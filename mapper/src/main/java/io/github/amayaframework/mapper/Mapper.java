@@ -6,7 +6,6 @@ package io.github.amayaframework.mapper;
 public interface Mapper {
 
     /**
-     *
      * @param path
      * @param segments
      * @return
@@ -14,7 +13,6 @@ public interface Mapper {
     String map(String path, Iterable<String> segments);
 
     /**
-     *
      * @param path
      * @return
      */

@@ -18,7 +18,6 @@ public final class MachineMapperFactory implements MapperFactory {
     private final Tokenizer tokenizer;
 
     /**
-     *
      * @param factory
      * @param tokenizer
      */
@@ -28,7 +27,6 @@ public final class MachineMapperFactory implements MapperFactory {
     }
 
     /**
-     *
      * @param factory
      */
     public MachineMapperFactory(StateMachineFactory factory) {

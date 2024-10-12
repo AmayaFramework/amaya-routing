@@ -1,5 +1,6 @@
 /**
  * Amaya Mapper.
+ *
  * @author Roman Bakaldin
  */
 module io.github.amayaframework.mapper {

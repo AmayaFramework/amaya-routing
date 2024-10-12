@@ -9,14 +9,12 @@ import java.util.Map;
 public interface MapperFactory {
 
     /**
-     *
      * @param paths
      * @return
      */
     Mapper create(Map<String, List<String>> paths);
 
     /**
-     *
      * @param paths
      * @return
      */
