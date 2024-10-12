@@ -5,22 +5,25 @@ import io.github.amayaframework.tokenize.Tokenizers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- *
+ * Implementation of {@link RouterFactory} that uses hash mapping for static routing.
  */
 public final class StaticRouterFactory implements RouterFactory {
     private final Tokenizer tokenizer;
 
     /**
-     * @param tokenizer
+     * Constructs a {@link StaticRouterFactory} instance with {@link Tokenizer}.
+     *
+     * @param tokenizer the specified {@link Tokenizer} instance, must be non-null
      */
     public StaticRouterFactory(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
+        this.tokenizer = Objects.requireNonNull(tokenizer);
     }
 
     /**
-     *
+     * Constructs a {@link StaticRouterFactory} instance with {@link io.github.amayaframework.tokenize.PlainTokenizer}.
      */
     public StaticRouterFactory() {
         this.tokenizer = Tokenizers.PLAIN_TOKENIZER;

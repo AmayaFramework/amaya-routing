@@ -1,15 +1,17 @@
 package io.github.amayaframework.router;
 
 /**
- *
+ * A class that represents a universal parameter descriptor.
  */
 public class Parameter {
     final String name;
     final String type;
 
     /**
-     * @param name
-     * @param type
+     * Constructs a {@link Parameter} instance with given name and type.
+     *
+     * @param name the specified parameter name, must be non-null
+     * @param type the specified parameter type, may be null
      */
     public Parameter(String name, String type) {
         this.name = name;
@@ -17,14 +19,18 @@ public class Parameter {
     }
 
     /**
-     * @return
+     * Gets parameter name.
+     *
+     * @return the parameter name
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @return
+     * Gets parameter type.
+     *
+     * @return the parameter type
      */
     public String getType() {
         return type;

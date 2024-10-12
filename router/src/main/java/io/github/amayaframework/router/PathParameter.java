@@ -1,15 +1,17 @@
 package io.github.amayaframework.router;
 
 /**
- *
+ * A class that represents a path parameter descriptor.
  */
 public final class PathParameter extends Parameter {
     int index;
 
     /**
-     * @param name
-     * @param index
-     * @param type
+     * Constructs an {@link PathParameter} instance with given name, type and parameter index.
+     *
+     * @param name  the specified path parameter name, must be non-null
+     * @param index the specified parameter index, must be &gt;= 0
+     * @param type  the specified path parameter type, may be null
      */
     public PathParameter(String name, int index, String type) {
         super(name, type);
@@ -17,7 +19,9 @@ public final class PathParameter extends Parameter {
     }
 
     /**
-     * @return
+     * Gets path parameter position in path.
+     *
+     * @return the parameter position
      */
     public int getIndex() {
         return index;

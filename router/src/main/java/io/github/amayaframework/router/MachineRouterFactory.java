@@ -6,13 +6,10 @@ import com.github.romanqed.jsm.model.MachineModelBuilder;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- *
+ * Implementation of {@link RouterFactory} that uses state machines for dynamic routing.
  */
 public final class MachineRouterFactory implements RouterFactory {
     private static final String INITIAL_STATE = "I";
@@ -22,19 +19,24 @@ public final class MachineRouterFactory implements RouterFactory {
     private final Tokenizer tokenizer;
 
     /**
-     * @param factory
-     * @param tokenizer
+     * Constructs a {@link MachineRouterFactory} instance with given {@link StateMachineFactory} and {@link Tokenizer}.
+     *
+     * @param factory   the specified {@link StateMachineFactory} instance, must be non-null
+     * @param tokenizer the specified {@link Tokenizer} instance, must be non-null
      */
     public MachineRouterFactory(StateMachineFactory factory, Tokenizer tokenizer) {
-        this.factory = factory;
-        this.tokenizer = tokenizer;
+        this.factory = Objects.requireNonNull(factory);
+        this.tokenizer = Objects.requireNonNull(tokenizer);
     }
 
     /**
-     * @param factory
+     * Constructs a {@link MachineRouterFactory} instance with given {@link StateMachineFactory} and
+     * {@link io.github.amayaframework.tokenize.PlainTokenizer}.
+     *
+     * @param factory the specified {@link StateMachineFactory} instance, must be non-null
      */
     public MachineRouterFactory(StateMachineFactory factory) {
-        this.factory = factory;
+        this.factory = Objects.requireNonNull(factory);
         this.tokenizer = Tokenizers.PLAIN_TOKENIZER;
     }
 

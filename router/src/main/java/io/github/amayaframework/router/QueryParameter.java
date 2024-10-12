@@ -1,15 +1,17 @@
 package io.github.amayaframework.router;
 
 /**
- *
+ * A class that represents a query parameter descriptor.
  */
 public final class QueryParameter extends Parameter {
     Boolean required;
 
     /**
-     * @param name
-     * @param required
-     * @param type
+     * Constructs an {@link QueryParameter} instance with given name, type and requirement flag.
+     *
+     * @param name     the specified query parameter name, must be non-null
+     * @param required the specified requirement flag, may be null
+     * @param type     the specified query parameter type, may be null
      */
     public QueryParameter(String name, Boolean required, String type) {
         super(name, type);
@@ -17,7 +19,9 @@ public final class QueryParameter extends Parameter {
     }
 
     /**
-     * @return
+     * Checks if this parameter is required.
+     *
+     * @return boolean value if set, null otherwise
      */
     public Boolean isRequired() {
         return required;

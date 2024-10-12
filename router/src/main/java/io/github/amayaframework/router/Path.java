@@ -3,7 +3,7 @@ package io.github.amayaframework.router;
 import java.util.List;
 
 /**
- *
+ * A class that represents a universal uri path descriptor.
  */
 public final class Path {
     final String path;
@@ -12,9 +12,11 @@ public final class Path {
     PathData data;
 
     /**
-     * @param path
-     * @param segments
-     * @param dynamic
+     * Constructs a {@link Path} instance with given normalized string representation, path segments and dynamic flag.
+     *
+     * @param path     the specified normalized path representation, must be non-null
+     * @param segments the specified path segments, must be non-null
+     * @param dynamic  the specified dynamic flag
      */
     public Path(String path, List<String> segments, boolean dynamic) {
         this.path = path;
@@ -23,35 +25,45 @@ public final class Path {
     }
 
     /**
-     * @return
+     * Gets normalized path representation.
+     *
+     * @return the normalized path representation
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * @return
+     * Gets path segments.
+     *
+     * @return the {@link List} containing path segments
      */
     public List<String> getSegments() {
         return segments;
     }
 
     /**
-     * @return
+     * Checks if this path is dynamic.
+     *
+     * @return true if this path is dynamic, false otherwise
      */
     public boolean isDynamic() {
         return dynamic;
     }
 
     /**
-     * @return
+     * Gets path data.
+     *
+     * @return the {@link PathData} instance
      */
     public PathData getData() {
         return data;
     }
 
     /**
-     * @param data
+     * Sets path data.
+     *
+     * @param data the {@link PathData} instance
      */
     public void setData(PathData data) {
         this.data = data;
