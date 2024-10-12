@@ -1,3 +1,4 @@
 rootProject.name = 'amaya-routing'
 include 'mapper'
+include 'router'
 
