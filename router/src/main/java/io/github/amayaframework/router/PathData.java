@@ -6,17 +6,8 @@ import java.util.List;
  *
  */
 public final class PathData {
-    final List<PathParameter> pathParameters;
-    final List<QueryParameter> queryParameters;
-
-    /**
-     * @param pathParameters
-     * @param queryParameters
-     */
-    public PathData(List<PathParameter> pathParameters, List<QueryParameter> queryParameters) {
-        this.pathParameters = pathParameters;
-        this.queryParameters = queryParameters;
-    }
+    List<PathParameter> pathParameters;
+    List<QueryParameter> queryParameters;
 
     /**
      * @return
@@ -26,9 +17,23 @@ public final class PathData {
     }
 
     /**
+     * @param pathParameters
+     */
+    public void setPathParameters(List<PathParameter> pathParameters) {
+        this.pathParameters = pathParameters;
+    }
+
+    /**
      * @return
      */
     public List<QueryParameter> getQueryParameters() {
         return queryParameters;
+    }
+
+    /**
+     * @param queryParameters
+     */
+    public void setQueryParameters(List<QueryParameter> queryParameters) {
+        this.queryParameters = queryParameters;
     }
 }

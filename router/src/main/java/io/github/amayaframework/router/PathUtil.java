@@ -1,10 +1,17 @@
 package io.github.amayaframework.router;
 
-final class PathUtil {
+/**
+ *
+ */
+public final class PathUtil {
     private PathUtil() {
     }
 
-    static String normalize(String path) {
+    /**
+     * @param path
+     * @return
+     */
+    public static String normalize(String path) {
         if (path.isEmpty() || path.equals("/")) {
             return "/";
         }
