@@ -9,13 +9,13 @@ package io.github.amayaframework.mapper;
  * F_mapper =
  * &#123;
  * <br>
- * /a/1 -> /a/*;
+ * /a/1 -&gt; /a/*;
  * <br>
- * /a/2 -> /a/*;
+ * /a/2 -&gt; /a/*;
  * <br>
  * ...
  * <br>
- * /a/random_segment -> /a/*;
+ * /a/random_segment -&gt; /a/*;
  * <br>
  * &#125;
  */
