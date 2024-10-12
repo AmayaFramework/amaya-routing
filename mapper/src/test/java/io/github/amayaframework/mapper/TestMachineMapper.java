@@ -9,7 +9,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class TestMachineMapper {
-    private static final MapperFactory FACTORY = new MachineMapperFactory(
+    private static final PathMapperFactory FACTORY = new MachineMapperFactory(
             new BytecodeMachineFactory(),
             Tokenizers.PLAIN_TOKENIZER
     );

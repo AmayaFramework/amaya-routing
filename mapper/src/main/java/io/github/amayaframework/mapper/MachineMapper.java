@@ -5,7 +5,7 @@ import io.github.amayaframework.tokenize.Tokenizer;
 
 import java.util.Map;
 
-final class MachineMapper implements Mapper {
+final class MachineMapper implements PathMapper {
     private final StateMachine<?, String> machine;
     private final Map<Long, String> dynamics;
     private final Tokenizer tokenizer;
@@ -17,13 +17,13 @@ final class MachineMapper implements Mapper {
     }
 
     @Override
-    public String map(String path, Iterable<String> segments) {
+    public String map(Iterable<String> segments) {
         var hash = machine.stamp(segments);
         return dynamics.get(hash);
     }
 
     @Override
     public String map(String path) {
-        return map(path, tokenizer.tokenize(path, "/"));
+        return map(tokenizer.tokenize(path, "/"));
     }
 }

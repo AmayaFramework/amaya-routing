@@ -9,17 +9,19 @@ import io.github.amayaframework.tokenize.Tokenizers;
 import java.util.*;
 
 /**
- *
+ * Implementation of {@link PathMapperFactory} that uses state machines for path mapping.
  */
-public final class MachineMapperFactory implements MapperFactory {
+public final class MachineMapperFactory implements PathMapperFactory {
     private static final String INITIAL_STATE = "I";
     private static final String EXIT_STATE = "E";
     private final StateMachineFactory factory;
     private final Tokenizer tokenizer;
 
     /**
-     * @param factory
-     * @param tokenizer
+     * Constructs a {@link MachineMapperFactory} instance with given {@link StateMachineFactory} and {@link Tokenizer}.
+     *
+     * @param factory   the specified {@link StateMachineFactory} instance, must be non-null
+     * @param tokenizer the specified {@link Tokenizer} instance, must be non-null
      */
     public MachineMapperFactory(StateMachineFactory factory, Tokenizer tokenizer) {
         this.factory = Objects.requireNonNull(factory);
@@ -27,7 +29,10 @@ public final class MachineMapperFactory implements MapperFactory {
     }
 
     /**
-     * @param factory
+     * Constructs a {@link MachineMapperFactory} instance with given {@link StateMachineFactory} and
+     * {@link io.github.amayaframework.tokenize.PlainTokenizer}.
+     *
+     * @param factory the specified {@link StateMachineFactory} instance, must be non-null
      */
     public MachineMapperFactory(StateMachineFactory factory) {
         this.factory = Objects.requireNonNull(factory);
@@ -72,7 +77,7 @@ public final class MachineMapperFactory implements MapperFactory {
         return factory.create(model);
     }
 
-    private Mapper innerCreate(Map<String, List<String>> paths) {
+    private PathMapper innerCreate(Map<String, List<String>> paths) {
         var machine = createMachine(paths.values());
         var map = new HashMap<Long, String>();
         for (var entry : paths.entrySet()) {
@@ -83,13 +88,13 @@ public final class MachineMapperFactory implements MapperFactory {
     }
 
     @Override
-    public Mapper create(Map<String, List<String>> paths) {
+    public PathMapper create(Map<String, List<String>> paths) {
         Objects.requireNonNull(paths);
         return innerCreate(paths);
     }
 
     @Override
-    public Mapper create(Iterable<String> paths) {
+    public PathMapper create(Iterable<String> paths) {
         Objects.requireNonNull(paths);
         var map = new HashMap<String, List<String>>();
         for (var path : paths) {
