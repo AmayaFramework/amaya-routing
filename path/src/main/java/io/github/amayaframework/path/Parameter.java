@@ -4,8 +4,8 @@ package io.github.amayaframework.path;
  * A class that represents a universal parameter descriptor.
  */
 public class Parameter {
-    final String name;
-    final String type;
+    protected final String name;
+    protected final String type;
 
     /**
      * Constructs a {@link Parameter} instance with given name and type.

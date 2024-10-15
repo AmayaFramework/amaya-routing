@@ -6,8 +6,8 @@ import java.util.List;
  * A class representing a set of path data: path and query parameters descriptors.
  */
 public final class PathData {
-    List<PathParameter> pathParameters;
-    List<QueryParameter> queryParameters;
+    private List<PathParameter> pathParameters;
+    private List<QueryParameter> queryParameters;
 
     /**
      * Gets path parameter descriptors.

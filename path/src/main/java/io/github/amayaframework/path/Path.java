@@ -1,15 +1,17 @@
 package io.github.amayaframework.path;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class that represents a universal uri path descriptor.
  */
 public final class Path {
-    final String path;
-    final List<String> segments;
-    final boolean dynamic;
-    PathData data;
+    private final String path;
+    private final List<String> segments;
+    private final boolean dynamic;
+    private PathData data;
 
     /**
      * Constructs a {@link Path} instance with given normalized string representation, path segments and dynamic flag.
@@ -19,8 +21,8 @@ public final class Path {
      * @param dynamic  the specified dynamic flag
      */
     public Path(String path, List<String> segments, boolean dynamic) {
-        this.path = path;
-        this.segments = segments;
+        this.path = Objects.requireNonNull(path);
+        this.segments = Collections.unmodifiableList(segments);
         this.dynamic = dynamic;
     }
 

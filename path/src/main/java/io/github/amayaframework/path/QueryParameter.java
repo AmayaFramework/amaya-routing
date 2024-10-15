@@ -4,7 +4,7 @@ package io.github.amayaframework.path;
  * A class that represents a query parameter descriptor.
  */
 public final class QueryParameter extends Parameter {
-    Boolean required;
+    private final Boolean required;
 
     /**
      * Constructs an {@link QueryParameter} instance with given name, type and requirement flag.

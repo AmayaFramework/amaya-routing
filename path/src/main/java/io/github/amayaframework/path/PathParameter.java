@@ -4,7 +4,7 @@ package io.github.amayaframework.path;
  * A class that represents a path parameter descriptor.
  */
 public final class PathParameter extends Parameter {
-    int index;
+    private final int index;
 
     /**
      * Constructs an {@link PathParameter} instance with given name, type and parameter index.
