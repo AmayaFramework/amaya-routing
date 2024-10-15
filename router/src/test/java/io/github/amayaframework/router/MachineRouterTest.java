@@ -1,6 +1,7 @@
 package io.github.amayaframework.router;
 
 import com.github.romanqed.jsm.bytecode.BytecodeMachineFactory;
+import io.github.amayaframework.path.Path;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

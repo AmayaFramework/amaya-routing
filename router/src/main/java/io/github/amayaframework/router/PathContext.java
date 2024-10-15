@@ -1,5 +1,7 @@
 package io.github.amayaframework.router;
 
+import io.github.amayaframework.path.PathData;
+
 /**
  * A class representing the context of the path.
  *

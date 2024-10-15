@@ -1,5 +1,6 @@
 package io.github.amayaframework.router;
 
+import io.github.amayaframework.path.Path;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
@@ -34,11 +35,11 @@ public final class StaticRouterFactory implements RouterFactory {
         var statics = new HashMap<String, PathContext<T>>();
         for (var entry : paths.entrySet()) {
             var path = entry.getKey();
-            if (path.dynamic) {
+            if (path.isDynamic()) {
                 throw new IllegalArgumentException("Static router does not support dynamic paths");
             }
-            var context = new PathContext<>(path.data, entry.getValue());
-            statics.put(path.path, context);
+            var context = new PathContext<>(path.getData(), entry.getValue());
+            statics.put(path.getPath(), context);
         }
         return new StaticRouter<>(tokenizer, statics);
     }

@@ -3,6 +3,7 @@ package io.github.amayaframework.router;
 import com.github.romanqed.jsm.StateMachine;
 import com.github.romanqed.jsm.StateMachineFactory;
 import com.github.romanqed.jsm.model.MachineModelBuilder;
+import io.github.amayaframework.path.Path;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
@@ -72,7 +73,7 @@ public final class MachineRouterFactory implements RouterFactory {
         builder.setInitState(INITIAL_STATE);
         builder.setExitState(EXIT_STATE);
         for (var path : paths) {
-            add(builder, path.segments);
+            add(builder, path.getSegments());
         }
         var model = builder.build();
         return factory.create(model);
@@ -84,12 +85,12 @@ public final class MachineRouterFactory implements RouterFactory {
         var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
             var path = entry.getKey();
-            if (path.dynamic) {
+            if (path.isDynamic()) {
                 dynamics.add(path);
                 continue;
             }
-            var context = new PathContext<>(path.data, entry.getValue());
-            statics.put(path.path, context);
+            var context = new PathContext<>(path.getData(), entry.getValue());
+            statics.put(path.getPath(), context);
         }
         if (dynamics.isEmpty()) {
             return new MachineRouter<>(tokenizer, statics, null, null);
@@ -97,8 +98,8 @@ public final class MachineRouterFactory implements RouterFactory {
         var machine = createMachine(dynamics);
         var dynamicMap = new HashMap<Long, PathContext<T>>();
         for (var path : dynamics) {
-            var hash = machine.stamp(path.segments);
-            var context = new PathContext<>(path.data, paths.get(path));
+            var hash = machine.stamp(path.getSegments());
+            var context = new PathContext<>(path.getData(), paths.get(path));
             dynamicMap.put(hash, context);
         }
         return new MachineRouter<>(tokenizer, statics, machine, dynamicMap);

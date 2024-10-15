@@ -1,5 +1,7 @@
 package io.github.amayaframework.router;
 
+import io.github.amayaframework.path.Path;
+
 import java.util.Map;
 
 /**

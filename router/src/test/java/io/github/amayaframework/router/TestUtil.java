@@ -1,5 +1,9 @@
 package io.github.amayaframework.router;
 
+import io.github.amayaframework.path.Path;
+import io.github.amayaframework.path.PathData;
+import io.github.amayaframework.path.PathParameter;
+import io.github.amayaframework.path.QueryParameter;
 import io.github.amayaframework.tokenize.Tokenizers;
 
 import java.util.ArrayList;
@@ -20,13 +24,14 @@ public final class TestUtil {
         var qp = p.substring(index + 1);
         var qs = parseQuery(qp);
         var ret = parsePath(pp);
-        ret.data.queryParameters = qs;
+        ret.getData().setQueryParameters(qs);
         return ret;
     }
 
     static Path parsePath(String p) {
         var data = new PathData();
-        data.pathParameters = new ArrayList<>();
+        var params = new ArrayList<PathParameter>();
+        data.setPathParameters(params);
         var segments = new ArrayList<String>();
         var norm = new StringBuilder();
         var tokens = Tokenizers.split(p, "/");
@@ -48,10 +53,10 @@ public final class TestUtil {
             dynamic = true;
             segments.add(null);
             norm.append("/*");
-            data.pathParameters.add(temp);
+            params.add(temp);
         }
         var ret = new Path(norm.toString(), segments, dynamic);
-        ret.data = data;
+        ret.setData(data);
         return ret;
     }
 
@@ -63,7 +68,7 @@ public final class TestUtil {
             if (t == null) {
                 continue;
             }
-            ret.put(t.name, t);
+            ret.put(t.getName(), t);
         }
         return new ArrayList<>(ret.values());
     }

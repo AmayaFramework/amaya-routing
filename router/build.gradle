@@ -29,6 +29,7 @@ dependencies {
     // Dependencies
     api group: 'com.github.romanqed', name: 'jsm', version: '1.1.0'
     api group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '1.0.0'
+    api group: 'io.github.amayaframework', name: 'amaya-path', version: '1.0.0'
 }
 
 test {
