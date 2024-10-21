@@ -27,7 +27,12 @@ public final class BracketPathParser extends AbstractPathParser {
                              Map<Character, Character> brackets,
                              PathParameterParser pathParser,
                              QueryParameterParser queryParser) {
-        super(tokenizer, GENERIC, pathParser, queryParser);
+        super(
+                Objects.requireNonNull(tokenizer),
+                GENERIC,
+                Objects.requireNonNull(pathParser),
+                Objects.requireNonNull(queryParser)
+        );
         this.brackets = Objects.requireNonNull(brackets);
     }
 
