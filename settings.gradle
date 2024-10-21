@@ -3,4 +3,5 @@ include 'mapper'
 include 'router'
 include 'path'
 include 'parser'
+include 'filter'
 
