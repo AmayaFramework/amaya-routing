@@ -33,7 +33,8 @@ public abstract class AbstractPathParser implements PathParser {
     protected abstract String unwrapPathParameter(String parameter);
 
     protected Path parsePathString(String path) {
-        var parameters = new HashSet<PathParameter>();
+        var parameters = new ArrayList<PathParameter>();
+        var set = new HashSet<String>();
         var segments = new ArrayList<String>();
         var normalized = new StringBuilder();
         var dynamic = false;
@@ -58,12 +59,14 @@ public abstract class AbstractPathParser implements PathParser {
             }
             // Handle param definition segment
             var parameter = pathParser.parse(unwrapped, index);
+            var name = parameter.getName();
+            if (set.contains(name)) {
+                throw new IllegalArgumentException("Duplicate path parameter found: " + parameter);
+            }
+            set.add(name);
             dynamic = true;
             normalized.append('/').append(any);
             segments.add(null);
-            if (parameters.contains(parameter)) {
-                throw new IllegalArgumentException("Duplicate path parameter found: " + parameter);
-            }
             parameters.add(parameter);
             index++;
         }
@@ -72,7 +75,7 @@ public abstract class AbstractPathParser implements PathParser {
             return ret;
         }
         var data = new PathData();
-        data.setPathParameters(new ArrayList<>(parameters));
+        data.setPathParameters(parameters);
         ret.setData(data);
         return ret;
     }
@@ -82,15 +85,18 @@ public abstract class AbstractPathParser implements PathParser {
             return null;
         }
         var tokens = tokenizer.tokenize(query, QUERY_DELIM);
-        var parameters = new HashSet<QueryParameter>();
+        var parameters = new ArrayList<QueryParameter>();
+        var set = new HashSet<String>();
         for (var token : tokens) {
             var parameter = queryParser.parse(token);
-            if (parameters.contains(parameter)) {
+            var name = parameter.getName();
+            if (set.contains(name)) {
                 throw new IllegalArgumentException("Duplicate query parameter found: " + parameter);
             }
+            set.add(name);
             parameters.add(parameter);
         }
-        return new ArrayList<>(parameters);
+        return parameters;
     }
 
     @Override
