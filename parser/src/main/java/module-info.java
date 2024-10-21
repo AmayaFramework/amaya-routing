@@ -1,5 +1,6 @@
 /**
  * Amaya Path Parser Module.
+ *
  * @author Roman Bakaldin
  */
 module io.github.amayaframework.parser {

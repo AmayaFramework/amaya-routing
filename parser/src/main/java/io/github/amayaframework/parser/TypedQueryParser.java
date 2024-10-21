@@ -2,9 +2,20 @@ package io.github.amayaframework.parser;
 
 import io.github.amayaframework.path.QueryParameter;
 
+/**
+ * An implementation of {@link QueryParameterParser} that works with the following path parameter template format:
+ * &lt;name&gt;&lt;?!&gt;:&lt;type&gt;. Requirement and type segments is optional and can be omitted.
+ * '?' means optional query requirement, '!' means strict requirement.
+ * If this segment is omitted, parameter requirement is null.
+ */
 public final class TypedQueryParser implements QueryParameterParser {
     private final char delim;
 
+    /**
+     * Constructs a {@link TypedQueryParser} instance with given type delimiter.
+     *
+     * @param delim the specified type delimiter
+     */
     public TypedQueryParser(char delim) {
         this.delim = delim;
     }
