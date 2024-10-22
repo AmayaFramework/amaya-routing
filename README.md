@@ -1,4 +1,4 @@
-# amaya-routing
+# amaya-routing [![amaya-routing](https://img.shields.io/maven-central/v/io.github.amayaframework/amaya-jetty?color=blue)](https://repo1.maven.org/maven2/io/github/amayaframework/amaya-routing)
 
 A module of the amaya framework that implements routing of http paths
 and processing of path and query parameters.
