@@ -10,7 +10,6 @@ import io.github.amayaframework.http.HttpMethod;
 public interface PathSet {
 
     /**
-     *
      * @param method
      * @param path
      * @return
@@ -18,7 +17,6 @@ public interface PathSet {
     Runnable1<HttpContext> get(HttpMethod method, String path);
 
     /**
-     *
      * @param method
      * @param path
      * @param handler
@@ -26,14 +24,12 @@ public interface PathSet {
     void set(HttpMethod method, String path, Runnable1<HttpContext> handler);
 
     /**
-     *
      * @param method
      * @param path
      */
     void remove(HttpMethod method, String path);
 
     /**
-     *
      * @return
      */
     boolean isEmpty();

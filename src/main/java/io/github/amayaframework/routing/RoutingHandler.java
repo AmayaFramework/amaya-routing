@@ -8,6 +8,7 @@ import io.github.amayaframework.context.HttpResponse;
 import io.github.amayaframework.filter.FilterSet;
 import io.github.amayaframework.http.HttpCode;
 import io.github.amayaframework.http.HttpMethod;
+import io.github.amayaframework.path.Parameter;
 import io.github.amayaframework.path.PathParameter;
 import io.github.amayaframework.path.QueryParameter;
 import io.github.amayaframework.router.Router;
@@ -15,7 +16,6 @@ import io.github.amayaframework.router.Router;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 final class RoutingHandler implements Runnable2<HttpContext, Runnable1<HttpContext>> {
     private final Router<Map<HttpMethod, Runnable1<HttpContext>>> router;
@@ -24,6 +24,10 @@ final class RoutingHandler implements Runnable2<HttpContext, Runnable1<HttpConte
     RoutingHandler(Router<Map<HttpMethod, Runnable1<HttpContext>>> router, FilterSet filters) {
         this.router = router;
         this.filters = filters;
+    }
+
+    private static String getBadRequestMessage(String type, Parameter parameter, Object value, String reason) {
+        return type + " parameter " + parameter + " with value '" + value + "' is invalid. Reason: " + reason;
     }
 
     private boolean processPathParameters(HttpRequest request,
@@ -51,7 +55,10 @@ final class RoutingHandler implements Runnable2<HttpContext, Runnable1<HttpConte
                 var object = filter.process(raw);
                 map.put(name, object);
             } catch (Throwable e) {
-                response.sendError(HttpCode.BAD_REQUEST, "Path parameter " + parameter + " is invalid");
+                response.sendError(
+                        HttpCode.BAD_REQUEST,
+                        getBadRequestMessage("Path", parameter, raw, e.getMessage())
+                );
                 return true;
             }
         }
@@ -63,6 +70,38 @@ final class RoutingHandler implements Runnable2<HttpContext, Runnable1<HttpConte
                                            List<QueryParameter> parameters) throws IOException {
         if (parameters == null || parameters.isEmpty()) {
             return false;
+        }
+        var queries = request.getQueryParameters();
+        for (var parameter : parameters) {
+            var raw = queries.get(parameter.getName());
+            if (raw == null) {
+                if (parameter.isRequired() == Boolean.TRUE) {
+                    response.sendError(HttpCode.BAD_REQUEST, "Missing required query parameter " + parameter);
+                    return true;
+                }
+                continue;
+            }
+            var type = parameter.getType();
+            if (type == null || raw.isEmpty()) {
+                continue;
+            }
+            var filter = filters.get(type);
+            if (filter == null) {
+                continue;
+            }
+            try {
+                var size = raw.size();
+                for (var i = 0; i < size; ++i) {
+                    var string = (String) raw.get(i);
+                    raw.set(i, filter.process(string));
+                }
+            } catch (Throwable e) {
+                response.sendError(
+                        HttpCode.BAD_REQUEST,
+                        getBadRequestMessage("Query", parameter, raw, e.getMessage())
+                );
+                return true;
+            }
         }
         return false;
     }
@@ -83,7 +122,10 @@ final class RoutingHandler implements Runnable2<HttpContext, Runnable1<HttpConte
         var method = request.getMethod();
         var handler = found.getValue().get(method);
         if (handler == null) {
-            response.sendError(HttpCode.METHOD_NOT_ALLOWED, "Method " + method + " not allowed for path " + path);
+            response.sendError(
+                    HttpCode.METHOD_NOT_ALLOWED,
+                    "Method " + method + " not allowed for path " + path
+            );
             return;
         }
         // Process path and query parameters

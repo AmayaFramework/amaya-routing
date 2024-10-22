@@ -32,9 +32,12 @@ dependencies {
     api group: 'io.github.amayaframework', name: 'amaya-router', version: '1.0.1'
     api group: 'io.github.amayaframework', name: 'amaya-path', version: '1.0.0'
     api group: 'io.github.amayaframework', name: 'amaya-path-parser', version: '1.0.0'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-http', version: '1.0.0'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-context', version: '1.1.2'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-web', version: '1.0.0'
+    // TODO Replace api with co
+    /*compileOnly*/ api group: 'io.github.amayaframework', name: 'amaya-http', version: '1.0.0'
+    /*compileOnly*/ api group: 'io.github.amayaframework', name: 'amaya-context', version: '1.1.2'
+    /*compileOnly*/ api group: 'io.github.amayaframework', name: 'amaya-web', version: '1.0.0'
+    // TODO Remove
+    api group: 'io.github.amayaframework', name: 'amaya-jetty', version: '1.0.0'
 }
 
 test {

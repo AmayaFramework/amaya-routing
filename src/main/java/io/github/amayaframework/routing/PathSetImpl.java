@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 
 final class PathSetImpl implements PathSet {
-    private final PathParser parser;
     final Map<Path, Map<HttpMethod, Runnable1<HttpContext>>> map;
     final Map<String, Path> cache;
+    private final PathParser parser;
 
     PathSetImpl(PathParser parser) {
         this.parser = parser;
@@ -34,6 +34,13 @@ final class PathSetImpl implements PathSet {
             return null;
         }
         return map.get(method);
+    }
+
+    private static void removeHandler(Map<HttpMethod, Runnable1<HttpContext>> map, HttpMethod method) {
+        if (map == null) {
+            return;
+        }
+        map.remove(method);
     }
 
     @Override
@@ -57,13 +64,6 @@ final class PathSetImpl implements PathSet {
         cache.put(getPathPart(path), parsed);
         var handlers = map.computeIfAbsent(parsed, k -> new HashMap<>());
         handlers.put(method, handler);
-    }
-
-    private static void removeHandler(Map<HttpMethod, Runnable1<HttpContext>> map, HttpMethod method) {
-        if (map == null) {
-            return;
-        }
-        map.remove(method);
     }
 
     @Override

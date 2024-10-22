@@ -9,7 +9,6 @@ import io.github.amayaframework.router.RouterFactory;
 public interface RoutingConfigurerFactory {
 
     /**
-     *
      * @param factory
      * @param parser
      * @return
