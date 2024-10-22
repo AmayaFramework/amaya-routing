@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-final class PathSetImpl implements PathSet {
+final class ParsingPathSet implements PathSet {
     final Map<Path, Map<HttpMethod, Runnable1<HttpContext>>> map;
     final Map<String, Path> cache;
     private final PathParser parser;
 
-    PathSetImpl(PathParser parser) {
+    ParsingPathSet(PathParser parser) {
         this.parser = parser;
         this.map = new HashMap<>();
         this.cache = new HashMap<>();
