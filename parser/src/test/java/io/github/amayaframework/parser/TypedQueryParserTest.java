@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class TypedQueryParserTest {
-    private static final TypedQueryParser PARSER = new TypedQueryParser(':');
+    private static final TypedQueryParameterParser PARSER = new TypedQueryParameterParser(':');
 
     @Test
     public void testTyped() {

@@ -15,10 +15,16 @@ public final class BracketPathParserTest {
     public void testEmpty() {
         var p1 = PARSER.parse("");
         var p2 = PARSER.parse("/");
+        var p3 = PARSER.parse("/?a");
+        var p4 = PARSER.parse("?a");
         assertEquals("/", p1.getPath());
         assertEquals("/", p2.getPath());
+        assertEquals("/", p3.getPath());
+        assertEquals("/", p4.getPath());
         assertTrue(p1.getSegments().isEmpty());
         assertTrue(p2.getSegments().isEmpty());
+        assertTrue(p3.getSegments().isEmpty());
+        assertTrue(p4.getSegments().isEmpty());
     }
 
     @Test

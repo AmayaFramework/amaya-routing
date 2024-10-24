@@ -86,7 +86,11 @@ public abstract class AbstractPathParser implements PathParser {
      * @param path the path string to parse
      * @return a {@link Path} object representing the parsed path, including segments and parameters
      */
+    @SuppressWarnings("unchecked")
     protected Path parsePathString(String path) {
+        if (path.isEmpty() || path.equals("/")) {
+            return new Path("/", Collections.EMPTY_LIST, false);
+        }
         var parameters = new ArrayList<PathParameter>();
         var set = new HashSet<String>();
         var segments = new ArrayList<String>();

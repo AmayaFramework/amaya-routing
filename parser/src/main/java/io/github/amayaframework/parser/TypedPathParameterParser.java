@@ -6,15 +6,15 @@ import io.github.amayaframework.path.PathParameter;
  * An implementation of {@link PathParameterParser} that works with the following path parameter template format:
  * &lt;name&gt;:&lt;type&gt;. Type segment is optional and can be omitted.
  */
-public final class TypedPathParser implements PathParameterParser {
+public final class TypedPathParameterParser implements PathParameterParser {
     private final char delim;
 
     /**
-     * Constructs a {@link TypedPathParser} instance with given type delimiter.
+     * Constructs a {@link TypedPathParameterParser} instance with given type delimiter.
      *
      * @param delim the specified type delimiter
      */
-    public TypedPathParser(char delim) {
+    public TypedPathParameterParser(char delim) {
         this.delim = delim;
     }
 

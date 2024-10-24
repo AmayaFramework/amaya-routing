@@ -31,8 +31,8 @@ public final class PathParsers {
      * @return an instance of {@link PathParser} with the specified configuration
      */
     public static PathParser createDefault(Tokenizer tokenizer, Map<Character, Character> brackets, char delim) {
-        var pathParser = new TypedPathParser(delim);
-        var queryParser = new TypedQueryParser(delim);
+        var pathParser = new TypedPathParameterParser(delim);
+        var queryParser = new TypedQueryParameterParser(delim);
         return new BracketPathParser(tokenizer, brackets, pathParser, queryParser);
     }
 

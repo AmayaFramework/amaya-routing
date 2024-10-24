@@ -8,15 +8,15 @@ import io.github.amayaframework.path.QueryParameter;
  * '?' means optional query requirement, '!' means strict requirement.
  * If this segment is omitted, parameter requirement is null.
  */
-public final class TypedQueryParser implements QueryParameterParser {
+public final class TypedQueryParameterParser implements QueryParameterParser {
     private final char delim;
 
     /**
-     * Constructs a {@link TypedQueryParser} instance with given type delimiter.
+     * Constructs a {@link TypedQueryParameterParser} instance with given type delimiter.
      *
      * @param delim the specified type delimiter
      */
-    public TypedQueryParser(char delim) {
+    public TypedQueryParameterParser(char delim) {
         this.delim = delim;
     }
 

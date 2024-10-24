@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class TypedPathParserTest {
-    private static final TypedPathParser PARSER = new TypedPathParser(':');
+    private static final TypedPathParameterParser PARSER = new TypedPathParameterParser(':');
 
     @Test
     public void testUntyped() {
