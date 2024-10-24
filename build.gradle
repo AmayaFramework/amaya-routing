@@ -31,7 +31,7 @@ dependencies {
     api group: 'io.github.amayaframework', name: 'amaya-filter', version: '1.0.0'
     api group: 'io.github.amayaframework', name: 'amaya-router', version: '1.0.1'
     api group: 'io.github.amayaframework', name: 'amaya-path', version: '1.0.0'
-    api group: 'io.github.amayaframework', name: 'amaya-path-parser', version: '1.0.0'
+    api group: 'io.github.amayaframework', name: 'amaya-path-parser', version: '1.0.1'
     compileOnly group: 'io.github.amayaframework', name: 'amaya-http', version: '1.0.0'
     compileOnly group: 'io.github.amayaframework', name: 'amaya-context', version: '1.1.2'
     compileOnly group: 'io.github.amayaframework', name: 'amaya-application', version: '1.1.1'
