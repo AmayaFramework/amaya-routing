@@ -13,7 +13,7 @@ To install it, you will need:
 
 ### Features
 
-* Fast route processing
+* Fast route processing (now without collisions ^_^)
 * Static routing
 * Dynamic routing
 * Path parameter parsing
@@ -26,7 +26,7 @@ To install it, you will need:
 ```Groovy
 dependencies {
     implementation group: 'com.github.romanqed', name: 'amaya-core', version: '2.0.0'
-    implementation group: 'com.github.romanqed', name: 'amaya-routing', version: '1.0.1'
+    implementation group: 'com.github.romanqed', name: 'amaya-routing', version: '1.0.2'
 }
 ```
 
@@ -41,7 +41,7 @@ dependencies {
 <dependency>
     <groupId>io.github.amayaframework</groupId>
     <artifactId>amaya-routing</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
