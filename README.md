@@ -13,7 +13,7 @@ To install it, you will need:
 
 ### Features
 
-* Fast route processing
+* Fast route processing (now without collisions ^_^)
 * Static routing
 * Dynamic routing
 * Path parameter parsing

@@ -23,6 +23,25 @@ public final class MachineRouterTest {
     }
 
     @Test
+    public void testCollisions() {
+        var paths = Map.of(
+                TestUtil.parse("/AaAa/*"), "c1",
+                TestUtil.parse("/BBBB/*"), "c2",
+                TestUtil.parse("/AaBB/*"), "c3",
+                TestUtil.parse("/BBAa/*"), "c4"
+        );
+        var router = DYNAMIC_FACTORY.create(paths);
+        var c1 = router.process("/AaAa/_");
+        assertEquals("c1", c1.value);
+        var c2 = router.process("/BBBB/_");
+        assertEquals("c2", c2.value);
+        var c3 = router.process("/AaBB/_");
+        assertEquals("c3", c3.value);
+        var c4 = router.process("/BBAa/_");
+        assertEquals("c4", c4.value);
+    }
+
+    @Test
     public void testStatic() {
         var paths = Map.of(
                 TestUtil.parse("/s1"), "s1",
