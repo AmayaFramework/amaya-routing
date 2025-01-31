@@ -8,8 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public final class MachineRouterTest {
     private static final RouterFactory DYNAMIC_FACTORY = new MachineRouterFactory(new BytecodeMachineFactory());
@@ -180,5 +179,23 @@ public final class MachineRouterTest {
         assertEquals("/dynamic/*", c2.value);
         var c3 = router.process("/dynamic/override");
         assertEquals("/dynamic/override", c3.value);
+    }
+
+    @Test
+    public void testOverrideCutout() {
+        var paths = parse(List.of(
+                "/a/*",
+                "/a/*/s",
+                "/a/override"
+        ));
+        var router = DYNAMIC_FACTORY.create(paths);
+        var c1 = router.process("/a/_");
+        assertEquals("/a/*", c1.value);
+        var c2 = router.process("/a/_/s");
+        assertEquals("/a/*/s", c2.value);
+        var c3 = router.process("/a/override");
+        assertEquals("/a/override", c3.value);
+        var c4 = router.process("/a/override/s");
+        assertNull(c4);
     }
 }
