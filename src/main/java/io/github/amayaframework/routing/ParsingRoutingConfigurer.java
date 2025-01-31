@@ -11,13 +11,26 @@ import io.github.amayaframework.web.WebApplication;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-final class ParsingRoutingConfigurer implements RoutingConfigurer {
+/**
+ * Implementation of {@link RoutingConfigurer} that use built-in routing handler.
+ * Can be reused after {@link ParsingRoutingConfigurer#createHandler()}
+ * or {@link ParsingRoutingConfigurer#run(WebApplication)} invocation.
+ */
+public final class ParsingRoutingConfigurer implements RoutingConfigurer {
     private final RouterFactory factory;
     private final ParsingPathSet paths;
     private final Supplier<FilterSet> supplier;
     private FilterSet filters;
 
-    ParsingRoutingConfigurer(RouterFactory factory, PathParser parser, Supplier<FilterSet> supplier) {
+    /**
+     * Constructs a {@link ParsingRoutingConfigurer} instance with given router factory, path parser
+     * and filter set supplier.
+     *
+     * @param factory  the specified router factory, must be non-null
+     * @param parser   the specified parser, must be non-null
+     * @param supplier the specified filter set supplier, must be non-null
+     */
+    public ParsingRoutingConfigurer(RouterFactory factory, PathParser parser, Supplier<FilterSet> supplier) {
         this.factory = factory;
         this.paths = new ParsingPathSet(parser);
         this.supplier = supplier;
