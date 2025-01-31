@@ -85,14 +85,15 @@ public final class MachineRouterFactory implements RouterFactory {
         var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
             var path = entry.getKey();
-            if (path.isDynamic()) {
-                dynamics.add(path);
-                continue;
+            // Add all paths to state machine to prevent undefined behaviour
+            dynamics.add(path);
+            // If path not is dynamic, register it in fast static map
+            if (!path.isDynamic()) {
+                var context = new PathContext<>(path.getData(), entry.getValue());
+                statics.put(path.getPath(), context);
             }
-            var context = new PathContext<>(path.getData(), entry.getValue());
-            statics.put(path.getPath(), context);
         }
-        if (dynamics.isEmpty()) {
+        if (statics.size() == dynamics.size()) {
             return new MachineRouter<>(tokenizer, statics, null, null);
         }
         var machine = createMachine(dynamics);

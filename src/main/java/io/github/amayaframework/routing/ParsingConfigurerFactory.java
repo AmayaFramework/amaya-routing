@@ -7,7 +7,7 @@ import io.github.amayaframework.router.RouterFactory;
 import java.util.Objects;
 
 /**
- *
+ * Implementation of {@link RoutingConfigurerFactory} that creates basic routing configurer.
  */
 public final class ParsingConfigurerFactory implements RoutingConfigurerFactory {
 
