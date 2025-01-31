@@ -26,7 +26,7 @@ To install it, you will need:
 ```Groovy
 dependencies {
     implementation group: 'com.github.romanqed', name: 'amaya-core', version: '2.0.0'
-    implementation group: 'com.github.romanqed', name: 'amaya-routing', version: '1.0.2'
+    implementation group: 'com.github.romanqed', name: 'amaya-routing', version: '1.0.3'
 }
 ```
 
@@ -41,7 +41,7 @@ dependencies {
 <dependency>
     <groupId>io.github.amayaframework</groupId>
     <artifactId>amaya-routing</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
