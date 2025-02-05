@@ -6,7 +6,6 @@
 module io.github.amayaframework.routing {
     // Imports
     requires com.github.romanqed.jfunc;
-    requires com.github.romanqed.jsm;
     requires io.github.amayaframework.path;
     requires io.github.amayaframework.parser;
     requires io.github.amayaframework.router;

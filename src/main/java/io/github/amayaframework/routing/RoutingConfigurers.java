@@ -48,13 +48,11 @@ public final class RoutingConfigurers {
 
     /**
      * Creates a {@link RoutingConfigurer} using a default path parser.
-     * A default router factory is created using a new instance of {@link BytecodeMachineFactory}.
      *
+     * @param factory the router factory to be used, must be non-null
      * @return a new instance of {@link RoutingConfigurer}
      */
-    public static RoutingConfigurer create() {
-        var machineFactory = new BytecodeMachineFactory();
-        var routerFactory = new MachineRouterFactory(machineFactory);
-        return CONFIGURER_FACTORY.create(routerFactory, PathParsers.createDefault());
+    public static RoutingConfigurer create(RouterFactory factory) {
+        return CONFIGURER_FACTORY.create(factory, PathParsers.createDefault());
     }
 }

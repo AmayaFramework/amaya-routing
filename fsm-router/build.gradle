@@ -26,10 +26,10 @@ dependencies {
     // Tests
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
-    testImplementation group: 'io.github.amayaframework', name: 'amaya-router', version: '1.0.3'
+    testImplementation group: 'io.github.amayaframework', name: 'amaya-router', version: '1.1.0'
     // Dependencies
     api group: 'com.github.romanqed', name: 'jsm', version: '1.1.2'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-router', version: '1.0.3'
+    compileOnly group: 'io.github.amayaframework', name: 'amaya-router', version: '1.1.0'
 }
 
 test {
