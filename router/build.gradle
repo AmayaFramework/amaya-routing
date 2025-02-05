@@ -27,7 +27,6 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
     // Dependencies
-    api group: 'com.github.romanqed', name: 'jsm', version: '1.1.2'
     api group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '1.0.0'
     api group: 'io.github.amayaframework', name: 'amaya-path', version: '1.0.0'
 }

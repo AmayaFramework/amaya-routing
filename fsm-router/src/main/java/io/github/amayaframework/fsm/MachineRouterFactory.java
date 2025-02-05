@@ -1,40 +1,45 @@
-package io.github.amayaframework.mapper;
+package io.github.amayaframework.fsm;
 
 import com.github.romanqed.jsm.StateMachine;
 import com.github.romanqed.jsm.StateMachineFactory;
 import com.github.romanqed.jsm.model.MachineModelBuilder;
+import io.github.amayaframework.path.Path;
+import io.github.amayaframework.router.PathContext;
+import io.github.amayaframework.router.Router;
+import io.github.amayaframework.router.RouterFactory;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
 import java.util.*;
 
 /**
- * Implementation of {@link PathMapperFactory} that uses state machines for path mapping.
+ * Implementation of {@link RouterFactory} that uses state machines for dynamic routing.
  */
-public final class MachineMapperFactory implements PathMapperFactory {
+public final class MachineRouterFactory implements RouterFactory {
     private static final String INITIAL_STATE = "I";
     private static final String EXIT_STATE = "E";
+
     private final StateMachineFactory factory;
     private final Tokenizer tokenizer;
 
     /**
-     * Constructs a {@link MachineMapperFactory} instance with given {@link StateMachineFactory} and {@link Tokenizer}.
+     * Constructs a {@link MachineRouterFactory} instance with given {@link StateMachineFactory} and {@link Tokenizer}.
      *
      * @param factory   the specified {@link StateMachineFactory} instance, must be non-null
      * @param tokenizer the specified {@link Tokenizer} instance, must be non-null
      */
-    public MachineMapperFactory(StateMachineFactory factory, Tokenizer tokenizer) {
+    public MachineRouterFactory(StateMachineFactory factory, Tokenizer tokenizer) {
         this.factory = Objects.requireNonNull(factory);
-        this.tokenizer = tokenizer;
+        this.tokenizer = Objects.requireNonNull(tokenizer);
     }
 
     /**
-     * Constructs a {@link MachineMapperFactory} instance with given {@link StateMachineFactory} and
+     * Constructs a {@link MachineRouterFactory} instance with given {@link StateMachineFactory} and
      * {@link io.github.amayaframework.tokenize.PlainTokenizer}.
      *
      * @param factory the specified {@link StateMachineFactory} instance, must be non-null
      */
-    public MachineMapperFactory(StateMachineFactory factory) {
+    public MachineRouterFactory(StateMachineFactory factory) {
         this.factory = Objects.requireNonNull(factory);
         this.tokenizer = Tokenizers.PLAIN_TOKENIZER;
     }
@@ -66,45 +71,41 @@ public final class MachineMapperFactory implements PathMapperFactory {
         }
     }
 
-    private StateMachine<Object, String> createMachine(Collection<List<String>> batches) {
+    private StateMachine<Object, String> createMachine(List<Path> paths) {
         var builder = new MachineModelBuilder<>(Object.class, String.class);
         builder.setInitState(INITIAL_STATE);
         builder.setExitState(EXIT_STATE);
-        for (var batch : batches) {
-            add(builder, batch);
+        for (var path : paths) {
+            add(builder, path.getSegments());
         }
         var model = builder.build();
         return factory.create(model);
     }
 
-    private PathMapper innerCreate(Map<String, List<String>> paths) {
-        var machine = createMachine(paths.values());
-        var map = new HashMap<Long, String>();
+    @Override
+    public <T> Router<T> create(Map<Path, T> paths) {
+        var statics = new HashMap<String, PathContext<T>>();
+        var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
-            var hash = machine.stamp(entry.getValue());
-            map.put(hash, entry.getKey());
-        }
-        return new MachineMapper(machine, map, tokenizer);
-    }
-
-    @Override
-    public PathMapper create(Map<String, List<String>> paths) {
-        Objects.requireNonNull(paths);
-        return innerCreate(paths);
-    }
-
-    @Override
-    public PathMapper create(Iterable<String> paths) {
-        Objects.requireNonNull(paths);
-        var map = new HashMap<String, List<String>>();
-        for (var path : paths) {
-            var split = tokenizer.tokenize(path, "/");
-            var tokens = new ArrayList<String>();
-            for (var token : split) {
-                tokens.add(token.equals("*") ? null : token);
+            var path = entry.getKey();
+            // Add all paths to state machine to prevent undefined behaviour
+            dynamics.add(path);
+            // If path not is dynamic, register it in fast static map
+            if (!path.isDynamic()) {
+                var context = new PathContext<>(path.getData(), entry.getValue());
+                statics.put(path.getPath(), context);
             }
-            map.put(path, tokens);
         }
-        return innerCreate(map);
+        if (statics.size() == dynamics.size()) {
+            return new MachineRouter<>(tokenizer, statics, null, null);
+        }
+        var machine = createMachine(dynamics);
+        var dynamicMap = new HashMap<Long, PathContext<T>>();
+        for (var path : dynamics) {
+            var hash = machine.stamp(path.getSegments());
+            var context = new PathContext<>(path.getData(), paths.get(path));
+            dynamicMap.put(hash, context);
+        }
+        return new MachineRouter<>(tokenizer, statics, machine, dynamicMap);
     }
 }

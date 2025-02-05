@@ -1,10 +1,9 @@
 package io.github.amayaframework.routing;
 
-import com.github.romanqed.jsm.bytecode.BytecodeMachineFactory;
 import io.github.amayaframework.parser.PathParser;
 import io.github.amayaframework.parser.PathParsers;
-import io.github.amayaframework.router.MachineRouterFactory;
 import io.github.amayaframework.router.RouterFactory;
+import io.github.amayaframework.router.StaticRouterFactory;
 
 /**
  * A utility class for creating instances of {@link RoutingConfigurer}.
@@ -35,26 +34,32 @@ public final class RoutingConfigurers {
 
     /**
      * Creates a {@link RoutingConfigurer} using the specified path parser.
-     * A default router factory is created using a new instance of {@link BytecodeMachineFactory}.
+     * A default router factory is created using a new instance of {@link StaticRouterFactory}.
      *
      * @param parser the path parser to be used, must be non-null
      * @return a new instance of {@link RoutingConfigurer}
      */
     public static RoutingConfigurer create(PathParser parser) {
-        var machineFactory = new BytecodeMachineFactory();
-        var routerFactory = new MachineRouterFactory(machineFactory);
-        return CONFIGURER_FACTORY.create(routerFactory, parser);
+        return CONFIGURER_FACTORY.create(new StaticRouterFactory(), parser);
     }
 
     /**
      * Creates a {@link RoutingConfigurer} using a default path parser.
-     * A default router factory is created using a new instance of {@link BytecodeMachineFactory}.
+     *
+     * @param factory the router factory to be used, must be non-null
+     * @return a new instance of {@link RoutingConfigurer}
+     */
+    public static RoutingConfigurer create(RouterFactory factory) {
+        return CONFIGURER_FACTORY.create(factory, PathParsers.createDefault());
+    }
+
+    /**
+     * Creates a {@link RoutingConfigurer} using a default path parser.
+     * A default router factory is created using a new instance of {@link StaticRouterFactory}.
      *
      * @return a new instance of {@link RoutingConfigurer}
      */
     public static RoutingConfigurer create() {
-        var machineFactory = new BytecodeMachineFactory();
-        var routerFactory = new MachineRouterFactory(machineFactory);
-        return CONFIGURER_FACTORY.create(routerFactory, PathParsers.createDefault());
+        return CONFIGURER_FACTORY.create(new StaticRouterFactory(), PathParsers.createDefault());
     }
 }
