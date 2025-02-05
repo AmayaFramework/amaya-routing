@@ -1,9 +1,12 @@
-package io.github.amayaframework.router;
+package io.github.amayaframework.fsm;
 
 import com.github.romanqed.jsm.StateMachine;
 import com.github.romanqed.jsm.StateMachineFactory;
 import com.github.romanqed.jsm.model.MachineModelBuilder;
 import io.github.amayaframework.path.Path;
+import io.github.amayaframework.router.PathContext;
+import io.github.amayaframework.router.Router;
+import io.github.amayaframework.router.RouterFactory;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 

@@ -1,7 +1,9 @@
-package io.github.amayaframework.router;
+package io.github.amayaframework.fsm;
 
 import com.github.romanqed.jsm.bytecode.BytecodeMachineFactory;
 import io.github.amayaframework.path.Path;
+import io.github.amayaframework.router.RouterFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -31,13 +33,13 @@ public final class MachineRouterTest {
         );
         var router = DYNAMIC_FACTORY.create(paths);
         var c1 = router.process("/AaAa/_");
-        assertEquals("c1", c1.value);
+        Assertions.assertEquals("c1", c1.getValue());
         var c2 = router.process("/BBBB/_");
-        assertEquals("c2", c2.value);
+        Assertions.assertEquals("c2", c2.getValue());
         var c3 = router.process("/AaBB/_");
-        assertEquals("c3", c3.value);
+        Assertions.assertEquals("c3", c3.getValue());
         var c4 = router.process("/BBAa/_");
-        assertEquals("c4", c4.value);
+        Assertions.assertEquals("c4", c4.getValue());
     }
 
     @Test
@@ -50,25 +52,25 @@ public final class MachineRouterTest {
         var router = DYNAMIC_FACTORY.create(paths);
         var c1 = router.process("/s1");
         assertNotNull(c1);
-        assertEquals("s1", c1.value);
+        Assertions.assertEquals("s1", c1.getValue());
         var c2 = router.process("/s2");
         assertNotNull(c2);
-        assertEquals("s2", c2.value);
+        Assertions.assertEquals("s2", c2.getValue());
         var c3 = router.process("/a/b/c/s3");
         assertNotNull(c3);
-        assertEquals("s3", c3.value);
+        Assertions.assertEquals("s3", c3.getValue());
         // s1
-        assertEquals(c1, router.process("s1"));
-        assertEquals(c1, router.process("s1/"));
-        assertEquals(c1, router.process("/s1/"));
+        Assertions.assertEquals(c1, router.process("s1"));
+        Assertions.assertEquals(c1, router.process("s1/"));
+        Assertions.assertEquals(c1, router.process("/s1/"));
         // s2
-        assertEquals(c2, router.process("s2"));
-        assertEquals(c2, router.process("s2/"));
-        assertEquals(c2, router.process("/s2/"));
+        Assertions.assertEquals(c2, router.process("s2"));
+        Assertions.assertEquals(c2, router.process("s2/"));
+        Assertions.assertEquals(c2, router.process("/s2/"));
         // s3
-        assertEquals(c3, router.process("a/b/c/s3"));
-        assertEquals(c3, router.process("a/b/c/s3/"));
-        assertEquals(c3, router.process("/a/b/c/s3/"));
+        Assertions.assertEquals(c3, router.process("a/b/c/s3"));
+        Assertions.assertEquals(c3, router.process("a/b/c/s3/"));
+        Assertions.assertEquals(c3, router.process("/a/b/c/s3/"));
     }
 
     @Test
@@ -100,50 +102,50 @@ public final class MachineRouterTest {
         var router = DYNAMIC_FACTORY.create(paths);
         // a
         var ca = router.process("/a/_");
-        assertEquals("/a/*", ca.value);
+        Assertions.assertEquals("/a/*", ca.getValue());
         var ca1 = router.process("/a/_/1");
-        assertEquals("/a/*/1", ca1.value);
+        Assertions.assertEquals("/a/*/1", ca1.getValue());
         var ca11 = router.process("/a/_/1/_");
-        assertEquals("/a/*/1/*", ca11.value);
+        Assertions.assertEquals("/a/*/1/*", ca11.getValue());
         var ca2 = router.process("/a/_/2");
-        assertEquals("/a/*/2", ca2.value);
+        Assertions.assertEquals("/a/*/2", ca2.getValue());
         var ca21 = router.process("/a/_/2/_");
-        assertEquals("/a/*/2/*", ca21.value);
+        Assertions.assertEquals("/a/*/2/*", ca21.getValue());
         var ca3 = router.process("/a/_/3");
-        assertEquals("/a/*/3", ca3.value);
+        Assertions.assertEquals("/a/*/3", ca3.getValue());
         var ca31 = router.process("/a/_/3/_");
-        assertEquals("/a/*/3/*", ca31.value);
+        Assertions.assertEquals("/a/*/3/*", ca31.getValue());
         // b
         var cb = router.process("/b/_");
-        assertEquals("/b/*", cb.value);
+        Assertions.assertEquals("/b/*", cb.getValue());
         var cb1 = router.process("/b/_/1");
-        assertEquals("/b/*/1", cb1.value);
+        Assertions.assertEquals("/b/*/1", cb1.getValue());
         var cb11 = router.process("/b/_/1/_");
-        assertEquals("/b/*/1/*", cb11.value);
+        Assertions.assertEquals("/b/*/1/*", cb11.getValue());
         var cb2 = router.process("/b/_/2");
-        assertEquals("/b/*/2", cb2.value);
+        Assertions.assertEquals("/b/*/2", cb2.getValue());
         var cb21 = router.process("/b/_/2/_");
-        assertEquals("/b/*/2/*", cb21.value);
+        Assertions.assertEquals("/b/*/2/*", cb21.getValue());
         var cb3 = router.process("/b/_/3");
-        assertEquals("/b/*/3", cb3.value);
+        Assertions.assertEquals("/b/*/3", cb3.getValue());
         var cb31 = router.process("/b/_/3/_");
-        assertEquals("/b/*/3/*", cb31.value);
+        Assertions.assertEquals("/b/*/3/*", cb31.getValue());
         // a
-        assertEquals(ca, router.process("/a/aaaa"));
-        assertEquals(ca1, router.process("/a/segment/1"));
-        assertEquals(ca11, router.process("/a/seg/1/seg"));
-        assertEquals(ca2, router.process("/a/ss/2"));
-        assertEquals(ca21, router.process("/a/dd/2/gfg"));
-        assertEquals(ca3, router.process("/a/lo/3"));
-        assertEquals(ca31, router.process("/a/qwerty/3/bebra"));
+        Assertions.assertEquals(ca, router.process("/a/aaaa"));
+        Assertions.assertEquals(ca1, router.process("/a/segment/1"));
+        Assertions.assertEquals(ca11, router.process("/a/seg/1/seg"));
+        Assertions.assertEquals(ca2, router.process("/a/ss/2"));
+        Assertions.assertEquals(ca21, router.process("/a/dd/2/gfg"));
+        Assertions.assertEquals(ca3, router.process("/a/lo/3"));
+        Assertions.assertEquals(ca31, router.process("/a/qwerty/3/bebra"));
         // b
-        assertEquals(cb, router.process("/b/bbbb"));
-        assertEquals(cb1, router.process("/b/segm/1"));
-        assertEquals(cb11, router.process("/b/seg/1/seq"));
-        assertEquals(cb2, router.process("/b/lok/2"));
-        assertEquals(cb21, router.process("/b/pp/2/123"));
-        assertEquals(cb3, router.process("/b/xd/3"));
-        assertEquals(cb31, router.process("/b/lol/3/kek"));
+        Assertions.assertEquals(cb, router.process("/b/bbbb"));
+        Assertions.assertEquals(cb1, router.process("/b/segm/1"));
+        Assertions.assertEquals(cb11, router.process("/b/seg/1/seq"));
+        Assertions.assertEquals(cb2, router.process("/b/lok/2"));
+        Assertions.assertEquals(cb21, router.process("/b/pp/2/123"));
+        Assertions.assertEquals(cb3, router.process("/b/xd/3"));
+        Assertions.assertEquals(cb31, router.process("/b/lol/3/kek"));
     }
 
     @Test
@@ -155,14 +157,14 @@ public final class MachineRouterTest {
         ));
         var router = DYNAMIC_FACTORY.create(paths);
         var c1 = router.process("/s1/_/s2/_");
-        assertEquals("/s1/*/s2/*", c1.value);
+        Assertions.assertEquals("/s1/*/s2/*", c1.getValue());
         var c2 = router.process("/s1/o1/s2/_");
-        assertEquals("/s1/o1/s2/*", c2.value);
+        Assertions.assertEquals("/s1/o1/s2/*", c2.getValue());
         var c3 = router.process("/s1/_/s2/o2");
-        assertEquals("/s1/*/s2/o2", c3.value);
-        assertEquals(c1, router.process("/s1/v1/s2/v2"));
-        assertEquals(c2, router.process("/s1/o1/s2/v2"));
-        assertEquals(c3, router.process("/s1/v1/s2/o2"));
+        Assertions.assertEquals("/s1/*/s2/o2", c3.getValue());
+        Assertions.assertEquals(c1, router.process("/s1/v1/s2/v2"));
+        Assertions.assertEquals(c2, router.process("/s1/o1/s2/v2"));
+        Assertions.assertEquals(c3, router.process("/s1/v1/s2/o2"));
     }
 
     @Test
@@ -174,11 +176,11 @@ public final class MachineRouterTest {
         ));
         var router = DYNAMIC_FACTORY.create(paths);
         var c1 = router.process("/static");
-        assertEquals("/static", c1.value);
+        Assertions.assertEquals("/static", c1.getValue());
         var c2 = router.process("/dynamic/_");
-        assertEquals("/dynamic/*", c2.value);
+        Assertions.assertEquals("/dynamic/*", c2.getValue());
         var c3 = router.process("/dynamic/override");
-        assertEquals("/dynamic/override", c3.value);
+        Assertions.assertEquals("/dynamic/override", c3.getValue());
     }
 
     @Test
@@ -190,11 +192,11 @@ public final class MachineRouterTest {
         ));
         var router = DYNAMIC_FACTORY.create(paths);
         var c1 = router.process("/a/_");
-        assertEquals("/a/*", c1.value);
+        Assertions.assertEquals("/a/*", c1.getValue());
         var c2 = router.process("/a/_/s");
-        assertEquals("/a/*/s", c2.value);
+        Assertions.assertEquals("/a/*/s", c2.getValue());
         var c3 = router.process("/a/override");
-        assertEquals("/a/override", c3.value);
+        Assertions.assertEquals("/a/override", c3.getValue());
         var c4 = router.process("/a/override/s");
         assertNull(c4);
     }
