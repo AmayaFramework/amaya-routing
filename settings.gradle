@@ -4,4 +4,5 @@ include 'path'
 include 'parser'
 include 'filter'
 include 'fsm-router'
+include 'tree-router'
 
