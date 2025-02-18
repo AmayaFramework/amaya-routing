@@ -1,4 +1,4 @@
-package io.github.amayaframework.fsm;
+package io.github.amayaframework.router.fsm;
 
 import com.github.romanqed.jsm.bytecode.BytecodeMachineFactory;
 import io.github.amayaframework.path.Path;

@@ -1,4 +1,4 @@
-package io.github.amayaframework.fsm;
+package io.github.amayaframework.router.fsm;
 
 import com.github.romanqed.jsm.StateMachine;
 import com.github.romanqed.jsm.StateMachineFactory;
