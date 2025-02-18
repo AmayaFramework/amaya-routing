@@ -1,4 +1,4 @@
-package io.github.amayaframework.fsm;
+package io.github.amayaframework.router.fsm;
 
 import io.github.amayaframework.path.Path;
 import io.github.amayaframework.path.PathData;
