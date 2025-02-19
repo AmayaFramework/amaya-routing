@@ -25,10 +25,10 @@ To install it, you will need:
 
 ```Groovy
 dependencies {
-    implementation group: 'com.github.romanqed', name: 'amaya-core', version: '2.0.0'
-    implementation group: 'com.github.romanqed', name: 'amaya-routing', version: '1.1.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '2.0.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-routing', version: '1.1.0'
     // Optional dependency for built-in dynamic routing impl
-    implementation group: 'com.github.romanqed', name: 'amaya-fsm-router', version: '1.0.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-fsm-router', version: '1.0.0'
 }
 ```
 
