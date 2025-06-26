@@ -1,4 +1,4 @@
-package io.github.amayaframework.parser;
+package io.github.amayaframework.path.parser;
 
 import org.junit.jupiter.api.Test;
 

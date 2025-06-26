@@ -1,4 +1,4 @@
-package io.github.amayaframework.parser;
+package io.github.amayaframework.path.parser;
 
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
