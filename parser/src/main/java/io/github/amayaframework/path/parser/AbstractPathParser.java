@@ -133,7 +133,7 @@ public abstract class AbstractPathParser implements PathParser {
             return ret;
         }
         var data = new PathData();
-        data.setPathParameters(parameters);
+        data.setPathParams(parameters);
         ret.setData(data);
         return ret;
     }
@@ -187,7 +187,7 @@ public abstract class AbstractPathParser implements PathParser {
             data = new PathData();
             path.setData(data);
         }
-        data.setQueryParameters(query);
+        data.setQueryParams(query);
         return path;
     }
 }

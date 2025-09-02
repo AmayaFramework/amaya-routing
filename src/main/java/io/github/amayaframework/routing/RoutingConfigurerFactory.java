@@ -3,7 +3,7 @@
 //import io.github.amayaframework.path.parser.PathParser;
 //import io.github.amayaframework.router.RouterFactory;
 //
-///**
+/// **
 // * An interface describing an abstract {@link RoutingConfigurer} factory.
 // */
 //public interface RoutingConfigurerFactory {

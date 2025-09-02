@@ -5,7 +5,7 @@
 //import io.github.amayaframework.router.RouterFactory;
 //import io.github.amayaframework.router.StaticRouterFactory;
 //
-///**
+/// **
 // * A utility class for creating instances of {@link RoutingConfigurer}.
 // * This class provides static methods to create routing configurations
 // * using different factories and parsers.

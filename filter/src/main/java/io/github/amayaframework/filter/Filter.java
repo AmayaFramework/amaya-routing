@@ -1,15 +1,14 @@
 package io.github.amayaframework.filter;
 
 /**
- * An interface describing an abstract filter that converts a string into an object representation.
+ * TODO
  */
 public interface Filter {
 
     /**
-     * Processes raw string and converts it into an object representation.
-     *
-     * @param raw the
-     * @return the {@link Object} representation
+     * TODO
+     * @param raw
+     * @return
      */
     Object process(String raw);
 }

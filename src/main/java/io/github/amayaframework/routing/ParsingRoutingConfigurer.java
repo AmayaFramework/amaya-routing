@@ -12,7 +12,7 @@
 //import java.util.Objects;
 //import java.util.function.Supplier;
 //
-///**
+/// **
 // * Implementation of {@link RoutingConfigurer} that use built-in routing handler.
 // * Can be reused after {@link ParsingRoutingConfigurer#createHandler()}
 // * or {@link ParsingRoutingConfigurer#run(WebApplication)} invocation.

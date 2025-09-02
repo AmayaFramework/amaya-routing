@@ -24,14 +24,14 @@ public final class TestUtil {
         var qp = p.substring(index + 1);
         var qs = parseQuery(qp);
         var ret = parsePath(pp);
-        ret.getData().setQueryParameters(qs);
+        ret.getData().setQueryParams(qs);
         return ret;
     }
 
     static Path parsePath(String p) {
         var data = new PathData();
         var params = new ArrayList<PathParameter>();
-        data.setPathParameters(params);
+        data.setPathParams(params);
         var segments = new ArrayList<String>();
         var norm = new StringBuilder();
         var tokens = Tokenizers.split(p, "/");

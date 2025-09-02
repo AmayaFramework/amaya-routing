@@ -29,6 +29,9 @@ dependencies {
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
     // Dependencies
     // TODO REMOVE dev deps
+    implementation project(':filter')
+    implementation project(':router')
+    implementation project(':path')
     implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.4.0'
     implementation group: 'io.github.amayaframework', name: 'amaya-tomcat', version: '3.1.0-10.1.44'
 }

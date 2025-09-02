@@ -7,7 +7,7 @@
 //import io.github.amayaframework.options.OptionSet;
 //import io.github.amayaframework.web.WebApplication;
 //
-///**
+/// **
 // * An interface describing an abstract routing configurator.
 // * It can be applied to {@link WebApplication} via
 // * {@link io.github.amayaframework.web.WebApplicationBuilder#configureApplication(Runnable1)}

@@ -6,16 +6,16 @@ import java.util.List;
  * A class representing a set of path data: path and query parameters descriptors.
  */
 public final class PathData {
-    private List<PathParameter> pathParameters;
-    private List<QueryParameter> queryParameters;
+    private List<PathParameter> pathParams;
+    private List<QueryParameter> queryParams;
 
     /**
      * Gets path parameter descriptors.
      *
      * @return the {@link List} containing path parameter descriptors
      */
-    public List<PathParameter> getPathParameters() {
-        return pathParameters;
+    public List<PathParameter> getPathParams() {
+        return pathParams;
     }
 
     /**
@@ -23,8 +23,8 @@ public final class PathData {
      *
      * @param pathParameters the {@link List} containing path parameter descriptors
      */
-    public void setPathParameters(List<PathParameter> pathParameters) {
-        this.pathParameters = pathParameters;
+    public void setPathParams(List<PathParameter> pathParameters) {
+        this.pathParams = pathParameters;
     }
 
     /**
@@ -32,16 +32,16 @@ public final class PathData {
      *
      * @return the {@link List} containing query parameter descriptors
      */
-    public List<QueryParameter> getQueryParameters() {
-        return queryParameters;
+    public List<QueryParameter> getQueryParams() {
+        return queryParams;
     }
 
     /**
      * Gets query parameter descriptors.
      *
-     * @param queryParameters the {@link List} containing query parameter descriptors
+     * @param queryParams the {@link List} containing query parameter descriptors
      */
-    public void setQueryParameters(List<QueryParameter> queryParameters) {
-        this.queryParameters = queryParameters;
+    public void setQueryParams(List<QueryParameter> queryParams) {
+        this.queryParams = queryParams;
     }
 }
