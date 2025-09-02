@@ -28,15 +28,9 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
     // Dependencies
-    api group: 'com.github.romanqed', name: 'jfunc', version: '1.1.4'
-    api group: 'io.github.amayaframework', name: 'amaya-filter', version: '1.0.0'
-    api group: 'io.github.amayaframework', name: 'amaya-router', version: '1.1.0'
-    api group: 'io.github.amayaframework', name: 'amaya-path', version: '1.0.0'
-    api group: 'io.github.amayaframework', name: 'amaya-path-parser', version: '1.0.1'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-http', version: '1.0.0'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-context', version: '1.1.2'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-application', version: '1.1.1'
-    compileOnly group: 'io.github.amayaframework', name: 'amaya-web', version: '1.0.0'
+    // TODO REMOVE dev deps
+    implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.4.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-tomcat', version: '3.1.0-10.1.44'
 }
 
 test {

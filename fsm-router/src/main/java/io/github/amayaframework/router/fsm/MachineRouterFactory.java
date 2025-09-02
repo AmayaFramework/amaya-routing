@@ -84,13 +84,14 @@ public final class MachineRouterFactory implements RouterFactory {
 
     @Override
     public <T> Router<T> create(Map<Path, T> paths) {
+        // TODO Review factory algorithm
         var statics = new HashMap<String, PathContext<T>>();
         var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
             var path = entry.getKey();
-            // Add all paths to state machine to prevent undefined behaviour
+            // Add all paths to state machine to prevent undefined behavior
             dynamics.add(path);
-            // If path not is dynamic, register it in fast static map
+            // If the path is not dynamic, register it in a fast static map
             if (!path.isDynamic()) {
                 var context = new PathContext<>(path.getData(), entry.getValue());
                 statics.put(path.getPath(), context);

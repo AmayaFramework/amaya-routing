@@ -1,9 +1,4 @@
-/**
- * Amaya Path
- *
- * @author Roman Bakaldin
- */
-module io.github.amayaframework.path {
+module amayaframework.path {
     // Exports
     exports io.github.amayaframework.path;
 }

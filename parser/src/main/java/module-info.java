@@ -3,10 +3,10 @@
  *
  * @author Roman Bakaldin
  */
-module io.github.amayaframework.path.parser {
+module amayaframework.path.parser {
     // Imports
-    requires io.github.amayaframework.path;
-    requires io.github.amayaframework.tokenize;
+    requires amayaframework.path;
+    requires amayaframework.tokenize;
     // Exports
     exports io.github.amayaframework.path.parser;
 }

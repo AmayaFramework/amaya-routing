@@ -1,9 +1,9 @@
-module io.github.amayaframework.router.fsm {
+module amayaframework.router.fsm {
     // Imports
     requires com.github.romanqed.jsm;
-    requires io.github.amayaframework.path;
-    requires io.github.amayaframework.router;
-    requires io.github.amayaframework.tokenize;
+    requires amayaframework.path;
+    requires amayaframework.router;
+    requires amayaframework.tokenize;
     // Exports
     exports io.github.amayaframework.router.fsm;
 }
