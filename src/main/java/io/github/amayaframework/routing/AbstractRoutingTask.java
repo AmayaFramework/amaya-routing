@@ -141,7 +141,12 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
     protected CompletableFuture<Void> sendMethodNotAllowedAsync(HttpResponse response, Set<HttpMethod> allowed) {
         response.header(ALLOW_HEADER, generateAllowHeader(allowed));
         applyCacheControl(response);
-        return Futures.run(() -> response.sendError(HttpCode.METHOD_NOT_ALLOWED));
+        try {
+            response.sendError(HttpCode.METHOD_NOT_ALLOWED);
+            return CompletableFuture.completedFuture(null);
+        } catch (IOException e) {
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
     protected void runHandler(Task<HttpContext> handler, HttpContext context) throws Throwable {
@@ -210,7 +215,12 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         var found = router.process(request.path(), request::pathSegments);
         // If there are no handlers, return 404
         if (found == null) {
-            return Futures.run(() -> response.sendError(HttpCode.NOT_FOUND, "Path not found"));
+            try {
+                response.sendError(HttpCode.NOT_FOUND, "Path not found");
+                return CompletableFuture.completedFuture(null);
+            } catch (IOException e) {
+                return CompletableFuture.failedFuture(e);
+            }
         }
         // Try to get handler for http method, otherwise return 405
         var method = request.method();
@@ -223,9 +233,12 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
             }
             // Send 404 as HTTP/1.0 does not support 405
             if (request.httpVersion() == HttpVersion.HTTP_1_0) {
-                return Futures.run(() ->
-                        response.sendError(HttpCode.NOT_FOUND, "Method " + method + " not allowed")
-                );
+                try {
+                    response.sendError(HttpCode.NOT_FOUND, "Method " + method + " not allowed");
+                    return CompletableFuture.completedFuture(null);
+                } catch (IOException e) {
+                    return CompletableFuture.failedFuture(e);
+                }
             }
             // Send 405
             return sendMethodNotAllowedAsync(response, map.methods());
@@ -236,15 +249,24 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         if (filters == null || data == null) {
             return runHandlerAsync(handler, context);
         }
-        var pathMessage = processPathParams(request, data.getPathParams());
+        String message;
         // If path params failed, return 400
-        if (pathMessage != null) {
-            return Futures.run(() -> response.sendError(HttpCode.BAD_REQUEST, pathMessage));
+        if ((message = processPathParams(request, data.getPathParams())) != null) {
+            try {
+                response.sendError(HttpCode.BAD_REQUEST, message);
+                return CompletableFuture.completedFuture(null);
+            } catch (IOException e) {
+                return CompletableFuture.failedFuture(e);
+            }
         }
-        var queryMessage = processQueryParams(request, data.getQueryParams());
         // If query params failed, return 400
-        if (queryMessage != null) {
-            return Futures.run(() -> response.sendError(HttpCode.BAD_REQUEST, queryMessage));
+        if ((message = processQueryParams(request, data.getQueryParams())) != null) {
+            try {
+                response.sendError(HttpCode.BAD_REQUEST, message);
+                return CompletableFuture.completedFuture(null);
+            } catch (IOException e) {
+                return CompletableFuture.failedFuture(e);
+            }
         }
         // Finally, run handler
         return runHandlerAsync(handler, context);
