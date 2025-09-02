@@ -44,7 +44,7 @@ public final class MachineRouterFactory implements RouterFactory {
         this.tokenizer = Tokenizers.PLAIN_TOKENIZER;
     }
 
-    private static void add(MachineModelBuilder<Object, String> builder, Object from, Object to, String value) {
+    private static void add(MachineModelBuilder<String, String> builder, String from, String to, String value) {
         builder.addState(to);
         if (value == null) {
             builder.addTransition(from, to);
@@ -53,14 +53,14 @@ public final class MachineRouterFactory implements RouterFactory {
         }
     }
 
-    private static Object toPositioned(String segment, int position) {
+    private static String toPositioned(String segment, int position) {
         if (segment == null) {
-            return position;
+            return Integer.toString(position);
         }
         return segment + position;
     }
 
-    private static void add(MachineModelBuilder<Object, String> builder, List<String> segments) {
+    private static void add(MachineModelBuilder<String, String> builder, List<String> segments) {
         var first = segments.get(0);
         add(builder, INITIAL_STATE, toPositioned(first, 0), first);
         for (var i = 1; i < segments.size(); ++i) {
@@ -71,8 +71,9 @@ public final class MachineRouterFactory implements RouterFactory {
         }
     }
 
-    private StateMachine<Object, String> createMachine(List<Path> paths) {
-        var builder = new MachineModelBuilder<>(Object.class, String.class);
+    private StateMachine<String, String> createMachine(List<Path> paths) {
+        var builder = new MachineModelBuilder<>(String.class, String.class);
+        builder.setComparator(Comparator.naturalOrder());
         builder.setInitState(INITIAL_STATE);
         builder.setExitState(EXIT_STATE);
         for (var path : paths) {

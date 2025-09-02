@@ -1,6 +1,6 @@
 package io.github.amayaframework.router.fsm;
 
-import com.github.romanqed.jsm.bytecode.BytecodeMachineFactory;
+import com.github.romanqed.jsm.asm.AsmMachineFactory;
 import io.github.amayaframework.path.Path;
 import io.github.amayaframework.router.RouterFactory;
 import org.junit.jupiter.api.Assertions;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public final class MachineRouterTest {
-    private static final RouterFactory DYNAMIC_FACTORY = new MachineRouterFactory(new BytecodeMachineFactory());
+    private static final RouterFactory DYNAMIC_FACTORY = new MachineRouterFactory(new AsmMachineFactory());
 
     private static Map<Path, String> parse(List<String> paths) {
         var ret = new HashMap<Path, String>();

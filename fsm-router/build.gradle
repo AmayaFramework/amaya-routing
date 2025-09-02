@@ -28,6 +28,7 @@ dependencies {
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
     testImplementation project(':path')
     testImplementation project(':router')
+    testImplementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
     // Dependencies
     compileOnly project(':path')
     compileOnly project(':router')
