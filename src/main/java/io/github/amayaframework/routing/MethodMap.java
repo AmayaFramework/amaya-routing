@@ -5,6 +5,8 @@ import io.github.amayaframework.context.HttpContext;
 import io.github.amayaframework.http.HttpMethod;
 
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public interface MethodMap {
 
@@ -14,5 +16,11 @@ public interface MethodMap {
 
     Task<HttpContext> remove(HttpMethod method);
 
+    boolean empty(); // новое
+
     Set<HttpMethod> methods();
+
+    void forEach(Consumer<Task<HttpContext>> consumer); // новое
+
+    void forEach(BiConsumer<HttpMethod, Task<HttpContext>> consumer); // новое
 }

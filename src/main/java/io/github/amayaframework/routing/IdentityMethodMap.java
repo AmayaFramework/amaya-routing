@@ -7,6 +7,8 @@ import io.github.amayaframework.http.HttpMethod;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public final class IdentityMethodMap implements MethodMap {
     private final IdentityHashMap<HttpMethod, Task<HttpContext>> methods;
@@ -33,7 +35,22 @@ public final class IdentityMethodMap implements MethodMap {
     }
 
     @Override
+    public boolean empty() {
+        return methods.isEmpty();
+    }
+
+    @Override
     public Set<HttpMethod> methods() {
         return methodSetView;
+    }
+
+    @Override
+    public void forEach(Consumer<Task<HttpContext>> consumer) {
+        methods.values().forEach(consumer);
+    }
+
+    @Override
+    public void forEach(BiConsumer<HttpMethod, Task<HttpContext>> consumer) {
+        methods.forEach(consumer);
     }
 }

@@ -4,9 +4,9 @@ import com.github.romanqed.jconv.Task;
 import io.github.amayaframework.context.HttpContext;
 import io.github.amayaframework.http.HttpMethod;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class ArrayMethodMap implements MethodMap {
@@ -23,6 +23,31 @@ public final class ArrayMethodMap implements MethodMap {
         if (method == HttpMethod.TRACE) return 7;
         if (method == HttpMethod.PATCH) return 8;
         throw new IllegalArgumentException("Unknown method: " + method);
+    }
+
+    public static HttpMethod of(int ordinal) {
+        switch (ordinal) {
+            case 0:
+                return HttpMethod.GET;
+            case 1:
+                return HttpMethod.HEAD;
+            case 2:
+                return HttpMethod.POST;
+            case 3:
+                return HttpMethod.PUT;
+            case 4:
+                return HttpMethod.DELETE;
+            case 5:
+                return HttpMethod.CONNECT;
+            case 6:
+                return HttpMethod.OPTIONS;
+            case 7:
+                return HttpMethod.TRACE;
+            case 8:
+                return HttpMethod.PATCH;
+            default:
+                throw new IllegalArgumentException("Unknown ordinal: " + ordinal);
+        }
     }
 
     private final Task[] handlers;
@@ -62,7 +87,32 @@ public final class ArrayMethodMap implements MethodMap {
     }
 
     @Override
+    public boolean empty() {
+        return methodSet.isEmpty();
+    }
+
+    @Override
     public Set<HttpMethod> methods() {
         return methodSetView;
+    }
+
+    @Override
+    public void forEach(Consumer<Task<HttpContext>> consumer) {
+        for (var handler : handlers) {
+            if (handler != null) {
+                consumer.accept(handler);
+            }
+        }
+    }
+
+    @Override
+    public void forEach(BiConsumer<HttpMethod, Task<HttpContext>> consumer) {
+        for (var i = 0; i < handlers.length; ++i) {
+            var handler = handlers[i];
+            if (handler == null) {
+                continue;
+            }
+            consumer.accept(of(i), handler);
+        }
     }
 }

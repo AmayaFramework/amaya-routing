@@ -70,39 +70,39 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
 
     @Override
     @SuppressWarnings("unchecked")
-    public RouterConfigurer map(Path path, HttpMethod method, Task<HttpContext> task) {
+    public C map(Path path, HttpMethod method, Task<HttpContext> task) {
         map(path).map(method, task);
         return (C) this;
     }
 
     @Override
-    public RouterConfigurer map(Path path, HttpMethod method, SyncTask<HttpContext> task) {
+    public C map(Path path, HttpMethod method, SyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
     }
 
     @Override
-    public RouterConfigurer map(Path path, HttpMethod method, AsyncTask<HttpContext> task) {
+    public C map(Path path, HttpMethod method, AsyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
     }
 
     @Override
-    public RouterConfigurer map(String path, HttpMethod method, Task<HttpContext> task) {
+    public C map(String path, HttpMethod method, Task<HttpContext> task) {
         return map(parse(path), method, task);
     }
 
     @Override
-    public RouterConfigurer map(String path, HttpMethod method, SyncTask<HttpContext> task) {
+    public C map(String path, HttpMethod method, SyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
     }
 
     @Override
-    public RouterConfigurer map(String path, HttpMethod method, AsyncTask<HttpContext> task) {
+    public C map(String path, HttpMethod method, AsyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public RouterConfigurer unmap(Path path) {
+    public C unmap(Path path) {
         if (path != null && paths != null) {
             paths.remove(path);
         }
@@ -110,13 +110,13 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     }
 
     @Override
-    public RouterConfigurer unmap(String path) {
+    public C unmap(String path) {
         return unmap(parse(path));
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public RouterConfigurer unmap(Path path, HttpMethod method) {
+    public C unmap(Path path, HttpMethod method) {
         if (path == null || method == null || paths == null) {
             return (C) this;
         }
@@ -128,7 +128,7 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     }
 
     @Override
-    public RouterConfigurer unmap(String path, HttpMethod method) {
+    public C unmap(String path, HttpMethod method) {
         return unmap(parse(path), method);
     }
 }
