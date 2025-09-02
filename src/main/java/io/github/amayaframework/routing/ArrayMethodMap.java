@@ -51,6 +51,17 @@ public final class ArrayMethodMap implements MethodMap {
     }
 
     @Override
+    public Task<HttpContext> remove(HttpMethod method) {
+        var ret = handlers[ordinal(method)];
+        if (ret == null) {
+            return null;
+        }
+        handlers[ordinal(method)] = null;
+        methodSet.remove(method);
+        return ret;
+    }
+
+    @Override
     public Set<HttpMethod> methods() {
         return methodSetView;
     }

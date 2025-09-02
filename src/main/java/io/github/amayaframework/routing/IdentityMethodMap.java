@@ -28,6 +28,11 @@ public final class IdentityMethodMap implements MethodMap {
     }
 
     @Override
+    public Task<HttpContext> remove(HttpMethod method) {
+        return methods.remove(method);
+    }
+
+    @Override
     public Set<HttpMethod> methods() {
         return methodSetView;
     }

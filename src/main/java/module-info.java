@@ -7,6 +7,9 @@ module amayaframework.routing {
     requires amayaframework.filter;
     requires amayaframework.path;
     requires com.github.romanqed.jsync;
+    requires amayaframework.router.tree;
+    requires amayaframework.path.parser;
+    requires amayaframework.tokenize;
     // Imports
     // Exports
     exports io.github.amayaframework.routing;

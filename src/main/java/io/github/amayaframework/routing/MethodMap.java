@@ -12,5 +12,7 @@ public interface MethodMap {
 
     void put(HttpMethod method, Task<HttpContext> handler);
 
+    Task<HttpContext> remove(HttpMethod method);
+
     Set<HttpMethod> methods();
 }

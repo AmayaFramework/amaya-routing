@@ -31,7 +31,11 @@ dependencies {
     // TODO REMOVE dev deps
     implementation project(':filter')
     implementation project(':router')
+    implementation project(':parser')
     implementation project(':path')
+    implementation project(':tree-router')
+    implementation project(':fsm-router')
+    implementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
     implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.4.0'
     implementation group: 'io.github.amayaframework', name: 'amaya-tomcat', version: '3.1.0-10.1.44'
 }
