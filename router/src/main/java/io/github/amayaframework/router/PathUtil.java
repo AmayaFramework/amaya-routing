@@ -28,6 +28,6 @@ public final class PathUtil {
         if (path.charAt(0) == '/') {
             return path;
         }
-        return "/" + path;
+        return '/' + path;
     }
 }
