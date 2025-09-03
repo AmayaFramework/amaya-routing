@@ -31,7 +31,7 @@ public class MixedRoutingTask extends AbstractRoutingTask implements TaskConsume
         try {
             handler.run(context);
         } catch (Throwable e) {
-            Exceptions.throwAny(e);
+            return CompletableFuture.failedFuture(e);
         }
         return CompletableFuture.completedFuture(null);
     }
