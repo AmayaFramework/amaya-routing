@@ -23,13 +23,13 @@ public class FilterParamParser implements ParamParser {
         this.decodeQuery = decodeQuery;
     }
 
-    protected String getBadRequestMessage(String type, Parameter parameter, Object value, String reason) {
+    protected String getIllegalParamMessage(String type, Parameter parameter, Object value, String reason) {
         return type + " parameter " + parameter + " with value '" + value + "' is invalid. Reason: " + reason;
     }
 
-    protected String processPathParams(HttpRequest request, List<PathParameter> params) {
+    protected void processPathParams(HttpRequest request, List<PathParameter> params) {
         if (params == null || params.isEmpty()) {
-            return null;
+            return;
         }
         var segments = request.pathSegments();
         var map = request.pathParams();
@@ -39,7 +39,7 @@ public class FilterParamParser implements ParamParser {
                 try {
                     raw = decoder.decode(raw);
                 } catch (Throwable e) {
-                    return getBadRequestMessage("Path", param, raw, e.getMessage());
+                    throw new IllegalParamException(getIllegalParamMessage("Path", param, raw, e.getMessage()), e);
                 }
             }
             var name = param.getName();
@@ -57,10 +57,9 @@ public class FilterParamParser implements ParamParser {
                 var object = filter.process(raw);
                 map.put(name, object);
             } catch (Throwable e) {
-                return getBadRequestMessage("Path", param, raw, e.getMessage());
+                throw new IllegalParamException(getIllegalParamMessage("Path", param, raw, e.getMessage()), e);
             }
         }
-        return null;
     }
 
     protected void decodeQueryParams(List<String> queries) {
@@ -74,7 +73,7 @@ public class FilterParamParser implements ParamParser {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected String decodeQueryParams(Map<String, List<Object>> queries) {
+    protected void decodeQueryParams(Map<String, List<Object>> queries) {
         try {
             var iterator = queries.entrySet().iterator();
             while (iterator.hasNext()) {
@@ -88,29 +87,27 @@ public class FilterParamParser implements ParamParser {
                 iterator.remove();
                 queries.put(decoded, entry.getValue());
             }
-            return null;
         } catch (Throwable e) {
-            return "Query string is invalid. Reason: " + e.getMessage();
+            throw new IllegalParamException("Query string is invalid. Reason: " + e.getMessage(), e);
         }
     }
 
-    protected String processQueryParams(HttpRequest request, List<QueryParameter> parameters) {
+    protected void processQueryParams(HttpRequest request, List<QueryParameter> parameters) {
         var queries = request.queryParams();
         if (queries == null || queries.isEmpty()) {
-            return null;
+            return;
         }
-        String message;
-        if (decodeQuery && (message = decodeQueryParams(queries)) != null) {
-            return message;
+        if (decodeQuery) {
+            decodeQueryParams(queries);
         }
         if (parameters == null || parameters.isEmpty()) {
-            return null;
+            return;
         }
         for (var parameter : parameters) {
             var raw = queries.get(parameter.getName());
             if (raw == null) {
                 if (parameter.isRequired() == Boolean.TRUE) {
-                    return "Missing required query parameter " + parameter;
+                    throw new IllegalParamException("Missing required query parameter " + parameter);
                 }
                 continue;
             }
@@ -129,18 +126,14 @@ public class FilterParamParser implements ParamParser {
                     raw.set(i, filter.process(string));
                 }
             } catch (Throwable e) {
-                return getBadRequestMessage("Query", parameter, raw, e.getMessage());
+                throw new IllegalParamException(getIllegalParamMessage("Query", parameter, raw, e.getMessage()), e);
             }
         }
-        return null;
     }
 
     @Override
-    public String process(HttpRequest request, PathData data) {
-        var ret = processPathParams(request, data.getPathParams());
-        if (ret != null) {
-            return ret;
-        }
-        return processQueryParams(request, data.getQueryParams());
+    public void process(HttpRequest request, PathData data) {
+        processPathParams(request, data.getPathParams());
+        processQueryParams(request, data.getQueryParams());
     }
 }

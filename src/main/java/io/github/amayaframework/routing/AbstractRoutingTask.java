@@ -118,9 +118,10 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
             runHandler(handler, context);
             return;
         }
-        var message = parser.process(request, data);
-        if (message != null) {
-            response.sendError(HttpCode.BAD_REQUEST, message);
+        try {
+            parser.process(request, data);
+        } catch (IllegalParamException e) {
+            response.sendError(HttpCode.BAD_REQUEST, e.getMessage());
             return;
         }
         // Finally, run handler
@@ -169,13 +170,14 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         if (parser == null || data == null) {
             return runHandlerAsync(handler, context);
         }
-        var message = parser.process(request, data);
-        if (message != null) {
+        try {
+            parser.process(request, data);
+        } catch (IllegalParamException e) {
             try {
-                response.sendError(HttpCode.BAD_REQUEST, message);
+                response.sendError(HttpCode.BAD_REQUEST, e.getMessage());
                 return CompletableFuture.completedFuture(null);
-            } catch (IOException e) {
-                return CompletableFuture.failedFuture(e);
+            } catch (IOException ioe) {
+                return CompletableFuture.failedFuture(ioe);
             }
         }
         // Finally, run handler

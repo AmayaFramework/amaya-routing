@@ -13,6 +13,7 @@ public interface ParamParser {
      * @param request
      * @param data
      * @return
+     * @throws IllegalParamException
      */
-    String process(HttpRequest request, PathData data); // возвращает ошибку, результат парсинга пишется в request
+    void process(HttpRequest request, PathData data);
 }
