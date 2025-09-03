@@ -2,6 +2,7 @@ package io.github.amayaframework.router.fsm;
 
 import com.github.romanqed.jsm.StateMachine;
 import com.github.romanqed.jsm.StateMachineFactory;
+import com.github.romanqed.jsm.asm.AsmMachineFactory;
 import com.github.romanqed.jsm.model.MachineModelBuilder;
 import io.github.amayaframework.path.Path;
 import io.github.amayaframework.router.PathContext;
@@ -41,6 +42,11 @@ public final class MachineRouterFactory implements RouterFactory {
      */
     public MachineRouterFactory(StateMachineFactory factory) {
         this.factory = Objects.requireNonNull(factory);
+        this.tokenizer = Tokenizers.PLAIN_TOKENIZER;
+    }
+
+    public MachineRouterFactory() {
+        this.factory = new AsmMachineFactory();
         this.tokenizer = Tokenizers.PLAIN_TOKENIZER;
     }
 

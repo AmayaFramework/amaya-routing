@@ -92,26 +92,19 @@ public class FilterParamParser implements ParamParser {
         }
     }
 
-    protected void processQueryParams(HttpRequest request, List<QueryParameter> parameters) {
-        var queries = request.queryParams();
-        if (queries == null || queries.isEmpty()) {
+    protected void processQueryParams(Map<String, List<Object>> queries, List<QueryParameter> params) {
+        if (params == null || params.isEmpty()) {
             return;
         }
-        if (decodeQuery) {
-            decodeQueryParams(queries);
-        }
-        if (parameters == null || parameters.isEmpty()) {
-            return;
-        }
-        for (var parameter : parameters) {
-            var raw = queries.get(parameter.getName());
+        for (var param : params) {
+            var raw = queries.get(param.getName());
             if (raw == null) {
-                if (parameter.isRequired() == Boolean.TRUE) {
-                    throw new IllegalParamException("Missing required query parameter " + parameter);
+                if (param.isRequired() == Boolean.TRUE) {
+                    throw new IllegalParamException("Missing required query parameter " + param);
                 }
                 continue;
             }
-            var type = parameter.getType();
+            var type = param.getType();
             if (type == null || raw.isEmpty()) {
                 continue;
             }
@@ -126,14 +119,20 @@ public class FilterParamParser implements ParamParser {
                     raw.set(i, filter.process(string));
                 }
             } catch (Throwable e) {
-                throw new IllegalParamException(getIllegalParamMessage("Query", parameter, raw, e.getMessage()), e);
+                throw new IllegalParamException(getIllegalParamMessage("Query", param, raw, e.getMessage()), e);
             }
         }
     }
 
     @Override
     public void process(HttpRequest request, PathData data) {
-        processPathParams(request, data.getPathParams());
-        processQueryParams(request, data.getQueryParams());
+        var queries = request.queryParams();
+        if (decodeQuery && !queries.isEmpty()) {
+            decodeQueryParams(queries);
+        }
+        if (data != null) {
+            processPathParams(request, data.getPathParams());
+            processQueryParams(queries, data.getQueryParams());
+        }
     }
 }

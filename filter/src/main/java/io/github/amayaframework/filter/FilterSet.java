@@ -46,7 +46,7 @@ public interface FilterSet {
      *
      * @return true if there are no filters in this set, false otherwise
      */
-    boolean isEmpty();
+    boolean empty();
 
     /**
      * Gets the number of filters in this set.

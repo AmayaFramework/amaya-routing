@@ -59,6 +59,16 @@ public abstract class AbstractRouteConfigurer<C extends RouteConfigurer> impleme
     }
 
     @Override
+    public C get(Consumer<TaskConfigurer<HttpContext>> action) {
+        return map(HttpMethod.GET, action);
+    }
+
+    @Override
+    public C post(Consumer<TaskConfigurer<HttpContext>> action) {
+        return map(HttpMethod.POST, action);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public C map(HttpMethod method, Task<HttpContext> task) {
         Objects.requireNonNull(method);
@@ -72,6 +82,16 @@ public abstract class AbstractRouteConfigurer<C extends RouteConfigurer> impleme
     }
 
     @Override
+    public C get(Task<HttpContext> task) {
+        return map(HttpMethod.GET, task);
+    }
+
+    @Override
+    public C post(Task<HttpContext> task) {
+        return map(HttpMethod.POST, task);
+    }
+
+    @Override
     public C map(HttpMethod method, SyncTask<HttpContext> task) {
         return map(method, (Task<HttpContext>) task);
     }
@@ -79,6 +99,26 @@ public abstract class AbstractRouteConfigurer<C extends RouteConfigurer> impleme
     @Override
     public C map(HttpMethod method, AsyncTask<HttpContext> task) {
         return map(method, (Task<HttpContext>) task);
+    }
+
+    @Override
+    public C get(SyncTask<HttpContext> task) {
+        return map(HttpMethod.GET, task);
+    }
+
+    @Override
+    public C get(AsyncTask<HttpContext> task) {
+        return map(HttpMethod.GET, task);
+    }
+
+    @Override
+    public C post(SyncTask<HttpContext> task) {
+        return map(HttpMethod.POST, task);
+    }
+
+    @Override
+    public C post(AsyncTask<HttpContext> task) {
+        return map(HttpMethod.POST, task);
     }
 
     @Override

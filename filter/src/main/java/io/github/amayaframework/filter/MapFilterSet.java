@@ -59,7 +59,7 @@ public class MapFilterSet implements FilterSet {
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean empty() {
         return map.isEmpty();
     }
 

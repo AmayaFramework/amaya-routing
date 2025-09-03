@@ -113,8 +113,8 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         }
         // Process path and query parameters
         var data = found.getData();
-        // Fast check for no-known params/no filters
-        if (parser == null || data == null) {
+        // Fast check for no parser
+        if (parser == null) {
             runHandler(handler, context);
             return;
         }
@@ -166,8 +166,8 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         }
         // Process path and query parameters
         var data = found.getData();
-        // Fast check for no-known params/no filters
-        if (parser == null || data == null) {
+        // Fast check for no parser
+        if (parser == null) {
             return runHandlerAsync(handler, context);
         }
         try {

@@ -4,7 +4,9 @@ import com.github.romanqed.jconv.Task;
 import io.github.amayaframework.context.HttpContext;
 import io.github.amayaframework.http.HttpMethod;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -18,10 +20,10 @@ public final class ArrayMethodMap implements MethodMap {
         if (method == HttpMethod.POST) return 2;
         if (method == HttpMethod.PUT) return 3;
         if (method == HttpMethod.DELETE) return 4;
-        if (method == HttpMethod.CONNECT) return 5;
+        if (method == HttpMethod.PATCH) return 5;
         if (method == HttpMethod.OPTIONS) return 6;
-        if (method == HttpMethod.TRACE) return 7;
-        if (method == HttpMethod.PATCH) return 8;
+        if (method == HttpMethod.CONNECT) return 7;
+        if (method == HttpMethod.TRACE) return 8;
         throw new IllegalArgumentException("Unknown method: " + method);
     }
 
@@ -38,13 +40,13 @@ public final class ArrayMethodMap implements MethodMap {
             case 4:
                 return HttpMethod.DELETE;
             case 5:
-                return HttpMethod.CONNECT;
+                return HttpMethod.PATCH;
             case 6:
                 return HttpMethod.OPTIONS;
             case 7:
-                return HttpMethod.TRACE;
+                return HttpMethod.CONNECT;
             case 8:
-                return HttpMethod.PATCH;
+                return HttpMethod.TRACE;
             default:
                 throw new IllegalArgumentException("Unknown ordinal: " + ordinal);
         }

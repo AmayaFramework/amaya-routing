@@ -17,13 +17,13 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     protected final PathParser parser;
     protected Map<Path, R> paths;
     protected Map<String, Path> parsed;
-    
+
     protected AbstractRouterConfigurer(PathParser parser) {
         this.parser = parser;
     }
-    
+
     protected abstract R createRouteConfigurer();
-    
+
     protected Path parse(String path) {
         if (path == null) {
             return null;
@@ -33,7 +33,7 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
         }
         return parsed.computeIfAbsent(path, parser::parse);
     }
-    
+
     protected void ensurePaths() {
         if (paths == null) {
             paths = new HashMap<>();
@@ -76,6 +76,16 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     }
 
     @Override
+    public C get(Path path, Task<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    @Override
+    public C post(Path path, Task<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
+    }
+
+    @Override
     public C map(Path path, HttpMethod method, SyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
     }
@@ -86,8 +96,38 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     }
 
     @Override
+    public C get(Path path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    @Override
+    public C get(Path path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    @Override
+    public C post(Path path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
+    }
+
+    @Override
+    public C post(Path path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
+    }
+
+    @Override
     public C map(String path, HttpMethod method, Task<HttpContext> task) {
         return map(parse(path), method, task);
+    }
+
+    @Override
+    public C get(String path, Task<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    @Override
+    public C post(String path, Task<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
     }
 
     @Override
@@ -98,6 +138,26 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     @Override
     public C map(String path, HttpMethod method, AsyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
+    }
+
+    @Override
+    public C get(String path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    @Override
+    public C get(String path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    @Override
+    public C post(String path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
+    }
+
+    @Override
+    public C post(String path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
     }
 
     @Override

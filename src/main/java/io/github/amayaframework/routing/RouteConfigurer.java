@@ -14,9 +14,33 @@ public interface RouteConfigurer extends Resettable {
 
     TaskConfigurer<HttpContext> map(HttpMethod method);
 
+    default TaskConfigurer<HttpContext> get() {
+        return map(HttpMethod.GET);
+    }
+
+    default TaskConfigurer<HttpContext> post() {
+        return map(HttpMethod.POST);
+    }
+
     RouteConfigurer map(HttpMethod method, Consumer<TaskConfigurer<HttpContext>> action);
 
+    default RouteConfigurer get(Consumer<TaskConfigurer<HttpContext>> action) {
+        return map(HttpMethod.GET, action);
+    }
+
+    default RouteConfigurer post(Consumer<TaskConfigurer<HttpContext>> action) {
+        return map(HttpMethod.POST, action);
+    }
+
     RouteConfigurer map(HttpMethod method, Task<HttpContext> task);
+
+    default RouteConfigurer get(Task<HttpContext> task) {
+        return map(HttpMethod.GET, task);
+    }
+
+    default RouteConfigurer post(Task<HttpContext> task) {
+        return map(HttpMethod.POST, task);
+    }
 
     default RouteConfigurer map(HttpMethod method, SyncTask<HttpContext> task) {
         return map(method, (Task<HttpContext>) task);
@@ -24,6 +48,22 @@ public interface RouteConfigurer extends Resettable {
 
     default RouteConfigurer map(HttpMethod method, AsyncTask<HttpContext> task) {
         return map(method, (Task<HttpContext>) task);
+    }
+
+    default RouteConfigurer get(SyncTask<HttpContext> task) {
+        return map(HttpMethod.GET, (Task<HttpContext>) task);
+    }
+
+    default RouteConfigurer get(AsyncTask<HttpContext> task) {
+        return map(HttpMethod.GET, (Task<HttpContext>) task);
+    }
+
+    default RouteConfigurer post(SyncTask<HttpContext> task) {
+        return map(HttpMethod.POST, (Task<HttpContext>) task);
+    }
+
+    default RouteConfigurer post(AsyncTask<HttpContext> task) {
+        return map(HttpMethod.POST, (Task<HttpContext>) task);
     }
 
     RouteConfigurer unmap(HttpMethod method);

@@ -10,18 +10,16 @@ import java.util.function.Supplier;
 
 public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, RouteBuilder> {
     protected final RouterFactory factory;
-    protected final Supplier<MethodMap> supplier;
-    protected final boolean preferExtended;
+    protected final Supplier<RouteBuilder> supplier;
 
-    public RouterBuilder(PathParser parser, RouterFactory factory, Supplier<MethodMap> supplier, boolean preferExtended) {
+    public RouterBuilder(PathParser parser, RouterFactory factory, Supplier<RouteBuilder> supplier) {
         super(parser);
         this.factory = factory;
         this.supplier = supplier;
-        this.preferExtended = preferExtended;
     }
 
     public RouterBuilder(PathParser parser, RouterFactory factory) {
-        this(parser, factory, IdentityMethodMap::new, false);
+        this(parser, factory, RouteBuilder::new);
     }
 
     public RouterBuilder(RouterFactory factory) {
@@ -30,7 +28,7 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
 
     @Override
     protected RouteBuilder createRouteConfigurer() {
-        return new RouteBuilder(supplier, preferExtended);
+        return supplier.get();
     }
 
     protected TaskRouter doBuild() {

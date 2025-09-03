@@ -19,10 +19,36 @@ public interface RouterConfigurer extends Resettable {
         return map(path).map(method);
     }
 
+    default TaskConfigurer<HttpContext> get(Path path) {
+        return map(path, HttpMethod.GET);
+    }
+
+    default TaskConfigurer<HttpContext> post(Path path) {
+        return map(path, HttpMethod.POST);
+    }
+
     TaskConfigurer<HttpContext> map(String path, HttpMethod method);
+
+    default TaskConfigurer<HttpContext> get(String path) {
+        return map(path, HttpMethod.GET);
+    }
+
+    default TaskConfigurer<HttpContext> post(String path) {
+        return map(path, HttpMethod.POST);
+    }
 
     default RouterConfigurer map(Path path, HttpMethod method, Task<HttpContext> task) {
         map(path).map(method, task);
+        return this;
+    }
+
+    default RouterConfigurer get(Path path, Task<HttpContext> task) {
+        map(path).map(HttpMethod.GET, task);
+        return this;
+    }
+
+    default RouterConfigurer post(Path path, Task<HttpContext> task) {
+        map(path).map(HttpMethod.POST, task);
         return this;
     }
 
@@ -34,7 +60,31 @@ public interface RouterConfigurer extends Resettable {
         return map(path, method, (Task<HttpContext>) task);
     }
 
+    default RouterConfigurer get(Path path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer get(Path path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer post(Path path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer post(Path path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, (Task<HttpContext>) task);
+    }
+
     RouterConfigurer map(String path, HttpMethod method, Task<HttpContext> task);
+
+    default RouterConfigurer get(String path, Task<HttpContext> task) {
+        return map(path, HttpMethod.GET, task);
+    }
+
+    default RouterConfigurer post(String path, Task<HttpContext> task) {
+        return map(path, HttpMethod.POST, task);
+    }
 
     default RouterConfigurer map(String path, HttpMethod method, SyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
@@ -42,6 +92,22 @@ public interface RouterConfigurer extends Resettable {
 
     default RouterConfigurer map(String path, HttpMethod method, AsyncTask<HttpContext> task) {
         return map(path, method, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer get(String path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer get(String path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.GET, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer post(String path, SyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, (Task<HttpContext>) task);
+    }
+
+    default RouterConfigurer post(String path, AsyncTask<HttpContext> task) {
+        return map(path, HttpMethod.POST, (Task<HttpContext>) task);
     }
 
     RouterConfigurer unmap(Path path);
