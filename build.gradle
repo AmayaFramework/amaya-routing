@@ -1,6 +1,8 @@
 import java.text.SimpleDateFormat
 
 plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
@@ -28,7 +30,6 @@ dependencies {
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
     // Dependencies
-    // TODO REMOVE dev deps
     implementation project(':filter')
     implementation project(':router')
     implementation project(':parser')
@@ -52,6 +53,8 @@ jar {
         var vmVersion = System.getProperty("java.vm.version")
 
         attributes(
+                // TODO REMOVE
+                'Main-Class': 'io.github.amayaframework.routing.Main',
                 'Created-By': String.format("%s (%s %s)", javaVersion, vmVendor, vmVersion),
                 'Gradle-Version': "Gradle $gradle.gradleVersion",
                 'Build-Date': new SimpleDateFormat("yyyy-MM-dd").format(date),
