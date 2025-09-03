@@ -2,21 +2,14 @@ package io.github.amayaframework.routing;
 
 import com.github.romanqed.jconv.Task;
 import com.github.romanqed.jconv.TaskConsumer;
-import com.github.romanqed.jsync.Futures;
 import io.github.amayaframework.context.HttpContext;
-import io.github.amayaframework.context.HttpRequest;
 import io.github.amayaframework.context.HttpResponse;
-import io.github.amayaframework.filter.FilterSet;
 import io.github.amayaframework.http.HttpCode;
 import io.github.amayaframework.http.HttpMethod;
 import io.github.amayaframework.http.HttpVersion;
-import io.github.amayaframework.path.Parameter;
-import io.github.amayaframework.path.PathParameter;
-import io.github.amayaframework.path.QueryParameter;
 import io.github.amayaframework.router.Router;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,19 +18,15 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
     protected static final String CACHE_CONTROL_HEADER = "Cache-Control";
 
     protected final Router<MethodMap> router;
-    protected final FilterSet filters;
+    protected final ParamParser parser;
     protected final boolean handleOptions;
     protected final String cacheControl;
 
-    protected AbstractRoutingTask(Router<MethodMap> router, FilterSet filters, boolean handleOptions, String cacheControl) {
+    protected AbstractRoutingTask(Router<MethodMap> router, ParamParser parser, boolean handleOptions, String cacheControl) {
         this.router = router;
-        this.filters = filters;
+        this.parser = parser;
         this.handleOptions = handleOptions;
         this.cacheControl = cacheControl;
-    }
-
-    protected String getBadRequestMessage(String type, Parameter parameter, Object value, String reason) {
-        return type + " parameter " + parameter + " with value '" + value + "' is invalid. Reason: " + reason;
     }
 
     protected String generateAllowHeader(Set<HttpMethod> allowed) {
@@ -50,69 +39,6 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
             builder.append(", OPTIONS");
         }
         return builder.toString();
-    }
-
-    protected String processPathParams(HttpRequest request, List<PathParameter> params) {
-        if (params == null || params.isEmpty()) {
-            return null;
-        }
-        var segments = request.pathSegments();
-        var map = request.pathParams();
-        for (var param : params) {
-            var raw = segments.get(param.getIndex());
-            var name = param.getName();
-            var type = param.getType();
-            if (type == null) {
-                map.put(name, raw);
-                continue;
-            }
-            var filter = filters.get(type);
-            if (filter == null) {
-                map.put(name, raw);
-                continue;
-            }
-            try {
-                var object = filter.process(raw);
-                map.put(name, object);
-            } catch (Throwable e) {
-                return getBadRequestMessage("Path", param, raw, e.getMessage());
-            }
-        }
-        return null;
-    }
-
-    protected String processQueryParams(HttpRequest request, List<QueryParameter> parameters) {
-        if (parameters == null || parameters.isEmpty()) {
-            return null;
-        }
-        var queries = request.queryParams();
-        for (var parameter : parameters) {
-            var raw = queries.get(parameter.getName());
-            if (raw == null) {
-                if (parameter.isRequired() == Boolean.TRUE) {
-                    return "Missing required query parameter " + parameter;
-                }
-                continue;
-            }
-            var type = parameter.getType();
-            if (type == null || raw.isEmpty()) {
-                continue;
-            }
-            var filter = filters.get(type);
-            if (filter == null) {
-                continue;
-            }
-            try {
-                var size = raw.size();
-                for (var i = 0; i < size; ++i) {
-                    var string = (String) raw.get(i);
-                    raw.set(i, filter.process(string));
-                }
-            } catch (Throwable e) {
-                return getBadRequestMessage("Query", parameter, raw, e.getMessage());
-            }
-        }
-        return null;
     }
 
     protected void applyCacheControl(HttpResponse response) {
@@ -188,18 +114,12 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         // Process path and query parameters
         var data = found.getData();
         // Fast check for no-known params/no filters
-        if (filters == null || data == null) {
+        if (parser == null || data == null) {
             runHandler(handler, context);
             return;
         }
-        String message;
-        // If path params failed, return 400
-        if ((message = processPathParams(request, data.getPathParams())) != null) {
-            response.sendError(HttpCode.BAD_REQUEST, message);
-            return;
-        }
-        // If query params failed, return 400
-        if ((message = processQueryParams(request, data.getQueryParams())) != null) {
+        var message = parser.process(request, data);
+        if (message != null) {
             response.sendError(HttpCode.BAD_REQUEST, message);
             return;
         }
@@ -246,21 +166,11 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
         // Process path and query parameters
         var data = found.getData();
         // Fast check for no-known params/no filters
-        if (filters == null || data == null) {
+        if (parser == null || data == null) {
             return runHandlerAsync(handler, context);
         }
-        String message;
-        // If path params failed, return 400
-        if ((message = processPathParams(request, data.getPathParams())) != null) {
-            try {
-                response.sendError(HttpCode.BAD_REQUEST, message);
-                return CompletableFuture.completedFuture(null);
-            } catch (IOException e) {
-                return CompletableFuture.failedFuture(e);
-            }
-        }
-        // If query params failed, return 400
-        if ((message = processQueryParams(request, data.getQueryParams())) != null) {
+        var message = parser.process(request, data);
+        if (message != null) {
             try {
                 response.sendError(HttpCode.BAD_REQUEST, message);
                 return CompletableFuture.completedFuture(null);

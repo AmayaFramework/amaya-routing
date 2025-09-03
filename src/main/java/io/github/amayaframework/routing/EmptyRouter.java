@@ -4,10 +4,10 @@ import io.github.amayaframework.router.PathContext;
 
 import java.util.function.Supplier;
 
-public final class EmptyRouter implements HttpRouter {
-    public static final HttpRouter INSTANCE = new EmptyRouter();
+public final class EmptyRouter implements TaskRouter {
+    public static final TaskRouter INSTANCE = new EmptyRouter();
 
-    public static HttpRouter emptyRouter() {
+    public static TaskRouter emptyRouter() {
         return INSTANCE;
     }
 

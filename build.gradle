@@ -36,8 +36,8 @@ dependencies {
     implementation project(':tree-router')
     implementation project(':fsm-router')
     implementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
-    implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.4.0'
-    implementation group: 'io.github.amayaframework', name: 'amaya-tomcat', version: '3.1.0-10.1.44'
+    implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.5.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-tomcat', version: '3.2.0-10.1.44'
 }
 
 test {

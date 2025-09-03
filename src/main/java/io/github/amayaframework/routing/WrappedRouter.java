@@ -5,7 +5,7 @@ import io.github.amayaframework.router.Router;
 
 import java.util.function.Supplier;
 
-final class WrappedRouter implements HttpRouter {
+final class WrappedRouter implements TaskRouter {
     final Router<MethodMap> router;
     final boolean sync;
     final boolean async;

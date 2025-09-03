@@ -33,7 +33,7 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
         return new RouteBuilder(supplier, preferExtended);
     }
 
-    protected HttpRouter doBuild() {
+    protected TaskRouter doBuild() {
         if (paths == null || paths.isEmpty()) {
             return EmptyRouter.INSTANCE;
         }
@@ -53,7 +53,7 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
         return new WrappedRouter(factory.create(map), flags[0], flags[1]);
     }
 
-    public HttpRouter build() {
+    public TaskRouter build() {
         try {
             return doBuild();
         } finally {

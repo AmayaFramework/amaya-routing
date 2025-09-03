@@ -6,7 +6,7 @@ import io.github.amayaframework.router.Router;
 
 import java.util.function.Supplier;
 
-public interface HttpRouter extends Router<MethodMap>, Uni {
+public interface TaskRouter extends Router<MethodMap>, Uni {
 
     @Override
     PathContext<MethodMap> process(String path, Supplier<Iterable<String>> supplier);
