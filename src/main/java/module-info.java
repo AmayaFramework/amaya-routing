@@ -1,7 +1,4 @@
 module amayaframework.routing {
-    // TODO Remove dep deps
-    requires amayaframework.core;
-    requires amayaframework.tomcat;
     // Imports
     // Basic dependencies
     requires com.github.romanqed.jtype;
