@@ -13,6 +13,14 @@ import java.util.function.Supplier;
 public final class StaticRouter<T> extends AbstractRouter<T> {
     private final Map<String, PathContext<T>> statics;
 
+    /**
+     * Constructs a new {@code StaticRouter} with the given tokenizer and static path mappings.
+     * <p>
+     * This router is optimized for exact (static) path lookups without dynamic segments.
+     *
+     * @param tokenizer the tokenizer used for path normalization
+     * @param statics   the map of normalized static paths to their {@link PathContext} values
+     */
     public StaticRouter(Tokenizer tokenizer, Map<String, PathContext<T>> statics) {
         super(tokenizer);
         this.statics = statics;
