@@ -3,7 +3,8 @@ package io.github.amayaframework.path;
 import java.util.List;
 
 /**
- * A class representing a set of path data: path and query parameters descriptors.
+ * Holds metadata for a {@link Path}, including its
+ * {@link PathParameter} and {@link QueryParameter} descriptors.
  */
 public final class PathData {
     private List<PathParameter> pathParams;
@@ -12,7 +13,7 @@ public final class PathData {
     /**
      * Gets path parameter descriptors.
      *
-     * @return the {@link List} containing path parameter descriptors
+     * @return the {@link List} of {@link PathParameter} descriptors, or {@code null} if none
      */
     public List<PathParameter> getPathParams() {
         return pathParams;
@@ -21,7 +22,7 @@ public final class PathData {
     /**
      * Sets path parameter descriptors.
      *
-     * @param pathParameters the {@link List} containing path parameter descriptors
+     * @param pathParameters the {@link List} of {@link PathParameter} descriptors
      */
     public void setPathParams(List<PathParameter> pathParameters) {
         this.pathParams = pathParameters;
@@ -30,16 +31,16 @@ public final class PathData {
     /**
      * Gets query parameter descriptors.
      *
-     * @return the {@link List} containing query parameter descriptors
+     * @return the {@link List} of {@link QueryParameter} descriptors, or {@code null} if none
      */
     public List<QueryParameter> getQueryParams() {
         return queryParams;
     }
 
     /**
-     * Gets query parameter descriptors.
+     * Sets query parameter descriptors.
      *
-     * @param queryParams the {@link List} containing query parameter descriptors
+     * @param queryParams the {@link List} of {@link QueryParameter} descriptors
      */
     public void setQueryParams(List<QueryParameter> queryParams) {
         this.queryParams = queryParams;

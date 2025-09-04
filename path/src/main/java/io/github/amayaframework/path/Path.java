@@ -5,7 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A class that represents a universal uri path descriptor.
+ * Represents a normalized URI path descriptor.
+ * <p>
+ * A {@link Path} stores the normalized path string, its pre-tokenized
+ * segments, and a flag indicating whether it contains dynamic parameters.
+ * Optional {@link PathData} may be attached for parameter metadata.
  */
 public final class Path {
     private final String path;
@@ -14,11 +18,11 @@ public final class Path {
     private PathData data;
 
     /**
-     * Constructs a {@link Path} instance with given normalized string representation, path segments and dynamic flag.
+     * Constructs a {@link Path} instance.
      *
-     * @param path     the specified normalized path representation, must be non-null
-     * @param segments the specified path segments, must be non-null
-     * @param dynamic  the specified dynamic flag
+     * @param path     the normalized path string, must be non-null
+     * @param segments the list of path segments, must be non-null
+     * @param dynamic  whether this path contains dynamic parameters
      */
     public Path(String path, List<String> segments, boolean dynamic) {
         this.path = Objects.requireNonNull(path);
@@ -27,43 +31,43 @@ public final class Path {
     }
 
     /**
-     * Gets normalized path representation.
+     * Gets the normalized path string.
      *
-     * @return the normalized path representation
+     * @return the normalized path
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * Gets path segments.
+     * Gets the list of path segments.
      *
-     * @return the {@link List} containing path segments
+     * @return an unmodifiable {@link List} of path segments
      */
     public List<String> getSegments() {
         return segments;
     }
 
     /**
-     * Checks if this path is dynamic.
+     * Checks whether this path contains dynamic parameters.
      *
-     * @return true if this path is dynamic, false otherwise
+     * @return {@code true} if the path contains parameters, {@code false} otherwise
      */
     public boolean isDynamic() {
         return dynamic;
     }
 
     /**
-     * Gets path data.
+     * Gets the associated {@link PathData}, if any.
      *
-     * @return the {@link PathData} instance
+     * @return the {@link PathData} instance, or {@code null} if none
      */
     public PathData getData() {
         return data;
     }
 
     /**
-     * Sets path data.
+     * Associates {@link PathData} with this path.
      *
      * @param data the {@link PathData} instance
      */

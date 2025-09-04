@@ -1,17 +1,21 @@
 package io.github.amayaframework.path;
 
 /**
- * A class that represents a universal parameter descriptor.
+ * Represents a universal parameter descriptor used in URI templates.
+ * <p>
+ * Serves as a base class for {@link PathParameter} and {@link QueryParameter}.
+ * Each parameter has a name and an optional type identifier
+ * that can be resolved using a {@link io.github.amayaframework.filter.Filter}.
  */
 public class Parameter {
     protected final String name;
     protected final String type;
 
     /**
-     * Constructs a {@link Parameter} instance with given name and type.
+     * Constructs a {@link Parameter} instance with the given name and type.
      *
-     * @param name the specified parameter name, must be non-null
-     * @param type the specified parameter type, may be null
+     * @param name the parameter name, must be non-null
+     * @param type the parameter type identifier, may be null
      */
     public Parameter(String name, String type) {
         this.name = name;
@@ -19,7 +23,7 @@ public class Parameter {
     }
 
     /**
-     * Gets parameter name.
+     * Gets the parameter name.
      *
      * @return the parameter name
      */
@@ -28,9 +32,9 @@ public class Parameter {
     }
 
     /**
-     * Gets parameter type.
+     * Gets the parameter type identifier.
      *
-     * @return the parameter type
+     * @return the parameter type identifier, or {@code null} if none
      */
     public String getType() {
         return type;
