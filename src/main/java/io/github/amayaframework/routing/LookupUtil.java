@@ -32,11 +32,11 @@ final class LookupUtil {
     }
 
     static RouterFactory lookupRouterFactory() {
-        var clazz = loadClass(FSM_FACTORY);
+        var clazz = loadClass(TREE_FACTORY);
         if (clazz != null) {
             return createInstance(clazz);
         }
-        clazz = loadClass(TREE_FACTORY);
+        clazz = loadClass(FSM_FACTORY);
         if (clazz != null) {
             return createInstance(clazz);
         }
