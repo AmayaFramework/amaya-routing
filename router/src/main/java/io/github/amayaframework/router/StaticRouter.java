@@ -5,6 +5,11 @@ import io.github.amayaframework.tokenize.Tokenizer;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * {@link Router} implementation optimized for static paths.
+ *
+ * @param <T> the type of the context value
+ */
 final class StaticRouter<T> extends AbstractRouter<T> {
     private final Map<String, PathContext<T>> statics;
 

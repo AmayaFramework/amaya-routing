@@ -1,21 +1,22 @@
 package io.github.amayaframework.router;
 
 /**
- * The utility class, containing path-related methods.
+ * Utility methods for working with path strings.
  */
 public final class PathUtil {
     private PathUtil() {
     }
 
     /**
-     * Normalizes given path by following rules:
-     * <br>
-     * 1. Path must start with a slash
-     * 2. Path must end with no slash
-     * 3. If path is empty, path must be '/'
+     * Normalizes the given path string according to the following rules:
+     * <ul>
+     *   <li>Path must start with a slash</li>
+     *   <li>Path must not end with a trailing slash</li>
+     *   <li>If path is empty, it becomes {@code "/"}</li>
+     * </ul>
      *
-     * @param path the specified path to be normalized
-     * @return the normalized path
+     * @param path raw path string
+     * @return normalized path string
      */
     public static String normalize(String path) {
         if (path.isEmpty() || path.equals("/")) {

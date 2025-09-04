@@ -3,26 +3,31 @@ package io.github.amayaframework.router;
 import java.util.function.Supplier;
 
 /**
- * An interface describing an abstract router.
+ * Defines a generic router that maps normalized paths to
+ * {@link PathContext} instances.
  *
- * @param <T> the path context value type
+ * @param <T> the type of the context value associated with each path
  */
 public interface Router<T> {
 
     /**
-     * Maps given path with stored contexts.
+     * Resolves the given path into a {@link PathContext}.
      *
-     * @param path     the specified path to be mapped
-     * @param supplier the specified path tokens supplier
-     * @return the {@link PathContext} associated with path or null
+     * @param path     the raw path string to resolve
+     * @param supplier supplier of tokenized path segments
+     * @return the matching {@link PathContext}, or {@code null} if not found
      */
     PathContext<T> process(String path, Supplier<Iterable<String>> supplier);
 
     /**
-     * Maps given path with stored contexts.
+     * Resolves the given path into a {@link PathContext}.
+     * <p>
+     * This overload tokenizes the path automatically using the router’s
+     * configured {@link io.github.amayaframework.tokenize.Tokenizer}.
+     * </p>
      *
-     * @param path the specified path to be mapped
-     * @return the {@link PathContext} associated with path or null
+     * @param path the raw path string to resolve
+     * @return the matching {@link PathContext}, or {@code null} if not found
      */
     PathContext<T> process(String path);
 }

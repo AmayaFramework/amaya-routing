@@ -9,22 +9,27 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Implementation of {@link RouterFactory} that uses hash mapping for static routing.
+ * {@link RouterFactory} that creates {@link Router} instances
+ * for static path mappings.
+ * <p>
+ * Dynamic paths are not supported; attempting to register one
+ * will result in {@link IllegalArgumentException}.
+ * </p>
  */
 public final class StaticRouterFactory implements RouterFactory {
     private final Tokenizer tokenizer;
 
     /**
-     * Constructs a {@link StaticRouterFactory} instance with {@link Tokenizer}.
+     * Creates a factory using the given {@link Tokenizer}.
      *
-     * @param tokenizer the specified {@link Tokenizer} instance, must be non-null
+     * @param tokenizer tokenizer for path processing
      */
     public StaticRouterFactory(Tokenizer tokenizer) {
         this.tokenizer = Objects.requireNonNull(tokenizer);
     }
 
     /**
-     * Constructs a {@link StaticRouterFactory} instance with {@link io.github.amayaframework.tokenize.PlainTokenizer}.
+     * Creates a factory using {@link Tokenizers#PLAIN_TOKENIZER}.
      */
     public StaticRouterFactory() {
         this.tokenizer = Tokenizers.PLAIN_TOKENIZER;
@@ -38,8 +43,7 @@ public final class StaticRouterFactory implements RouterFactory {
             if (path.isDynamic()) {
                 throw new IllegalArgumentException("Static router does not support dynamic paths");
             }
-            var context = new PathContext<>(path.getData(), entry.getValue());
-            statics.put(path.getPath(), context);
+            statics.put(path.getPath(), new PathContext<>(path.getData(), entry.getValue()));
         }
         return new StaticRouter<>(tokenizer, statics);
     }

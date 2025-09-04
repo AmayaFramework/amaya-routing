@@ -3,19 +3,20 @@ package io.github.amayaframework.router;
 import io.github.amayaframework.path.PathData;
 
 /**
- * A class representing the context of the path.
+ * Holds the routing context for a resolved path, including
+ * parsed {@link PathData} and an associated value.
  *
- * @param <T> the path context value type
+ * @param <T> the type of the value stored in the context
  */
 public final class PathContext<T> {
     final PathData data;
     final T value;
 
     /**
-     * Constructs a {@link PathContext} instance with given path data and context value.
+     * Creates a new {@link PathContext}.
      *
-     * @param data  the specified {@link PathData} instance, may be null
-     * @param value the specified context value, may be null
+     * @param data  optional {@link PathData}, may be {@code null}
+     * @param value context value, may be {@code null}
      */
     public PathContext(PathData data, T value) {
         this.data = data;
@@ -23,7 +24,7 @@ public final class PathContext<T> {
     }
 
     /**
-     * Gets path data.
+     * Returns the parsed {@link PathData}, or {@code null} if none.
      *
      * @return the {@link PathData} instance
      */
@@ -32,7 +33,7 @@ public final class PathContext<T> {
     }
 
     /**
-     * Gets path context value.
+     * Returns the associated context value.
      *
      * @return the path context value
      */

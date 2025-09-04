@@ -5,16 +5,17 @@ import io.github.amayaframework.path.Path;
 import java.util.Map;
 
 /**
- * An interface describing an abstract {@link Router} factory.
+ * Factory for creating {@link Router} instances from a mapping of
+ * {@link Path} definitions to context values.
  */
 public interface RouterFactory {
 
     /**
-     * Creates router with given path map.
+     * Creates a new {@link Router} instance for the given path map.
      *
-     * @param paths the specified path map
-     * @param <T>   the path context value type
-     * @return the {@link Router} instance
+     * @param paths the map of {@link Path} definitions to associated values
+     * @param <T>   the type of the context values
+     * @return a new {@link Router} instance
      */
     <T> Router<T> create(Map<Path, T> paths);
 }

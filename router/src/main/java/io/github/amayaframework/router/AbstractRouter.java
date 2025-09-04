@@ -3,20 +3,21 @@ package io.github.amayaframework.router;
 import io.github.amayaframework.tokenize.Tokenizer;
 
 /**
- * The skeletal implementation of {@link Router}.
+ * Abstract base class for {@link Router} implementations.
  *
- * @param <T> the path context type
+ * @param <T> the type of the context value
  */
 public abstract class AbstractRouter<T> implements Router<T> {
+
     /**
-     * The tokenizer to be used by default.
+     * Default tokenizer for path segmentation.
      */
     protected final Tokenizer tokenizer;
 
     /**
-     * Constructs an {@link AbstractRouter} instance with given {@link Tokenizer}.
+     * Creates an {@link AbstractRouter} with the given {@link Tokenizer}.
      *
-     * @param tokenizer the specified {@link Tokenizer} instance, must be non-null
+     * @param tokenizer tokenizer to split incoming paths, must be non-null
      */
     protected AbstractRouter(Tokenizer tokenizer) {
         this.tokenizer = tokenizer;
