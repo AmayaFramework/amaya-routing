@@ -12,55 +12,57 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * An abstract class that implements the PathParser interface, providing common functionality
- * for parsing paths and query strings. This class serves as a base for specific path parser
- * implementations, offering methods to handle path parameters and query parameters.
+ * Base class for {@link PathParser} implementations.
+ * <p>
+ * Provides common functionality for parsing path and query segments,
+ * detecting {@link PathParameter} and {@link QueryParameter} declarations,
+ * and normalizing template strings.
+ * </p>
  */
 public abstract class AbstractPathParser implements PathParser {
 
     /**
-     * The delimiter used to separate path segments.
+     * Delimiter between path segments.
      */
     protected static final String PATH_DELIM = "/";
 
     /**
-     * The delimiter used to separate query parameters.
+     * Delimiter between query parameters.
      */
     protected static final String QUERY_DELIM = "&";
 
     /**
-     * The character that indicates the beginning of the query string in a URL.
+     * Character indicating the start of a query string.
      */
     protected static final char QUERY_STRING_DELIM = '?';
 
     /**
-     * The tokenizer used for splitting strings into tokens based on defined delimiters.
+     * Tokenizer for splitting path and query strings.
      */
     protected final Tokenizer tokenizer;
 
     /**
-     * A string representing common dynamic segment in the path.
+     * Placeholder for dynamic segments in normalized paths.
      */
     protected final String any;
 
     /**
-     * A parser responsible for handling path parameters.
+     * Parser for path parameters.
      */
     protected final PathParameterParser pathParser;
 
     /**
-     * A parser responsible for handling query parameters.
+     * Parser for query parameters.
      */
     protected final QueryParameterParser queryParser;
 
     /**
-     * Constructs an instance of AbstractPathParser with the specified tokenizer,
-     * dynamic segment representation, and parameter parsers.
+     * Constructs an {@link AbstractPathParser}.
      *
-     * @param tokenizer   the tokenizer to be used for parsing paths and queries
-     * @param any         a string representation of common dynamic segment
-     * @param pathParser  the parser responsible for parsing path parameters
-     * @param queryParser the parser responsible for parsing query parameters
+     * @param tokenizer   tokenizer for splitting path and query strings
+     * @param any         placeholder symbol for dynamic path segments
+     * @param pathParser  parser for path parameter declarations
+     * @param queryParser parser for query parameter declarations
      */
     protected AbstractPathParser(Tokenizer tokenizer,
                                  String any,
@@ -73,10 +75,10 @@ public abstract class AbstractPathParser implements PathParser {
     }
 
     /**
-     * Unwraps the specified path parameter, converting it into a usable format.
+     * Extracts the parameter declaration from a segment if present.
      *
-     * @param parameter the path parameter to unwrap
-     * @return the unwrapped path parameter as a String
+     * @param parameter the raw path segment
+     * @return the unwrapped declaration string, or {@code null} if not a parameter
      */
     protected abstract String unwrapPathParameter(String parameter);
 

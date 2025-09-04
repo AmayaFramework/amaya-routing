@@ -6,22 +6,26 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * An implementation of {@link PathParser} that works with the following http path template:
- * <br>
- * /segment1/&lt;opening bracket&gt;path param declaration&lt;closing bracket&gt;?&lt;query param declaration&gt;
+ * Implementation of {@link PathParser} that uses bracketed declarations.
+ * <p>
+ * Example format:
+ * <pre>{@code
+ *   /users/{id:int}?active!:boolean
+ * }</pre>
+ * where <code>{}</code> are defined as valid brackets.
+ * </p>
  */
 public final class BracketPathParser extends AbstractPathParser {
     private static final String GENERIC = "*";
     private final Map<Character, Character> brackets;
 
     /**
-     * Constructs a {@link BracketPathParser} instance with given tokenizer, bracket map,
-     * path and query parameter parsers.
+     * Constructs a {@link BracketPathParser}.
      *
-     * @param tokenizer   the specified {@link Tokenizer}, must be not null
-     * @param brackets    the specified bracket map, must be not null
-     * @param pathParser  the specified {@link PathParameterParser}, must be not null
-     * @param queryParser the specified {@link QueryParameterParser}, must be not null
+     * @param tokenizer   tokenizer for splitting paths
+     * @param brackets    map of opening to closing brackets
+     * @param pathParser  parser for path parameter declarations
+     * @param queryParser parser for query parameter declarations
      */
     public BracketPathParser(Tokenizer tokenizer,
                              Map<Character, Character> brackets,
