@@ -1,8 +1,6 @@
 import java.text.SimpleDateFormat
 
 plugins {
-    id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
@@ -34,7 +32,7 @@ dependencies {
     implementation project(':router')
     implementation project(':parser')
     implementation project(':path')
-    implementation project(':tree-router')
+//    implementation project(':tree-router')
     implementation project(':fsm-router')
     implementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
     implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.5.0'

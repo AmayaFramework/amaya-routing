@@ -1,36 +1,36 @@
 package io.github.amayaframework.filter;
 
+import com.github.romanqed.jfunc.Exceptions;
 import com.github.romanqed.jfunc.Runnable2;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Supplier;
 
 /**
- * An implementation of the {@link FilterSet} interface that uses a
- * {@link Map} to store filters associated with their types.
+ * A {@link FilterSet} implementation backed by a {@link Map}.
+ * Filters are stored as key-value pairs, where the key is a type identifier
+ * and the value is the corresponding {@link Filter}.
+ *
+ * <p>This implementation is mutable but not thread-safe. If concurrent
+ * access is required, it should be externally synchronized.</p>
  */
-public class MapFilterSet implements FilterSet {
-    final Map<String, Filter> map;
+public final class MapFilterSet implements FilterSet {
+    private final Map<String, Filter> map;
 
     /**
-     * Constructs a {@link MapFilterSet} instance using the provided supplier
-     * to initialize the underlying map.
+     * Creates a new {@link MapFilterSet} backed by the given map.
      *
-     * @param supplier a {@link Supplier} that provides a {@link Map}
-     *                 instance for storing filters. The supplied map
-     *                 cannot be null
-     * @throws NullPointerException if the supplier or the map it provides is null
+     * @param map the backing map, must not be {@code null}
      */
-    public MapFilterSet(Supplier<Map<String, Filter>> supplier) {
-        this.map = Objects.requireNonNull(supplier.get());
+    public MapFilterSet(Map<String, Filter> map) {
+        this.map = Objects.requireNonNull(map);
     }
 
     /**
-     * Constructs a {@link MapFilterSet} instance with an empty {@link HashMap}
-     * as the underlying storage for filters.
+     * Creates a new {@link MapFilterSet} with an empty {@link HashMap}
+     * as the underlying storage.
      */
     public MapFilterSet() {
         this.map = new HashMap<>();
@@ -84,10 +84,8 @@ public class MapFilterSet implements FilterSet {
             for (var entry : map.entrySet()) {
                 action.run(entry.getKey(), entry.getValue());
             }
-        } catch (Error | RuntimeException e) {
-            throw e;
         } catch (Throwable e) {
-            throw new RuntimeException(e);
+            Exceptions.throwAny(e);
         }
     }
 }

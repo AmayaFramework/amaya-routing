@@ -5,74 +5,74 @@ import com.github.romanqed.jfunc.Runnable2;
 import java.util.Map;
 
 /**
- * An interface describing an abstract set of filters associated with types.
+ * An interface describing a collection of {@link Filter} instances
+ * associated with string-based types. A {@link FilterSet} is used
+ * to register, retrieve, and manage filters that convert raw values
+ * into typed objects during parameter parsing.
  */
 public interface FilterSet {
 
     /**
-     * Gets filter associated with given type.
+     * Gets the {@link Filter} associated with the given type.
      *
-     * @param type the specified type to filter lookup
-     * @return the {@link Filter} instance or null, if not found
+     * @param type the specified type to look up
+     * @return the associated {@link Filter}, or {@code null} if not found
      */
     Filter get(String type);
 
     /**
-     * Checks if a filter exists for the specified type.
+     * Checks whether a {@link Filter} exists for the specified type.
      *
-     * @param type the specified type to check
-     * @return true if a filter exists for the specified type, false otherwise
+     * @param type the type to check
+     * @return {@code true} if a filter exists, {@code false} otherwise
      */
     boolean contains(String type);
 
     /**
-     * Sets a filter for the specified type. If a filter already exists for
-     * that type, it will be replaced.
+     * Sets (or replaces) a {@link Filter} for the specified type.
      *
-     * @param type   the specified type to associate with the filter
-     * @param filter the {@link Filter} instance to be associated with the specified type
+     * @param type   the type identifier to associate with the filter
+     * @param filter the {@link Filter} instance to register
      */
     void set(String type, Filter filter);
 
     /**
-     * Removes the filter associated with the specified type.
+     * Removes the {@link Filter} associated with the specified type.
      *
-     * @param type the specified type whose filter should be removed
+     * @param type the type whose filter should be removed
      */
     void remove(String type);
 
     /**
-     * Checks if there are any filters in this set.
+     * Checks whether this filter set is empty.
      *
-     * @return true if there are no filters in this set, false otherwise
+     * @return {@code true} if no filters are registered, {@code false} otherwise
      */
     boolean empty();
 
     /**
-     * Gets the number of filters in this set.
+     * Returns the number of filters in this set.
      *
-     * @return the number of filters in this set
+     * @return the filter count
      */
     int size();
 
     /**
-     * Clears all filters from this set, removing any existing associations
+     * Removes all filters from this set.
      */
     void clear();
 
     /**
-     * Returns a map representation of the filters in this set, where
-     * each entry consists of a type and its associated filter.
+     * Returns an unmodifiable {@link Map} view of all filters in this set.
      *
-     * @return a map containing all types and their corresponding {@link Filter} instances
+     * @return a map of type identifiers to {@link Filter} instances
      */
     Map<String, Filter> asMap();
 
     /**
-     * Performs the given action for each entry in this filter set.
+     * Applies the given action to each entry in this set.
      *
-     * @param action a {@link Runnable2} that takes a type and its associated filter,
-     *               to be executed for each entry in the filter set
+     * @param action a {@link Runnable2} consuming the type and its filter
      */
     void forEach(Runnable2<String, Filter> action);
 }
