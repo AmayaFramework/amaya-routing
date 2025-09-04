@@ -5,7 +5,7 @@ package io.github.amayaframework.path;
  * <p>
  * Serves as a base class for {@link PathParameter} and {@link QueryParameter}.
  * Each parameter has a name and an optional type identifier
- * that can be resolved using a {@link io.github.amayaframework.filter.Filter}.
+ * that can be resolved using a {@code io.github.amayaframework.filter.Filter}.
  */
 public class Parameter {
     protected final String name;
