@@ -36,7 +36,11 @@ public final class StaticRouterFactory implements RouterFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> Router<T> create(Map<Path, T> paths) {
+        if (paths == null || paths.isEmpty()) {
+            return EmptyRouter.INSTANCE;
+        }
         var statics = new HashMap<String, PathContext<T>>();
         for (var entry : paths.entrySet()) {
             var path = entry.getKey();

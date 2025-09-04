@@ -1,10 +1,7 @@
 package io.github.amayaframework.router.tree;
 
 import io.github.amayaframework.path.Path;
-import io.github.amayaframework.router.PathContext;
-import io.github.amayaframework.router.Router;
-import io.github.amayaframework.router.RouterFactory;
-import io.github.amayaframework.router.StaticRouter;
+import io.github.amayaframework.router.*;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
@@ -46,7 +43,11 @@ public final class TreeRouterFactory implements RouterFactory {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> Router<T> create(Map<Path, T> paths) {
+        if (paths == null || paths.isEmpty()) {
+            return EmptyRouter.INSTANCE;
+        }
         var statics = new HashMap<String, PathContext<T>>();
         var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
