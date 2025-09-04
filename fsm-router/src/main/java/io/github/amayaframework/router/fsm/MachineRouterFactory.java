@@ -100,8 +100,7 @@ public final class MachineRouterFactory implements RouterFactory {
             dynamics.add(path);
             // If the path is not dynamic, register it in a fast static map
             if (!path.isDynamic()) {
-                var context = new PathContext<>(path.getData(), entry.getValue());
-                statics.put(path.getPath(), context);
+                statics.put(path.getPath(), new PathContext<>(path.getData(), entry.getValue()));
             }
         }
         if (statics.size() == dynamics.size()) {
@@ -110,9 +109,7 @@ public final class MachineRouterFactory implements RouterFactory {
         var machine = createMachine(dynamics);
         var dynamicMap = new HashMap<Long, PathContext<T>>();
         for (var path : dynamics) {
-            var hash = machine.stamp(path.getSegments());
-            var context = new PathContext<>(path.getData(), paths.get(path));
-            dynamicMap.put(hash, context);
+            dynamicMap.put(machine.stamp(path.getSegments()), new PathContext<>(path.getData(), paths.get(path)));
         }
         return new MachineRouter<>(tokenizer, statics, machine, dynamicMap);
     }
