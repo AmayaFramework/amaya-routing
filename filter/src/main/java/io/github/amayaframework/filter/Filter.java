@@ -8,6 +8,7 @@ package io.github.amayaframework.filter;
  * <p>Filters should be stateless and thread-safe, as they can be reused
  * across multiple requests concurrently.</p>
  */
+@FunctionalInterface
 public interface Filter {
 
     /**
