@@ -10,10 +10,10 @@ import java.util.function.Supplier;
  *
  * @param <T> the type of the context value
  */
-final class StaticRouter<T> extends AbstractRouter<T> {
+public final class StaticRouter<T> extends AbstractRouter<T> {
     private final Map<String, PathContext<T>> statics;
 
-    StaticRouter(Tokenizer tokenizer, Map<String, PathContext<T>> statics) {
+    public StaticRouter(Tokenizer tokenizer, Map<String, PathContext<T>> statics) {
         super(tokenizer);
         this.statics = statics;
     }

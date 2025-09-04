@@ -8,6 +8,7 @@ import io.github.amayaframework.path.Path;
 import io.github.amayaframework.router.PathContext;
 import io.github.amayaframework.router.Router;
 import io.github.amayaframework.router.RouterFactory;
+import io.github.amayaframework.router.StaticRouter;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
@@ -79,9 +80,9 @@ public final class MachineRouterFactory implements RouterFactory {
 
     private StateMachine<String, String> createMachine(List<Path> paths) {
         var builder = new MachineModelBuilder<>(String.class, String.class);
-        builder.setComparator(Comparator.naturalOrder());
-        builder.setInitState(INITIAL_STATE);
-        builder.setExitState(EXIT_STATE);
+        builder.comparator(Comparator.naturalOrder());
+        builder.initState(INITIAL_STATE);
+        builder.exitState(EXIT_STATE);
         for (var path : paths) {
             add(builder, path.getSegments());
         }
@@ -91,7 +92,6 @@ public final class MachineRouterFactory implements RouterFactory {
 
     @Override
     public <T> Router<T> create(Map<Path, T> paths) {
-        // TODO Review factory algorithm
         var statics = new HashMap<String, PathContext<T>>();
         var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
@@ -105,7 +105,7 @@ public final class MachineRouterFactory implements RouterFactory {
             }
         }
         if (statics.size() == dynamics.size()) {
-            return new MachineRouter<>(tokenizer, statics, null, null);
+            return new StaticRouter<>(tokenizer, statics);
         }
         var machine = createMachine(dynamics);
         var dynamicMap = new HashMap<Long, PathContext<T>>();
