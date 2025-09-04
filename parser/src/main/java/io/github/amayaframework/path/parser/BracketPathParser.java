@@ -13,7 +13,6 @@ import java.util.Objects;
  *   /users/{id:int}?active!:boolean
  * }</pre>
  * where <code>{}</code> are defined as valid brackets.
- * </p>
  */
 public final class BracketPathParser extends AbstractPathParser {
     private static final String GENERIC = "*";

@@ -13,7 +13,6 @@ import io.github.amayaframework.path.Path;
  * <pre>{@code
  *   /users/{id:int}?active!:boolean
  * }</pre>
- * </p>
  */
 public interface PathParser {
 

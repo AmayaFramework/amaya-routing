@@ -10,7 +10,6 @@ import io.github.amayaframework.path.PathParameter;
  *   name:type
  * }</pre>
  * where <code>type</code> is optional.
- * </p>
  */
 public final class TypedPathParameterParser implements PathParameterParser {
     private final char delim;
