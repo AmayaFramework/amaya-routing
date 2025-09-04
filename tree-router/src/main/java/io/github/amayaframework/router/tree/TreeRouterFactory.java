@@ -4,6 +4,7 @@ import io.github.amayaframework.path.Path;
 import io.github.amayaframework.router.PathContext;
 import io.github.amayaframework.router.Router;
 import io.github.amayaframework.router.RouterFactory;
+import io.github.amayaframework.router.StaticRouter;
 import io.github.amayaframework.tokenize.Tokenizer;
 import io.github.amayaframework.tokenize.Tokenizers;
 
@@ -13,7 +14,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Implementation of {@link RouterFactory} that uses path segment tree for dynamic routing.
+ * Implementation of {@link RouterFactory} that uses a path segment tree
+ * for dynamic routing.
+ *
+ * <p>When creating a router:</p>
+ * <ul>
+ *   <li>All paths are added to the tree to prevent undefined behavior.</li>
+ *   <li>Static (non-dynamic) paths are also stored in a fast lookup map
+ *       for constant-time resolution.</li>
+ *   <li>If all routes are static, a {@link StaticRouter} is returned
+ *       instead of a tree-based router.</li>
+ * </ul>
  */
 public final class TreeRouterFactory implements RouterFactory {
     private final Tokenizer tokenizer;
@@ -36,7 +47,6 @@ public final class TreeRouterFactory implements RouterFactory {
 
     @Override
     public <T> Router<T> create(Map<Path, T> paths) {
-        // TODO Review factory algorithm
         var statics = new HashMap<String, PathContext<T>>();
         var dynamics = new LinkedList<Path>();
         for (var entry : paths.entrySet()) {
@@ -45,17 +55,15 @@ public final class TreeRouterFactory implements RouterFactory {
             dynamics.add(path);
             // If the path is not dynamic, register it in a fast static map
             if (!path.isDynamic()) {
-                var context = new PathContext<>(path.getData(), entry.getValue());
-                statics.put(path.getPath(), context);
+                statics.put(path.getPath(), new PathContext<>(path.getData(), entry.getValue()));
             }
         }
         if (statics.size() == dynamics.size()) {
-            return new TreeRouter<>(tokenizer, statics, null);
+            return new StaticRouter<>(tokenizer, statics);
         }
         var root = new PathNode();
         for (var path : dynamics) {
-            var context = new PathContext<T>(path.getData(), paths.get(path));
-            root.attach(path, context);
+            root.attach(path, new PathContext<T>(path.getData(), paths.get(path)));
         }
         return new TreeRouter<>(tokenizer, statics, root);
     }

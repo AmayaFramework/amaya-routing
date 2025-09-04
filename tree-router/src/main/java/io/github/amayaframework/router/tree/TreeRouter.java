@@ -8,6 +8,15 @@ import io.github.amayaframework.tokenize.Tokenizer;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * Router implementation that uses a segment tree for dynamic path resolution.
+ *
+ * <p>This router first attempts to resolve paths via a fast static map
+ * (exact string matches). If no match is found, it falls back to
+ * the {@link PathNode} tree for dynamic resolution.</p>
+ *
+ * @param <T> the type of values stored in {@link PathContext}
+ */
 final class TreeRouter<T> extends AbstractRouter<T> {
     private final Map<String, PathContext<T>> statics;
     private final PathNode root;
@@ -24,9 +33,6 @@ final class TreeRouter<T> extends AbstractRouter<T> {
         var found = statics.get(PathUtil.normalize(path));
         if (found != null) {
             return found;
-        }
-        if (root == null) {
-            return null;
         }
         return root.lookup(supplier.get());
     }
