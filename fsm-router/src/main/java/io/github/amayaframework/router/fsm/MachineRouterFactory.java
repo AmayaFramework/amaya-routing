@@ -108,7 +108,7 @@ public final class MachineRouterFactory implements RouterFactory {
             return new StaticRouter<>(tokenizer, statics);
         }
         var machine = createMachine(dynamics);
-        var dynamicMap = new HashMap<Long, PathContext<T>>();
+        var dynamicMap = new LongMap<PathContext<T>>();
         for (var path : dynamics) {
             dynamicMap.put(machine.stamp(path.getSegments()), new PathContext<>(path.getData(), paths.get(path)));
         }

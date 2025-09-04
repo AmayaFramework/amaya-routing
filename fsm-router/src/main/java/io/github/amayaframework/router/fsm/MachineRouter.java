@@ -26,12 +26,12 @@ import java.util.function.Supplier;
 final class MachineRouter<T> extends AbstractRouter<T> {
     private final Map<String, PathContext<T>> statics;
     private final StateMachine<?, String> machine;
-    private final Map<Long, PathContext<T>> dynamics;
+    private final LongMap<PathContext<T>> dynamics;
 
     MachineRouter(Tokenizer tokenizer,
                   Map<String, PathContext<T>> statics,
                   StateMachine<?, String> machine,
-                  Map<Long, PathContext<T>> dynamics) {
+                  LongMap<PathContext<T>> dynamics) {
         super(tokenizer);
         this.statics = statics;
         this.machine = machine;

@@ -4,6 +4,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
+    id 'me.champeau.jmh' version '0.7.3'
 }
 
 java {
@@ -30,6 +31,13 @@ dependencies {
     testImplementation project(':parser')
     testImplementation project(':router')
     testImplementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
+    // Benchmarks
+    jmhImplementation group: 'org.openjdk.jmh', name: 'jmh-core', version: '1.37'
+    jmhImplementation group: 'org.openjdk.jmh', name: 'jmh-generator-annprocess', version: '1.37'
+    jmhImplementation project(':path')
+    jmhImplementation project(':parser')
+    jmhImplementation project(':router')
+    jmhImplementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
     // Dependencies
     compileOnly project(':path')
     compileOnly project(':router')
