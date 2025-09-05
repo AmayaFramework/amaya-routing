@@ -1,5 +1,9 @@
 package io.github.amayaframework.routing;
 
+/**
+ * TODO
+ * @param <C>
+ */
 public abstract class AbstractRoutingConfigurer<C extends RoutingConfigurer> implements RoutingConfigurer {
     protected TaskRouter router;
     protected ParamParser parser;

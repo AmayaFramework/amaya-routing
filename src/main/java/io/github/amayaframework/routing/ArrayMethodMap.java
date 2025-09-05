@@ -10,10 +10,18 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * TODO
+ */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class ArrayMethodMap implements MethodMap {
     private static final int METHOD_COUNT = HttpMethod.all().size();
 
+    /**
+     * TODO
+     * @param method
+     * @return
+     */
     public static int ordinal(HttpMethod method) {
         if (method == HttpMethod.GET) return 0;
         if (method == HttpMethod.HEAD) return 1;
@@ -27,6 +35,11 @@ public final class ArrayMethodMap implements MethodMap {
         throw new IllegalArgumentException("Unknown method: " + method);
     }
 
+    /**
+     * TODO
+     * @param ordinal
+     * @return
+     */
     public static HttpMethod of(int ordinal) {
         switch (ordinal) {
             case 0:
@@ -56,6 +69,9 @@ public final class ArrayMethodMap implements MethodMap {
     private final Set<HttpMethod> methodSet;
     private final Set<HttpMethod> methodSetView;
 
+    /**
+     * TODO
+     */
     public ArrayMethodMap() {
         this.handlers = new Task[METHOD_COUNT];
         this.methodSet = new HashSet<>();

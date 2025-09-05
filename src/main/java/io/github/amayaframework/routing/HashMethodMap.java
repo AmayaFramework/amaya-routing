@@ -10,10 +10,17 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * TODO
+ */
 public final class HashMethodMap implements MethodMap {
     private final Map<HttpMethod, Task<HttpContext>> methods;
     private final Set<HttpMethod> methodSetView;
 
+    /**
+     * TODO
+     * @param methods
+     */
     public HashMethodMap(Map<HttpMethod, Task<HttpContext>> methods) {
         this.methods = methods;
         this.methodSetView = Collections.unmodifiableSet(methods.keySet());

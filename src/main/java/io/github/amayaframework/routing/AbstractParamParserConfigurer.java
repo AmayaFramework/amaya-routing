@@ -40,9 +40,9 @@ public abstract class AbstractParamParserConfigurer<C extends ParamParserConfigu
 
     @Override
     @SuppressWarnings("unchecked")
-    public ParamParserConfigurer decodePath(boolean decode) {
+    public C decodePath(boolean decode) {
         this.decodePath = decode;
-        return this;
+        return (C) this;
     }
 
     @Override
@@ -52,9 +52,9 @@ public abstract class AbstractParamParserConfigurer<C extends ParamParserConfigu
 
     @Override
     @SuppressWarnings("unchecked")
-    public ParamParserConfigurer decodeQuery(boolean decode) {
+    public C decodeQuery(boolean decode) {
         this.decodeQuery = decode;
-        return this;
+        return (C) this;
     }
 
     @Override
@@ -64,8 +64,8 @@ public abstract class AbstractParamParserConfigurer<C extends ParamParserConfigu
 
     @Override
     @SuppressWarnings("unchecked")
-    public ParamParserConfigurer decoder(UrlDecoder decoder) {
+    public C decoder(UrlDecoder decoder) {
         this.decoder = decoder;
-        return this;
+        return (C) this;
     }
 }

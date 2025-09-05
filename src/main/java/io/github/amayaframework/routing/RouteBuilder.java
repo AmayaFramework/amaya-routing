@@ -10,15 +10,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * TODO
+ */
 public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
     protected final Supplier<MethodMap> supplier;
     protected final boolean preferExtended;
 
+    /**
+     * TODO
+     * @param supplier
+     * @param preferExtended
+     */
     public RouteBuilder(Supplier<MethodMap> supplier, boolean preferExtended) {
         this.supplier = supplier;
         this.preferExtended = preferExtended;
     }
 
+    /**
+     * TODO
+     */
     public RouteBuilder() {
         this.supplier = IdentityMethodMap::new;
         this.preferExtended = false;
@@ -47,6 +58,10 @@ public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
         return ret;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     protected MethodMap doBuild() {
         var map = buildMap();
         if (map == null || map.isEmpty()) {
@@ -70,6 +85,10 @@ public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
         return ret;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public MethodMap build() {
         try {
             return doBuild();

@@ -4,9 +4,16 @@ import io.github.amayaframework.router.PathContext;
 
 import java.util.function.Supplier;
 
+/**
+ * TODO
+ */
 public final class EmptyRouter implements TaskRouter {
     public static final TaskRouter INSTANCE = new EmptyRouter();
 
+    /**
+     * TODO
+     * @return
+     */
     public static TaskRouter emptyRouter() {
         return INSTANCE;
     }

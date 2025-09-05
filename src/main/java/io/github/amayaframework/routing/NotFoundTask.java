@@ -8,13 +8,23 @@ import io.github.amayaframework.http.HttpCode;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ *
+ */
 public final class NotFoundTask implements TaskConsumer<HttpContext> {
     private final String message;
 
+    /**
+     *
+     * @param message
+     */
     public NotFoundTask(String message) {
         this.message = message;
     }
 
+    /**
+     *
+     */
     public NotFoundTask() {
         this.message = "Path not found";
     }

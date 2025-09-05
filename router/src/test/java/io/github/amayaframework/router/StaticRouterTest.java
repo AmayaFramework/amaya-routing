@@ -1,5 +1,7 @@
 package io.github.amayaframework.router;
 
+import io.github.amayaframework.path.parser.PathParser;
+import io.github.amayaframework.path.parser.PathParsers;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -7,14 +9,15 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 public final class StaticRouterTest {
+    private static final PathParser PARSER = PathParsers.createDefault();
     private static final RouterFactory STATIC_FACTORY = new StaticRouterFactory();
 
     @Test
     public void testStatic() {
         var paths = Map.of(
-                TestUtil.parse("/s1"), "s1",
-                TestUtil.parse("/s2"), "s2",
-                TestUtil.parse("/a/b/c/s3"), "s3"
+                PARSER.parse("/s1"), "s1",
+                PARSER.parse("/s2"), "s2",
+                PARSER.parse("/a/b/c/s3"), "s3"
         );
         var router = STATIC_FACTORY.create(paths);
         var c1 = router.process("/s1");
@@ -43,7 +46,7 @@ public final class StaticRouterTest {
     @Test
     public void testThrowOnDynamic() {
         var paths = Map.of(
-                TestUtil.parse("/*"), ""
+                PARSER.parse("/*"), ""
         );
         assertThrows(IllegalArgumentException.class, () -> STATIC_FACTORY.create(paths));
     }

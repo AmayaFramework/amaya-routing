@@ -10,12 +10,22 @@ import io.github.amayaframework.path.QueryParameter;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * TODO
+ */
 public class FilterParamParser implements ParamParser {
     protected final FilterSet filters;
     protected final UrlDecoder decoder;
     protected final boolean decodePath;
     protected final boolean decodeQuery;
 
+    /**
+     * TODO
+     * @param filters
+     * @param decoder
+     * @param decodePath
+     * @param decodeQuery
+     */
     public FilterParamParser(FilterSet filters, UrlDecoder decoder, boolean decodePath, boolean decodeQuery) {
         this.filters = filters;
         this.decoder = decoder;
@@ -23,45 +33,86 @@ public class FilterParamParser implements ParamParser {
         this.decodeQuery = decodeQuery;
     }
 
+    /**
+     * TODO
+     * @param type
+     * @param parameter
+     * @param value
+     * @param reason
+     * @return
+     */
     protected String getIllegalParamMessage(String type, Parameter parameter, Object value, String reason) {
         return type + " parameter " + parameter + " with value '" + value + "' is invalid. Reason: " + reason;
     }
 
-    protected void processPathParams(HttpRequest request, List<PathParameter> params) {
-        if (params == null || params.isEmpty()) {
+    private void processPathParam(PathParameter param, String raw, Map<String, Object> map) {
+        var name = param.getName();
+        var type = param.getType();
+        if (type == null) {
+            map.put(name, raw);
             return;
         }
+        var filter = filters.get(type);
+        if (filter == null) {
+            map.put(name, raw);
+            return;
+        }
+        var object = filter.process(raw);
+        map.put(name, object);
+    }
+
+    private void processPathParamsNoDecode(HttpRequest request, PathParameter[] params) {
         var segments = request.pathSegments();
         var map = request.pathParams();
-        for (var param : params) {
-            var raw = segments.get(param.getIndex());
-            if (decodePath) {
-                try {
-                    raw = decoder.decode(raw);
-                } catch (Throwable e) {
-                    throw new IllegalParamException(getIllegalParamMessage("Path", param, raw, e.getMessage()), e);
-                }
+        PathParameter param = null;
+        String raw = null;
+        try {
+            for (var i = 0; i < params.length; ++i) {
+                param = params[i];
+                raw = segments.get(param.getIndex());
+                processPathParam(param, raw, map);
             }
-            var name = param.getName();
-            var type = param.getType();
-            if (type == null) {
-                map.put(name, raw);
-                continue;
-            }
-            var filter = filters.get(type);
-            if (filter == null) {
-                map.put(name, raw);
-                continue;
-            }
-            try {
-                var object = filter.process(raw);
-                map.put(name, object);
-            } catch (Throwable e) {
-                throw new IllegalParamException(getIllegalParamMessage("Path", param, raw, e.getMessage()), e);
-            }
+        } catch (Throwable e) {
+            throw new IllegalParamException(getIllegalParamMessage("Path", param, raw, e.getMessage()), e);
         }
     }
 
+    private void processPathParamsWithDecode(HttpRequest request, PathParameter[] params) {
+        var segments = request.pathSegments();
+        var map = request.pathParams();
+        PathParameter param = null;
+        String raw = null;
+        try {
+            for (var i = 0; i < params.length; ++i) {
+                param = params[i];
+                raw = decoder.decode(segments.get(param.getIndex()));
+                processPathParam(param, raw, map);
+            }
+        } catch (Throwable e) {
+            throw new IllegalParamException(getIllegalParamMessage("Path", param, raw, e.getMessage()), e);
+        }
+    }
+
+    /**
+     * TODO
+     * @param request
+     * @param params
+     */
+    protected void processPathParams(HttpRequest request, PathParameter[] params) {
+        if (params == null || params.length == 0) {
+            return;
+        }
+        if (decodePath) {
+            processPathParamsWithDecode(request, params);
+        } else {
+            processPathParamsNoDecode(request, params);
+        }
+    }
+
+    /**
+     * TODO
+     * @param queries
+     */
     protected void decodeQueryParams(List<String> queries) {
         if (queries == null) {
             return;
@@ -72,6 +123,10 @@ public class FilterParamParser implements ParamParser {
         }
     }
 
+    /**
+     * TODO
+     * @param queries
+     */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void decodeQueryParams(Map<String, List<Object>> queries) {
         try {
@@ -92,35 +147,46 @@ public class FilterParamParser implements ParamParser {
         }
     }
 
-    protected void processQueryParams(Map<String, List<Object>> queries, List<QueryParameter> params) {
-        if (params == null || params.isEmpty()) {
+    private void processQueryParam(QueryParameter param, List<Object> raw) {
+        if (raw == null) {
+            if (param.isRequired() == Boolean.TRUE) {
+                throw new IllegalParamException("Missing required query parameter " + param);
+            }
             return;
         }
-        for (var param : params) {
-            var raw = queries.get(param.getName());
-            if (raw == null) {
-                if (param.isRequired() == Boolean.TRUE) {
-                    throw new IllegalParamException("Missing required query parameter " + param);
-                }
-                continue;
+        var type = param.getType();
+        if (type == null || raw.isEmpty()) {
+            return;
+        }
+        var filter = filters.get(type);
+        if (filter == null) {
+            return;
+        }
+        var size = raw.size();
+        for (var i = 0; i < size; ++i) {
+            raw.set(i, filter.process((String) raw.get(i)));
+        }
+    }
+
+    /**
+     * TODO
+     * @param queries
+     * @param params
+     */
+    protected void processQueryParams(Map<String, List<Object>> queries, QueryParameter[] params) {
+        if (params == null || params.length == 0) {
+            return;
+        }
+        QueryParameter param = null;
+        List<Object> raw = null;
+        try {
+            for (var i = 0; i < params.length; ++i) {
+                param = params[i];
+                raw = queries.get(param.getName());
+                processQueryParam(param, raw);
             }
-            var type = param.getType();
-            if (type == null || raw.isEmpty()) {
-                continue;
-            }
-            var filter = filters.get(type);
-            if (filter == null) {
-                continue;
-            }
-            try {
-                var size = raw.size();
-                for (var i = 0; i < size; ++i) {
-                    var string = (String) raw.get(i);
-                    raw.set(i, filter.process(string));
-                }
-            } catch (Throwable e) {
-                throw new IllegalParamException(getIllegalParamMessage("Query", param, raw, e.getMessage()), e);
-            }
+        } catch (Throwable e) {
+            throw new IllegalParamException(getIllegalParamMessage("Query", param, raw, e.getMessage()), e);
         }
     }
 

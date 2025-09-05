@@ -4,13 +4,23 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * TODO
+ */
 public final class StandardUrlDecoder implements UrlDecoder {
     private final Charset charset;
 
+    /**
+     * TODO
+     * @param charset
+     */
     public StandardUrlDecoder(Charset charset) {
         this.charset = charset;
     }
 
+    /**
+     * TODO
+     */
     public StandardUrlDecoder() {
         this.charset = StandardCharsets.UTF_8;
     }

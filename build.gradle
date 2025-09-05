@@ -30,9 +30,12 @@ dependencies {
     // Dependencies
     // Path & router
     api group: 'io.github.amayaframework', name: 'amaya-filter', version: '2.0.0'
-    api group: 'io.github.amayaframework', name: 'amaya-path', version: '2.0.0'
-    api group: 'io.github.amayaframework', name: 'amaya-path-parser', version: '2.0.0'
-    api group: 'io.github.amayaframework', name: 'amaya-router', version: '2.0.0'
+//    api group: 'io.github.amayaframework', name: 'amaya-path', version: '2.0.0'
+    implementation project(':path')
+//    api group: 'io.github.amayaframework', name: 'amaya-path-parser', version: '2.0.0'
+    implementation project(':parser')
+//    api group: 'io.github.amayaframework', name: 'amaya-router', version: '2.0.0'
+    implementation project(':router')
     // Tokenizer
     implementation group: 'io.github.amayaframework', name: 'amaya-tokenize', version: '2.0.0'
     // Servlets

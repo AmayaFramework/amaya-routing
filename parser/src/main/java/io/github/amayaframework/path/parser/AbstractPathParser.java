@@ -135,7 +135,7 @@ public abstract class AbstractPathParser implements PathParser {
             return ret;
         }
         var data = new PathData();
-        data.setPathParams(parameters);
+        data.setPathParams(parameters.toArray(new PathParameter[0]));
         ret.setData(data);
         return ret;
     }
@@ -148,7 +148,7 @@ public abstract class AbstractPathParser implements PathParser {
      * or null if the query string is empty or blank
      */
     protected List<QueryParameter> parseQueryString(String query) {
-        if (query.isEmpty() || query.isBlank()) {
+        if (query.isBlank()) {
             return null;
         }
         var tokens = tokenizer.tokenize(query, QUERY_DELIM);
@@ -189,7 +189,7 @@ public abstract class AbstractPathParser implements PathParser {
             data = new PathData();
             path.setData(data);
         }
-        data.setQueryParams(query);
+        data.setQueryParams(query.toArray(new QueryParameter[0]));
         return path;
     }
 }

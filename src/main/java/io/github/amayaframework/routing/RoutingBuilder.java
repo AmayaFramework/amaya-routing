@@ -7,11 +7,18 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+/**
+ * TODO
+ */
 public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
     protected final Supplier<RouterBuilder> supplier;
     protected RouterBuilder routerBuilder;
     protected ParamParserBuilder paramParserBuilder;
 
+    /**
+     * TODO
+     * @param supplier
+     */
     public RoutingBuilder(Supplier<RouterBuilder> supplier) {
         this.supplier = supplier;
     }
@@ -23,12 +30,18 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
         paramParserBuilder = null;
     }
 
+    /**
+     * TODO
+     */
     protected void ensureRouterBuilder() {
         if (routerBuilder == null) {
             routerBuilder = supplier.get();
         }
     }
 
+    /**
+     * TODO
+     */
     protected void ensureParamParserBuilder() {
         if (paramParserBuilder == null) {
             paramParserBuilder = new ParamParserBuilder();
@@ -83,6 +96,10 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
         return null;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     protected TaskConsumer<HttpContext> doBuild() {
         var router = buildRouter();
         if (router.empty()) {
@@ -105,6 +122,10 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
         return new MixedRoutingTask(router, parser, handleOptionsRequest, cacheControl);
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public TaskConsumer<HttpContext> build() {
         try {
             return doBuild();

@@ -8,20 +8,38 @@ import io.github.amayaframework.router.RouterFactory;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
+/**
+ * TODO
+ */
 public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, RouteBuilder> {
     protected final RouterFactory factory;
     protected final Supplier<RouteBuilder> supplier;
 
+    /**
+     * TODO
+     * @param parser
+     * @param factory
+     * @param supplier
+     */
     public RouterBuilder(PathParser parser, RouterFactory factory, Supplier<RouteBuilder> supplier) {
         super(parser);
         this.factory = factory;
         this.supplier = supplier;
     }
 
+    /**
+     * TODO
+     * @param parser
+     * @param factory
+     */
     public RouterBuilder(PathParser parser, RouterFactory factory) {
         this(parser, factory, RouteBuilder::new);
     }
 
+    /**
+     * TODO
+     * @param factory
+     */
     public RouterBuilder(RouterFactory factory) {
         this(PathParsers.createDefault(), factory);
     }
@@ -31,6 +49,10 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
         return supplier.get();
     }
 
+    /**
+     * TODO
+     * @return
+     */
     protected TaskRouter doBuild() {
         if (paths == null || paths.isEmpty()) {
             return EmptyRouter.INSTANCE;
@@ -51,6 +73,10 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
         return new WrappedRouter(factory.create(map), flags[0], flags[1]);
     }
 
+    /**
+     * TODO
+     * @return
+     */
     public TaskRouter build() {
         try {
             return doBuild();

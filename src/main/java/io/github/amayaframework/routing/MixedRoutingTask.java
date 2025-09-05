@@ -7,16 +7,37 @@ import io.github.amayaframework.router.Router;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ *
+ */
 public class MixedRoutingTask extends AbstractRoutingTask implements TaskConsumer<HttpContext> {
 
+    /**
+     *
+     * @param router
+     * @param parser
+     * @param handleOptions
+     * @param cacheControl
+     */
     public MixedRoutingTask(Router<MethodMap> router, ParamParser parser, boolean handleOptions, String cacheControl) {
         super(router, parser, handleOptions, cacheControl);
     }
 
+    /**
+     *
+     * @param router
+     * @param parser
+     * @param handleOptions
+     */
     public MixedRoutingTask(Router<MethodMap> router, ParamParser parser, boolean handleOptions) {
         super(router, parser, handleOptions, null);
     }
 
+    /**
+     *
+     * @param router
+     * @param parser
+     */
     public MixedRoutingTask(Router<MethodMap> router, ParamParser parser) {
         super(router, parser, true, null);
     }

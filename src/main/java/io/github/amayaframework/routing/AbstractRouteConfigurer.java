@@ -9,18 +9,32 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * TODO
+ * @param <C>
+ */
 public abstract class AbstractRouteConfigurer<C extends RouteConfigurer> implements RouteConfigurer {
     protected Map<HttpMethod, Task<HttpContext>> tasks;
     protected Map<HttpMethod, TaskBuilder<HttpContext>> builders;
 
+    /**
+     * TODO
+     * @return
+     */
     protected abstract TaskBuilder<HttpContext> createTaskBuilder();
 
+    /**
+     * TODO
+     */
     protected void ensureTasks() {
         if (tasks == null) {
             tasks = new HashMap<>();
         }
     }
 
+    /**
+     * TODO
+     */
     protected void ensureBuilders() {
         if (builders == null) {
             builders = new HashMap<>();

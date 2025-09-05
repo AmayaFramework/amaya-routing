@@ -50,15 +50,15 @@ public final class BracketPathParserTest {
         assertEquals("/s1/s2", p1.getPath());
         assertIterableEquals(List.of("s1", "s2"), p1.getSegments());
         var qs1 = p1.getData().getQueryParams();
-        assertEquals("a", qs1.get(0).getName());
-        assertEquals("b", qs1.get(1).getName());
+        assertEquals("a", qs1[0].getName());
+        assertEquals("b", qs1[1].getName());
         // p2
         assertFalse(p2.isDynamic());
         assertEquals("/s1", p2.getPath());
         assertIterableEquals(List.of("s1"), p2.getSegments());
         var qs2 = p2.getData().getQueryParams();
-        assertEquals("q", qs2.get(0).getName());
-        assertEquals("t", qs2.get(0).getType());
+        assertEquals("q", qs2[0].getName());
+        assertEquals("t", qs2[0].getType());
     }
 
     @Test
@@ -84,15 +84,15 @@ public final class BracketPathParserTest {
         assertEquals("/s1/*", p1.getPath());
         assertIterableEquals(Arrays.asList("s1", null), p1.getSegments());
         var qs1 = p1.getData().getQueryParams();
-        assertEquals("a", qs1.get(0).getName());
-        assertEquals("b", qs1.get(1).getName());
+        assertEquals("a", qs1[0].getName());
+        assertEquals("b", qs1[1].getName());
         // p2
         assertTrue(p2.isDynamic());
         assertEquals("/*", p2.getPath());
         assertIterableEquals(Collections.singletonList(null), p2.getSegments());
         var qs2 = p2.getData().getQueryParams();
-        assertEquals("q", qs2.get(0).getName());
-        assertEquals("t", qs2.get(0).getType());
+        assertEquals("q", qs2[0].getName());
+        assertEquals("t", qs2[0].getType());
     }
 
     @Test
@@ -104,14 +104,14 @@ public final class BracketPathParserTest {
         assertEquals("/s1/*", p1.getPath());
         assertIterableEquals(Arrays.asList("s1", null), p1.getSegments());
         var pp1 = p1.getData().getPathParams();
-        assertEquals("p", pp1.get(0).getName());
+        assertEquals("p", pp1[0].getName());
         // p2
         assertTrue(p2.isDynamic());
         assertEquals("/*", p2.getPath());
         assertIterableEquals(Collections.singletonList(null), p2.getSegments());
         var pp2 = p2.getData().getPathParams();
-        assertEquals("p", pp2.get(0).getName());
-        assertEquals("t", pp2.get(0).getType());
+        assertEquals("p", pp2[0].getName());
+        assertEquals("t", pp2[0].getType());
     }
 
     @Test
@@ -123,19 +123,19 @@ public final class BracketPathParserTest {
         assertEquals("/s1/*", p1.getPath());
         assertIterableEquals(Arrays.asList("s1", null), p1.getSegments());
         var pp1 = p1.getData().getPathParams();
-        assertEquals("p", pp1.get(0).getName());
+        assertEquals("p", pp1[0].getName());
         var qs1 = p1.getData().getQueryParams();
-        assertEquals("a", qs1.get(0).getName());
-        assertEquals("b", qs1.get(1).getName());
+        assertEquals("a", qs1[0].getName());
+        assertEquals("b", qs1[1].getName());
         // p2
         assertTrue(p2.isDynamic());
         assertEquals("/*", p2.getPath());
         assertIterableEquals(Collections.singletonList(null), p2.getSegments());
         var pp2 = p2.getData().getPathParams();
-        assertEquals("p", pp2.get(0).getName());
-        assertEquals("t", pp2.get(0).getType());
+        assertEquals("p", pp2[0].getName());
+        assertEquals("t", pp2[0].getType());
         var qs2 = p2.getData().getQueryParams();
-        assertEquals("q", qs2.get(0).getName());
-        assertEquals("t", qs2.get(0).getType());
+        assertEquals("q", qs2[0].getName());
+        assertEquals("t", qs2[0].getType());
     }
 }

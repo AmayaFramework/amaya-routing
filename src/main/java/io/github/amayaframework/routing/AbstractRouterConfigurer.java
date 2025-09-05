@@ -13,17 +13,35 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * TODO
+ * @param <C>
+ * @param <R>
+ */
 public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R extends RouteConfigurer> implements RouterConfigurer {
     protected final PathParser parser;
     protected Map<Path, R> paths;
     protected Map<String, Path> parsed;
 
+    /**
+     * TODO
+     * @param parser
+     */
     protected AbstractRouterConfigurer(PathParser parser) {
         this.parser = parser;
     }
 
+    /**
+     * TODO
+     * @return
+     */
     protected abstract R createRouteConfigurer();
 
+    /**
+     * TODO
+     * @param path
+     * @return
+     */
     protected Path parse(String path) {
         if (path == null) {
             return null;
@@ -34,6 +52,9 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
         return parsed.computeIfAbsent(path, parser::parse);
     }
 
+    /**
+     * TODO
+     */
     protected void ensurePaths() {
         if (paths == null) {
             paths = new HashMap<>();

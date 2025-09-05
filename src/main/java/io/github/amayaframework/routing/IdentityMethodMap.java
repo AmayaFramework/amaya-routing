@@ -10,10 +10,16 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * TODO
+ */
 public final class IdentityMethodMap implements MethodMap {
     private final IdentityHashMap<HttpMethod, Task<HttpContext>> methods;
     private final Set<HttpMethod> methodSetView;
 
+    /**
+     * TODO
+     */
     public IdentityMethodMap() {
         this.methods = new IdentityHashMap<>();
         this.methodSetView = Collections.unmodifiableSet(methods.keySet());
