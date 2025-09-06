@@ -11,16 +11,39 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * TODO
+ * An array-based implementation of {@link MethodMap}.
+ * <p>
+ * This implementation stores handler tasks in a fixed-size array indexed by the ordinal
+ * value of the corresponding {@link HttpMethod}. Lookup, insertion, and removal are
+ * performed in constant time.
+ * <p>
+ * Since the mapping relies on predefined ordinal values, only the standard HTTP methods
+ * are supported. Attempts to resolve an unknown method or ordinal will result in an
+ * {@link IllegalArgumentException}.
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class ArrayMethodMap implements MethodMap {
     private static final int METHOD_COUNT = HttpMethod.all().size();
 
     /**
-     * TODO
-     * @param method
-     * @return
+     * Returns the internal ordinal index for the given HTTP method.
+     * <p>
+     * The ordinals are assigned as follows:
+     * <ul>
+     *   <li>{@link HttpMethod#GET} → 0</li>
+     *   <li>{@link HttpMethod#HEAD} → 1</li>
+     *   <li>{@link HttpMethod#POST} → 2</li>
+     *   <li>{@link HttpMethod#PUT} → 3</li>
+     *   <li>{@link HttpMethod#DELETE} → 4</li>
+     *   <li>{@link HttpMethod#PATCH} → 5</li>
+     *   <li>{@link HttpMethod#OPTIONS} → 6</li>
+     *   <li>{@link HttpMethod#CONNECT} → 7</li>
+     *   <li>{@link HttpMethod#TRACE} → 8</li>
+     * </ul>
+     *
+     * @param method the HTTP method to resolve
+     * @return the ordinal index associated with the method
+     * @throws IllegalArgumentException if the method is not recognized
      */
     public static int ordinal(HttpMethod method) {
         if (method == HttpMethod.GET) return 0;
@@ -36,9 +59,11 @@ public final class ArrayMethodMap implements MethodMap {
     }
 
     /**
-     * TODO
-     * @param ordinal
-     * @return
+     * Resolves the {@link HttpMethod} for the given ordinal index.
+     *
+     * @param ordinal the internal index
+     * @return the corresponding HTTP method
+     * @throws IllegalArgumentException if the ordinal is not recognized
      */
     public static HttpMethod of(int ordinal) {
         switch (ordinal) {
@@ -70,7 +95,10 @@ public final class ArrayMethodMap implements MethodMap {
     private final Set<HttpMethod> methodSetView;
 
     /**
-     * TODO
+     * Constructs an empty {@link ArrayMethodMap}.
+     * <p>
+     * The internal handler array is preallocated with a slot for each supported
+     * {@link HttpMethod}, but no handlers are initially registered.
      */
     public ArrayMethodMap() {
         this.handlers = new Task[METHOD_COUNT];

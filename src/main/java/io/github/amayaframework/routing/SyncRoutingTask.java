@@ -5,35 +5,50 @@ import io.github.amayaframework.context.HttpContext;
 import io.github.amayaframework.router.Router;
 
 /**
- *
+ * A synchronous routing task implementation.
+ * <p>
+ * This class extends {@link AbstractRoutingTask} and implements {@link SyncTaskConsumer},
+ * making it a {@link io.github.amayaframework.context.Middleware middleware} that
+ * executes routing logic synchronously by default.
+ * <p>
+ * It integrates with a {@link Router} to resolve routes and dispatch requests
+ * to the appropriate handlers, while also handling standard HTTP semantics such as
+ * 404 (Not Found), 405 (Method Not Allowed), and automatic {@code OPTIONS} responses.
  */
 public class SyncRoutingTask extends AbstractRoutingTask implements SyncTaskConsumer<HttpContext> {
 
     /**
+     * Creates a new synchronous routing task.
      *
-     * @param router
-     * @param parser
-     * @param handleOptions
-     * @param cacheControl
+     * @param router        the underlying router used to resolve paths
+     * @param parser        the parameter parser to apply (may be {@code null})
+     * @param handleOptions whether {@code OPTIONS} requests should be handled automatically
+     * @param cacheControl  optional value for the {@code Cache-Control} response header (may be {@code null})
      */
     public SyncRoutingTask(Router<MethodMap> router, ParamParser parser, boolean handleOptions, String cacheControl) {
         super(router, parser, handleOptions, cacheControl);
     }
 
     /**
+     * Creates a new synchronous routing task without a custom {@code Cache-Control} header.
      *
-     * @param router
-     * @param parser
-     * @param handleOptions
+     * @param router        the underlying router used to resolve paths
+     * @param parser        the parameter parser to apply (may be {@code null})
+     * @param handleOptions whether {@code OPTIONS} requests should be handled automatically
      */
     public SyncRoutingTask(Router<MethodMap> router, ParamParser parser, boolean handleOptions) {
         super(router, parser, handleOptions, null);
     }
 
     /**
+     * Creates a new synchronous routing task with default options:
+     * <ul>
+     *     <li>{@code handleOptions} is set to {@code true}</li>
+     *     <li>{@code cacheControl} is {@code null}</li>
+     * </ul>
      *
-     * @param router
-     * @param parser
+     * @param router the underlying router used to resolve paths
+     * @param parser the parameter parser to apply (may be {@code null})
      */
     public SyncRoutingTask(Router<MethodMap> router, ParamParser parser) {
         super(router, parser, true, null);

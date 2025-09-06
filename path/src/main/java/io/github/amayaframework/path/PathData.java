@@ -1,7 +1,5 @@
 package io.github.amayaframework.path;
 
-import java.util.List;
-
 /**
  * Holds metadata for a {@link Path}, including its
  * {@link PathParameter} and {@link QueryParameter} descriptors.
@@ -22,10 +20,10 @@ public final class PathData {
     /**
      * Sets path parameter descriptors.
      *
-     * @param pathParameters the array of {@link PathParameter} descriptors
+     * @param pathParams the array of {@link PathParameter} descriptors
      */
-    public void setPathParams(PathParameter[] pathParameters) {
-        this.pathParams = pathParameters;
+    public void setPathParams(PathParameter[] pathParams) {
+        this.pathParams = pathParams;
     }
 
     /**

@@ -11,14 +11,24 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * TODO
+ * An {@link IdentityHashMap}-based implementation of {@link MethodMap}.
+ * <p>
+ * This implementation uses reference equality ({@code ==}) to compare
+ * {@link HttpMethod} instances. It is efficient when methods are represented
+ * as canonical singletons (e.g., enum-like constants).
+ * <p>
+ * All operations such as lookup, insertion, and removal are backed directly
+ * by the underlying {@link IdentityHashMap}.
  */
 public final class IdentityMethodMap implements MethodMap {
     private final IdentityHashMap<HttpMethod, Task<HttpContext>> methods;
     private final Set<HttpMethod> methodSetView;
 
     /**
-     * TODO
+     * Constructs an empty {@link IdentityMethodMap}.
+     * <p>
+     * The internal {@link IdentityHashMap} is initialized with default capacity.
+     * The set of registered methods is exposed as an unmodifiable view.
      */
     public IdentityMethodMap() {
         this.methods = new IdentityHashMap<>();

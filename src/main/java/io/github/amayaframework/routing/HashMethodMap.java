@@ -11,15 +11,27 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * TODO
+ * A {@link Map}-backed implementation of {@link MethodMap}.
+ * <p>
+ * This implementation delegates all operations to the provided {@link Map},
+ * making it flexible in terms of internal storage. The behavior depends on
+ * the specific {@link Map} implementation used (e.g., {@link java.util.HashMap},
+ * {@link java.util.concurrent.ConcurrentHashMap}).
+ * <p>
+ * Lookups, insertions, and removals have the same complexity as the underlying
+ * {@link Map}. The set of registered methods is exposed as an unmodifiable view.
  */
 public final class HashMethodMap implements MethodMap {
     private final Map<HttpMethod, Task<HttpContext>> methods;
     private final Set<HttpMethod> methodSetView;
 
     /**
-     * TODO
-     * @param methods
+     * Constructs a {@link HashMethodMap} backed by the given {@link Map}.
+     * <p>
+     * The provided map is used directly without copying, so external
+     * modifications will be reflected in this instance.
+     *
+     * @param methods the backing map to store method-handler associations
      */
     public HashMethodMap(Map<HttpMethod, Task<HttpContext>> methods) {
         this.methods = methods;
