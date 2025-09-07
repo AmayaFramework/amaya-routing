@@ -8,7 +8,20 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
- * TODO
+ * A builder for creating a complete routing task pipeline.
+ * <p>
+ * This builder combines a {@link RouterBuilder} for route definitions
+ * and a {@link ParamParserBuilder} for parameter parsing, and produces
+ * a {@link TaskConsumer} that can be used as middleware in the request pipeline.
+ * <p>
+ * The resulting consumer is chosen dynamically:
+ * <ul>
+ *   <li>{@link NotFoundTask} if no routes are defined.</li>
+ *   <li>{@link UniRoutingTask} if the router supports unified execution.</li>
+ *   <li>{@link SyncRoutingTask} if only synchronous execution is supported.</li>
+ *   <li>{@link AsyncRoutingTask} if only asynchronous execution is supported.</li>
+ *   <li>{@link MixedRoutingTask} as a fallback if task capabilities are mixed.</li>
+ * </ul>
  */
 public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
     protected final Supplier<RouterBuilder> supplier;
@@ -16,8 +29,9 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
     protected ParamParserBuilder paramParserBuilder;
 
     /**
-     * TODO
-     * @param supplier
+     * Creates a new routing builder with a given supplier of {@link RouterBuilder}.
+     *
+     * @param supplier a supplier for new {@link RouterBuilder} instances
      */
     public RoutingBuilder(Supplier<RouterBuilder> supplier) {
         this.supplier = supplier;
@@ -31,7 +45,7 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
     }
 
     /**
-     * TODO
+     * Ensures that a {@link RouterBuilder} is available, creating one if necessary.
      */
     protected void ensureRouterBuilder() {
         if (routerBuilder == null) {
@@ -40,7 +54,7 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
     }
 
     /**
-     * TODO
+     * Ensures that a {@link ParamParserBuilder} is available, creating one if necessary.
      */
     protected void ensureParamParserBuilder() {
         if (paramParserBuilder == null) {
@@ -97,8 +111,12 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
     }
 
     /**
-     * TODO
-     * @return
+     * Builds the routing task without resetting this builder.
+     * <p>
+     * Selects the most suitable routing task implementation depending
+     * on the capabilities of the configured {@link TaskRouter}.
+     *
+     * @return a {@link TaskConsumer} representing the routing task
      */
     protected TaskConsumer<HttpContext> doBuild() {
         var router = buildRouter();
@@ -106,25 +124,26 @@ public class RoutingBuilder extends AbstractRoutingConfigurer<RoutingBuilder> {
             return new NotFoundTask();
         }
         var parser = buildParser();
-        // Лучший случай (uni = true)
+        // Best case: the router supports both sync and async execution (uni = true)
         if (router.isUni()) {
             return new UniRoutingTask(router, parser, handleOptionsRequest, cacheControl);
         }
-        // Не умеет uni, но умеет sync (sync = true, async = false, uni = false)
+        // Router does not support uni, but supports sync only (sync = true, async = false, uni = false)
         if (router.isSync()) {
             return new SyncRoutingTask(router, parser, handleOptionsRequest, cacheControl);
         }
-        // Не умеет uni, но умеет async (sync = false, async = true, uni = false)
+        // Router does not support uni, but supports async only (sync = false, async = true, uni = false)
         if (router.isAsync()) {
             return new AsyncRoutingTask(router, parser, handleOptionsRequest, cacheControl);
         }
-        // Худший случай - mixed
+        // Worst case: router contains a mix of sync-only and async-only tasks
         return new MixedRoutingTask(router, parser, handleOptionsRequest, cacheControl);
     }
 
     /**
-     * TODO
-     * @return
+     * Builds the routing task and resets this builder.
+     *
+     * @return the constructed {@link TaskConsumer}
      */
     public TaskConsumer<HttpContext> build() {
         try {

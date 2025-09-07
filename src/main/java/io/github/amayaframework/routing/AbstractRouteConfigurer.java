@@ -10,21 +10,29 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * TODO
- * @param <C>
+ * A skeletal implementation of {@link RouteConfigurer}.
+ * <p>
+ * This class provides storage and management of {@link Task tasks} and
+ * {@link TaskBuilder task builders} for each {@link HttpMethod}.
+ * <p>
+ * Subclasses must implement {@link #createTaskBuilder()} to supply
+ * the builder implementation used to construct method-specific pipelines.
+ *
+ * @param <C> the concrete self-type, allowing fluent API chaining
  */
 public abstract class AbstractRouteConfigurer<C extends RouteConfigurer> implements RouteConfigurer {
     protected Map<HttpMethod, Task<HttpContext>> tasks;
     protected Map<HttpMethod, TaskBuilder<HttpContext>> builders;
 
     /**
-     * TODO
-     * @return
+     * Creates a new task builder for assembling pipelines.
+     *
+     * @return a new task builder
      */
     protected abstract TaskBuilder<HttpContext> createTaskBuilder();
 
     /**
-     * TODO
+     * Ensures that the task map exists.
      */
     protected void ensureTasks() {
         if (tasks == null) {
@@ -33,7 +41,7 @@ public abstract class AbstractRouteConfigurer<C extends RouteConfigurer> impleme
     }
 
     /**
-     * TODO
+     * Ensures that the builder map exists.
      */
     protected void ensureBuilders() {
         if (builders == null) {

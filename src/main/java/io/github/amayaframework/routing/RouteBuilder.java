@@ -11,16 +11,29 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * TODO
+ * A builder for constructing {@link MethodMap} instances that associate
+ * HTTP methods with request handling pipelines.
+ * <p>
+ * This builder extends {@link AbstractRouteConfigurer}, allowing routes to be
+ * configured fluently with tasks or task pipelines. It supports two storage
+ * strategies:
+ * <ul>
+ *   <li>{@link ArrayMethodMap} for standard {@link HttpMethod} values.</li>
+ *   <li>A custom map supplied by {@link Supplier}, for extended or non-standard methods.</li>
+ * </ul>
+ * <p>
+ * The final {@link MethodMap} is produced via {@link #build()}, after which
+ * the builder state is reset and can be reused.
  */
 public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
     protected final Supplier<MethodMap> supplier;
     protected final boolean preferExtended;
 
     /**
-     * TODO
-     * @param supplier
-     * @param preferExtended
+     * Creates a new route builder.
+     *
+     * @param supplier       a supplier for creating extended {@link MethodMap} instances
+     * @param preferExtended whether to prefer the extended method map over the default {@link ArrayMethodMap}
      */
     public RouteBuilder(Supplier<MethodMap> supplier, boolean preferExtended) {
         this.supplier = supplier;
@@ -28,7 +41,10 @@ public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
     }
 
     /**
-     * TODO
+     * Creates a new route builder with default settings.
+     * <p>
+     * Uses {@link IdentityMethodMap} for extended maps and
+     * does not prefer extended storage unless required.
      */
     public RouteBuilder() {
         this.supplier = IdentityMethodMap::new;
@@ -40,6 +56,13 @@ public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
         return new LinkedTaskBuilder<>();
     }
 
+    /**
+     * Creates a {@link MethodMap} using either the supplier or a default
+     * {@link ArrayMethodMap}, depending on whether extended methods are required.
+     *
+     * @param extended whether to use the extended map
+     * @return a new method map
+     */
     protected MethodMap createMethodMap(boolean extended) {
         if (extended) {
             return supplier.get();
@@ -59,8 +82,12 @@ public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
     }
 
     /**
-     * TODO
-     * @return
+     * Builds a {@link MethodMap} from the current configuration without resetting state.
+     * <p>
+     * If no tasks are defined, returns an empty {@link ArrayMethodMap} or an extended map
+     * depending on {@link #preferExtended}. Extended methods are detected automatically.
+     *
+     * @return a method map for the configured routes
      */
     protected MethodMap doBuild() {
         var map = buildMap();
@@ -86,8 +113,9 @@ public class RouteBuilder extends AbstractRouteConfigurer<RouteBuilder> {
     }
 
     /**
-     * TODO
-     * @return
+     * Builds a {@link MethodMap} and resets this builder.
+     *
+     * @return the constructed method map
      */
     public MethodMap build() {
         try {

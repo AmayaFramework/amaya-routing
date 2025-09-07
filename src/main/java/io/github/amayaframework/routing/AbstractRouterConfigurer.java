@@ -14,9 +14,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * TODO
- * @param <C>
- * @param <R>
+ * A skeletal implementation of {@link RouterConfigurer}.
+ * <p>
+ * This class manages the mapping between {@link Path} objects and
+ * {@link RouteConfigurer route configurers}, supporting both
+ * pre-parsed paths and string path patterns.
+ * <p>
+ * Subclasses must implement {@link #createRouteConfigurer()} to supply
+ * the route configurer implementation for new paths.
+ *
+ * @param <C> the concrete self-type, allowing fluent API chaining
+ * @param <R> the concrete {@link RouteConfigurer} type used for each route
  */
 public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R extends RouteConfigurer> implements RouterConfigurer {
     protected final PathParser parser;
@@ -24,23 +32,26 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     protected Map<String, Path> parsed;
 
     /**
-     * TODO
-     * @param parser
+     * Creates a new router configurer using the specified {@link PathParser}.
+     *
+     * @param parser the path parser to use for string path patterns
      */
     protected AbstractRouterConfigurer(PathParser parser) {
         this.parser = parser;
     }
 
     /**
-     * TODO
-     * @return
+     * Creates a new route configurer for a path.
+     *
+     * @return a new route configurer
      */
     protected abstract R createRouteConfigurer();
 
     /**
-     * TODO
-     * @param path
-     * @return
+     * Parses a string path into a {@link Path}, caching results.
+     *
+     * @param path the raw string path
+     * @return the parsed path
      */
     protected Path parse(String path) {
         if (path == null) {
@@ -53,7 +64,7 @@ public abstract class AbstractRouterConfigurer<C extends RouterConfigurer, R ext
     }
 
     /**
-     * TODO
+     * Ensures that the route map exists.
      */
     protected void ensurePaths() {
         if (paths == null) {

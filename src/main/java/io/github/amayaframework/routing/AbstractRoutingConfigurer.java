@@ -1,8 +1,15 @@
 package io.github.amayaframework.routing;
 
 /**
- * TODO
- * @param <C>
+ * A skeletal implementation of {@link RoutingConfigurer}.
+ * <p>
+ * This class provides storage and default behavior for global routing
+ * configuration, including the {@link TaskRouter}, {@link ParamParser},
+ * automatic {@code OPTIONS} handling, and {@code Cache-Control} header.
+ * <p>
+ * Subclasses can extend this to provide additional configuration options.
+ *
+ * @param <C> the concrete self type, allowing fluent API chaining
  */
 public abstract class AbstractRoutingConfigurer<C extends RoutingConfigurer> implements RoutingConfigurer {
     protected TaskRouter router;

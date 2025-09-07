@@ -11,7 +11,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO
+ * A {@link ParamParser} implementation that applies {@link FilterSet filters}
+ * and optional URL decoding to request path and query parameters.
+ * <p>
+ * This parser supports:
+ * <ul>
+ *   <li>Decoding path segments via a {@link UrlDecoder}, controlled by {@code decodePath}.</li>
+ *   <li>Decoding query parameter names and values, controlled by {@code decodeQuery}.</li>
+ *   <li>Type conversion and validation of parameters using the configured {@link FilterSet}.</li>
+ * </ul>
+ * <p>
+ * Invalid or missing parameters result in an {@link IllegalParamException}.
  */
 public class FilterParamParser implements ParamParser {
     protected final FilterSet filters;
@@ -20,11 +30,12 @@ public class FilterParamParser implements ParamParser {
     protected final boolean decodeQuery;
 
     /**
-     * TODO
-     * @param filters
-     * @param decoder
-     * @param decodePath
-     * @param decodeQuery
+     * Creates a new parser.
+     *
+     * @param filters     the filter set used for type conversion and validation
+     * @param decoder     the decoder used for URL decoding
+     * @param decodePath  whether path parameters should be URL-decoded
+     * @param decodeQuery whether query parameters should be URL-decoded
      */
     public FilterParamParser(FilterSet filters, UrlDecoder decoder, boolean decodePath, boolean decodeQuery) {
         this.filters = filters;
@@ -34,12 +45,13 @@ public class FilterParamParser implements ParamParser {
     }
 
     /**
-     * TODO
-     * @param type
-     * @param parameter
-     * @param value
-     * @param reason
-     * @return
+     * Builds a detailed error message for an invalid parameter.
+     *
+     * @param type      the parameter type ("Path" or "Query")
+     * @param parameter the parameter definition
+     * @param value     the offending value
+     * @param reason    the reason for invalidity
+     * @return a formatted error message
      */
     protected String getIllegalParamMessage(String type, Parameter parameter, Object value, String reason) {
         return type + " parameter " + parameter + " with value '" + value + "' is invalid. Reason: " + reason;
@@ -94,9 +106,13 @@ public class FilterParamParser implements ParamParser {
     }
 
     /**
-     * TODO
-     * @param request
-     * @param params
+     * Processes path parameters for the given request.
+     * <p>
+     * Each segment is optionally decoded and passed through the configured {@link FilterSet}.
+     *
+     * @param request the HTTP request
+     * @param params  the path parameter definitions
+     * @throws IllegalParamException if decoding or filtering fails
      */
     protected void processPathParams(HttpRequest request, PathParameter[] params) {
         if (params == null || params.length == 0) {
@@ -110,8 +126,10 @@ public class FilterParamParser implements ParamParser {
     }
 
     /**
-     * TODO
-     * @param queries
+     * Decodes query parameter keys and values in place.
+     *
+     * @param queries the raw query map
+     * @throws IllegalParamException if decoding fails
      */
     protected void decodeQueryParams(List<String> queries) {
         if (queries == null) {
@@ -124,8 +142,10 @@ public class FilterParamParser implements ParamParser {
     }
 
     /**
-     * TODO
-     * @param queries
+     * Decodes query parameter keys and values in place.
+     *
+     * @param queries the raw query map
+     * @throws IllegalParamException if decoding fails
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     protected void decodeQueryParams(Map<String, List<Object>> queries) {
@@ -169,9 +189,11 @@ public class FilterParamParser implements ParamParser {
     }
 
     /**
-     * TODO
-     * @param queries
-     * @param params
+     * Applies filters and validation rules to query parameters.
+     *
+     * @param queries the raw query parameters
+     * @param params  the query parameter definitions
+     * @throws IllegalParamException if validation or filtering fails
      */
     protected void processQueryParams(Map<String, List<Object>> queries, QueryParameter[] params) {
         if (params == null || params.length == 0) {
@@ -190,6 +212,13 @@ public class FilterParamParser implements ParamParser {
         }
     }
 
+    /**
+     * Processes path and query parameters for the given request according to the provided metadata.
+     *
+     * @param request the HTTP request
+     * @param data    the path and query parameter metadata
+     * @throws IllegalParamException if parameter processing fails
+     */
     @Override
     public void process(HttpRequest request, PathData data) {
         var queries = request.queryParams();

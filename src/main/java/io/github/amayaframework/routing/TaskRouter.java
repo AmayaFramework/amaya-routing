@@ -25,7 +25,7 @@ public interface TaskRouter extends Router<MethodMap>, Uni {
      * @param path     the raw request path
      * @param supplier a supplier of path segments
      * @return a {@link PathContext} with the matched route and associated method map,
-     *         or {@code null} if no route matches
+     * or {@code null} if no route matches
      */
     @Override
     PathContext<MethodMap> process(String path, Supplier<Iterable<String>> supplier);
@@ -35,7 +35,7 @@ public interface TaskRouter extends Router<MethodMap>, Uni {
      *
      * @param path the raw request path
      * @return a {@link PathContext} with the matched route and associated method map,
-     *         or {@code null} if no route matches
+     * or {@code null} if no route matches
      */
     @Override
     PathContext<MethodMap> process(String path);

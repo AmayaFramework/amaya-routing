@@ -2,6 +2,17 @@ package io.github.amayaframework.routing;
 
 import io.github.amayaframework.filter.FilterSet;
 
+/**
+ * A skeletal implementation of {@link ParamParserConfigurer}.
+ * <p>
+ * This class manages the common state for parameter parsing configuration,
+ * including filters, URL decoding flags, and a {@link UrlDecoder}.
+ * <p>
+ * Subclasses must implement {@link #createFilterSet()} to provide the default
+ * filter set instance.
+ *
+ * @param <C> the concrete self-type, allowing fluent API chaining
+ */
 public abstract class AbstractParamParserConfigurer<C extends ParamParserConfigurer> implements ParamParserConfigurer {
     protected FilterSet filters;
     protected boolean decodePath;
@@ -16,6 +27,11 @@ public abstract class AbstractParamParserConfigurer<C extends ParamParserConfigu
         this.decoder = null;
     }
 
+    /**
+     * Creates the default filter set used when none has been explicitly configured.
+     *
+     * @return a new filter set
+     */
     protected abstract FilterSet createFilterSet();
 
     @Override

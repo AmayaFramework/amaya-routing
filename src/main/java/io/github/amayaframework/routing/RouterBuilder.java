@@ -9,17 +9,28 @@ import java.util.HashMap;
 import java.util.function.Supplier;
 
 /**
- * TODO
+ * A builder for constructing {@link TaskRouter} instances.
+ * <p>
+ * This builder extends {@link AbstractRouterConfigurer} and assembles
+ * a collection of {@link RouteBuilder route builders} mapped by {@link Path}.
+ * Each route produces a {@link MethodMap}, which is then combined into
+ * a router created by the provided {@link RouterFactory}.
+ * <p>
+ * The builder also determines whether the resulting router can be executed
+ * synchronously and/or asynchronously by inspecting the tasks it contains.
+ * <p>
+ * If no routes are defined, the builder produces {@link EmptyRouter#INSTANCE}.
  */
 public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, RouteBuilder> {
     protected final RouterFactory factory;
     protected final Supplier<RouteBuilder> supplier;
 
     /**
-     * TODO
-     * @param parser
-     * @param factory
-     * @param supplier
+     * Creates a new router builder with custom path parser, router factory, and route builder supplier.
+     *
+     * @param parser   the {@link PathParser} used to parse string path patterns
+     * @param factory  the factory used to construct the underlying router
+     * @param supplier a supplier of {@link RouteBuilder} instances for new paths
      */
     public RouterBuilder(PathParser parser, RouterFactory factory, Supplier<RouteBuilder> supplier) {
         super(parser);
@@ -28,17 +39,21 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
     }
 
     /**
-     * TODO
-     * @param parser
-     * @param factory
+     * Creates a new router builder with a custom parser and factory,
+     * using {@link RouteBuilder#RouteBuilder()} as the default route builder supplier.
+     *
+     * @param parser  the {@link PathParser} used to parse string path patterns
+     * @param factory the factory used to construct the underlying router
      */
     public RouterBuilder(PathParser parser, RouterFactory factory) {
         this(parser, factory, RouteBuilder::new);
     }
 
     /**
-     * TODO
-     * @param factory
+     * Creates a new router builder with a default path parser
+     * ({@link PathParsers#createDefault()}) and a custom factory.
+     *
+     * @param factory the factory used to construct the underlying router
      */
     public RouterBuilder(RouterFactory factory) {
         this(PathParsers.createDefault(), factory);
@@ -50,8 +65,15 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
     }
 
     /**
-     * TODO
-     * @return
+     * Builds a {@link TaskRouter} without resetting the builder state.
+     * <p>
+     * If no routes are defined, returns {@link EmptyRouter#INSTANCE}.
+     * Otherwise, creates a router from all accumulated paths and methods.
+     * <p>
+     * The router is wrapped in a {@link WrappedRouter} that records whether
+     * all tasks are synchronous and/or asynchronous for efficient execution.
+     *
+     * @return a task router for the configured routes
      */
     protected TaskRouter doBuild() {
         if (paths == null || paths.isEmpty()) {
@@ -74,8 +96,12 @@ public class RouterBuilder extends AbstractRouterConfigurer<RouterBuilder, Route
     }
 
     /**
-     * TODO
-     * @return
+     * Builds a {@link TaskRouter} and resets this builder.
+     * <p>
+     * After calling this method, the builder state is cleared
+     * and it may be reused for new configurations.
+     *
+     * @return the constructed router
      */
     public TaskRouter build() {
         try {

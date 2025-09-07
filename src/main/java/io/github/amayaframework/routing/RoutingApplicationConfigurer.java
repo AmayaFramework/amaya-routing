@@ -7,15 +7,32 @@ import io.github.amayaframework.web.WebApplication;
 
 import java.util.function.Consumer;
 
+/**
+ * A configurator that integrates {@link RoutingBuilder} into a {@link WebApplication}.
+ * <p>
+ * Optionally applies {@link RoutingOptions} from the application's {@link OptionSet},
+ * then registers the constructed routing task in the application's configurer.
+ */
 public final class RoutingApplicationConfigurer implements Runnable1<WebApplication> {
     private final RoutingBuilder builder;
     private final boolean configure;
 
+    /**
+     * Creates a new application configurator.
+     *
+     * @param builder   the underlying {@link RoutingBuilder} used to construct routing tasks
+     * @param configure whether to apply {@link RoutingOptions} from the application
+     */
     public RoutingApplicationConfigurer(RoutingBuilder builder, boolean configure) {
         this.builder = builder;
         this.configure = configure;
     }
 
+    /**
+     * Returns the underlying {@link RoutingConfigurer} for direct configuration.
+     *
+     * @return the routing configurer
+     */
     public RoutingConfigurer getConfigurer() {
         return builder;
     }
@@ -27,6 +44,15 @@ public final class RoutingApplicationConfigurer implements Runnable1<WebApplicat
         }
     }
 
+    /**
+     * Applies routing-related options from the provided {@link OptionSet}.
+     * <p>
+     * Supports custom {@link ParamParser}, or fallback to filter set, URL decoder,
+     * and decoding flags. Also configures global options such as handling
+     * {@code OPTIONS} requests and {@code Cache-Control} headers.
+     *
+     * @param options the option set containing routing configuration
+     */
     public void configure(OptionSet options) {
         var paramParser = options.get(RoutingOptions.PARAM_PARSER);
         if (paramParser != null) {
@@ -42,6 +68,12 @@ public final class RoutingApplicationConfigurer implements Runnable1<WebApplicat
         configure(options, RoutingOptions.CACHE_CONTROL, builder::cacheControl);
     }
 
+    /**
+     * Applies routing configuration (if enabled) and registers
+     * the built routing task in the {@link WebApplication}.
+     *
+     * @param app the target web application
+     */
     @Override
     public void run(WebApplication app) {
         if (configure) {
