@@ -95,8 +95,7 @@ publishing {
             // Configure pom
             pom {
                 name.set(archivesBaseName)
-                description.set('A module of the amaya framework that implements routing of http paths ' +
-                        'and processing of path and query parameters.')
+                description.set('A module of the amaya framework that implements HTTP path routing and parsing of path and query parameters.')
                 url.set('https://github.com/AmayaFramework/amaya-routing')
 
                 organization {
