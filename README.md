@@ -1,7 +1,6 @@
 # amaya-routing [![amaya-routing](https://img.shields.io/maven-central/v/io.github.amayaframework/amaya-routing?color=blue)](https://repo1.maven.org/maven2/io/github/amayaframework/amaya-routing)
 
-A module of the amaya framework that implements routing of http paths
-and processing of path and query parameters.
+A module of the amaya framework that implements HTTP path routing and parsing of path and query parameters.
 
 ## Getting Started
 
@@ -9,138 +8,125 @@ To install it, you will need:
 
 * Java 11+
 * Maven/Gradle
-* Amaya Core or set of core modules
+* [amaya-core](https://github.com/AmayaFramework/amaya-core) or a set of core modules
 
 ### Features
 
-* Fast route processing (now without collisions ^_^)
+* Fast and reliable route processing
 * Static routing
-* Dynamic routing
-* Path parameter parsing
-* Query parameter parsing
+* Dynamic routing with parameters
+* Path parameter parsing with filters
+* Query parameter parsing with filters
 
 ## Installing
 
 ### Gradle dependency
 
-```Groovy
+```groovy
 dependencies {
-    implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '2.0.0'
-    implementation group: 'io.github.amayaframework', name: 'amaya-routing', version: '1.1.0'
-    // Optional dependency for built-in dynamic routing impl
-    implementation group: 'io.github.amayaframework', name: 'amaya-fsm-router', version: '1.0.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-core', version: '3.5.0'
+    implementation group: 'io.github.amayaframework', name: 'amaya-routing', version: '2.0.0'
+    // Default stable dynamic router implementation
+    implementation group: 'io.github.amayaframework', name: 'amaya-tree-router', version: '2.0.0'
 }
 ```
 
 ### Maven dependency
 
-```
-<dependency>
-    <groupId>io.github.amayaframework</groupId>
-    <artifactId>amaya-core</artifactId>
-    <version>2.0.0</version>
-</dependency>
-<dependency>
-    <groupId>io.github.amayaframework</groupId>
-    <artifactId>amaya-routing</artifactId>
-    <version>1.1.0</version>
-</dependency>
-<!--Optional dependency for built-in dynamic routing impl-->
-<dependency>
-    <groupId>io.github.amayaframework</groupId>
-    <artifactId>amaya-fsm-router</artifactId>
-    <version>1.0.0</version>
-</dependency>
+```xml
+<dependencies>
+    <dependency>
+        <groupId>io.github.amayaframework</groupId>
+        <artifactId>amaya-core</artifactId>
+        <version>3.5.0</version>
+    </dependency>
+    <dependency>
+        <groupId>io.github.amayaframework</groupId>
+        <artifactId>amaya-routing</artifactId>
+        <version>2.0.0</version>
+    </dependency>
+    <!-- Default stable dynamic router implementation -->
+    <dependency>
+        <groupId>io.github.amayaframework</groupId>
+        <artifactId>amaya-tree-router</artifactId>
+        <version>2.0.0</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Examples
 
 ### Hello world
 
-```Java
+```java
 import io.github.amayaframework.core.WebBuilders;
-import io.github.amayaframework.http.HttpMethod;
+import io.github.amayaframework.routing.Routing;
 
 public final class Main {
     public static void main(String[] args) throws Throwable {
-        var cfg = RoutingConfigurers.create();
-        // Configure routes
-        var paths = cfg.getPathSet();
-        paths.set(HttpMethod.GET, "/hello", ctx -> {
-            ctx.getResponse().getWriter().write("Hello from amaya");
-        });
-        // Configure app
-        var builder = WebBuilders.create();
-        var app = builder
-                .setServerFactory(/* your web server factory here */)
-                .configureApplication(cfg)
+        var app = WebBuilders.create()
+                .configureApplication(Routing.configurer(cfg ->
+                        cfg.router(r -> r.get("/hello", ctx ->
+                                ctx.response().writer().println("Hello from amaya!")
+                        ))
+                ))
+                .withServerFactory(/* your web server factory here */)
                 .build();
         app.bind(8080);
         app.run();
     }
 }
-
 ```
 
-### Dynamic routing with jsm
-```Java
-import com.github.romanqed.jsm.bytecode.BytecodeMachineFactory;
+### Dynamic routing with filters
+```java
 import io.github.amayaframework.core.WebBuilders;
-import io.github.amayaframework.fsm.MachineRouterFactory;
-import io.github.amayaframework.http.HttpMethod;
-import io.github.amayaframework.routing.RoutingConfigurers;
+import io.github.amayaframework.routing.Routing;
+
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class Main {
 
     public static void main(String[] args) throws Throwable {
-        // Prepare fsm and routing factories
-        var machineFactory = new BytecodeMachineFactory();
-        var routingFactory = new MachineRouterFactory(machineFactory);
-        // Create configurer
-        var cfg = RoutingConfigurers.create(routingFactory);
-        // Configure filters
-        var filters = cfg.getFilterSet();
-        filters.set("int", Integer::parseInt);
-        filters.set("positive", raw -> {
-            var ret = Integer.parseInt(raw);
-            if (ret < 0) {
-                throw new IllegalArgumentException("Value must be >= 0");
-            }
-            return ret;
-        });
-        filters.set("word", raw -> {
-            raw = URLDecoder.decode(raw, StandardCharsets.UTF_8);
-            raw = raw.strip();
-            if (raw.contains(" ")) {
-                throw new IllegalArgumentException("Value must be single world");
-            }
-            return raw;
-        });
-        // Configure routes
-        var paths = cfg.getPathSet();
-        paths.set(HttpMethod.GET, "/a/{p:int}", ctx -> {
-            ctx.getResponse().getWriter().write("/a/" + ctx.getRequest().getPathParameter("p"));
-        });
-        paths.set(HttpMethod.GET, "/a/1", ctx -> {
-            ctx.getResponse().getWriter().write("/a/1 (static)");
-        });
-        paths.set(HttpMethod.GET, "/b/{p:positive}", ctx -> {
-            ctx.getResponse().getWriter().write("/b/" + ctx.getRequest().getPathParameter("p"));
-        });
-        paths.set(HttpMethod.GET, "/word/{w:word}", ctx -> {
-            ctx.getResponse().getWriter().write("/word/" + ctx.getRequest().getPathParameter("w"));
-        });
-        // Configure app
-        var builder = WebBuilders.create();
-        var app = builder
-                .setServerFactory(/* your web server factory here */)
-                .configureApplication(cfg)
+        var app = WebBuilders.create()
+                .configureApplication(Routing.configurer(cfg ->
+                        cfg.router(r -> r
+                                .get("/a/{p:int}", ctx -> {
+                                    int p = ctx.request().pathParam("p");
+                                    ctx.response().writer().println("/a/" + p);
+                                })
+                                .get("/a/1", ctx -> {
+                                    ctx.response().writer().println("/a/1 (static)");
+                                })
+                                .get("/b/{p:positive}", ctx -> {
+                                    int p = ctx.request().pathParam("p");
+                                    ctx.response().writer().println("/b/" + p);
+                                })
+                                .get("/word/{w:word}", ctx -> {
+                                    String w = ctx.request().pathParam("w");
+                                    ctx.response().writer().println("/word/" + w);
+                                })
+                        ).paramParser(p -> {
+                            p.filterSet().set("int", Integer::parseInt);
+                            p.filterSet().set("positive", raw -> {
+                                var val = Integer.parseInt(raw);
+                                if (val < 0) throw new IllegalArgumentException("Value must be >= 0");
+                                return val;
+                            });
+                            p.filterSet().set("word", raw -> {
+                                raw = URLDecoder.decode(raw, StandardCharsets.UTF_8).strip();
+                                if (raw.contains(" ")) throw new IllegalArgumentException("Value must be a single word");
+                                return raw;
+                            });
+                        })
+                ))
+                .withServerFactory(/* your web server factory here */)
                 .build();
         app.bind(8080);
         app.run();
     }
 }
-
 ```
 
 ## Built With
@@ -149,7 +135,6 @@ public class Main {
 * [jfunc](https://github.com/RomanQed/jfunc) - Basic functional interfaces
 * [jsm](https://github.com/RomanQed/jsm) - Finite state machine jit compiler
 * [amaya-core](https://github.com/AmayaFramework/amaya-core) - Various amaya modules
-* Black magic
 
 ## Authors
 
