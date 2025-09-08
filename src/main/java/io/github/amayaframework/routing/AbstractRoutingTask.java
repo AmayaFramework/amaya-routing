@@ -115,6 +115,7 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
      *
      * @param response the response to send to
      * @param allowed  the set of allowed methods
+     * @return a completed future indicating the response was sent
      */
     protected CompletableFuture<Void> sendOptionsResponseAsync(HttpResponse response, Set<HttpMethod> allowed) {
         sendOptionsResponse(response, allowed);
@@ -126,6 +127,8 @@ public abstract class AbstractRoutingTask implements TaskConsumer<HttpContext> {
      *
      * @param response the response to send to
      * @param allowed  the set of allowed methods
+     * @return a future that completes successfully when the error response is sent,
+     *         or completes exceptionally if the response cannot be written
      */
     protected CompletableFuture<Void> sendMethodNotAllowedAsync(HttpResponse response, Set<HttpMethod> allowed) {
         response.header(ALLOW_HEADER, generateAllowHeader(allowed));

@@ -8,7 +8,7 @@ import io.github.amayaframework.router.Router;
  * A synchronous routing task implementation.
  * <p>
  * This class extends {@link AbstractRoutingTask} and implements {@link SyncTaskConsumer},
- * making it a {@link io.github.amayaframework.context.Middleware middleware} that
+ * making it a {@link com.github.romanqed.jconv.TaskConsumer} that
  * executes routing logic synchronously by default.
  * <p>
  * It integrates with a {@link Router} to resolve routes and dispatch requests
